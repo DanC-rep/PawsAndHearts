@@ -39,4 +39,8 @@ public class Pet
     public IReadOnlyList<Requisite> Requisites => _requisites;
     
     public DateOnly CreationDate { get; private set; }
+
+    private readonly List<PetPhoto> _photos = [];
+
+    public IReadOnlyList<PetPhoto> Photos => _photos;
 }
