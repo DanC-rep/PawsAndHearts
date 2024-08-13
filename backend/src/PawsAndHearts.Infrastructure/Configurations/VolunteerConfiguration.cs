@@ -44,11 +44,11 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.HasMany(v => v.SocialNetworks)
             .WithOne()
-            .HasForeignKey("volunteer_id");
+            .HasForeignKey(s => s.VolunteerId);
 
         builder.HasMany(v => v.Requisites)
             .WithOne()
-            .HasForeignKey("volunteer_id");
+            .HasForeignKey(r => r.VolunteerId);
 
         builder.HasMany(v => v.Pets)
             .WithOne()

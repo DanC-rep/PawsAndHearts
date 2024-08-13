@@ -58,17 +58,18 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired();
 
         builder.Property(p => p.HelpStatus)
-            .IsRequired();
+            .IsRequired()
+            .HasConversion<string>();
 
         builder.HasMany(p => p.Requisites)
             .WithOne()
-            .HasForeignKey("pet_id");
+            .HasForeignKey(r => r.PetId);
 
         builder.Property(p => p.CreationDate)
             .IsRequired();
 
         builder.HasMany(p => p.Photos)
             .WithOne()
-            .HasForeignKey("pet_id");
+            .HasForeignKey(p => p.PetId);
     }
 }
