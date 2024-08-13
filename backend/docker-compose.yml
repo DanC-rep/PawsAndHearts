@@ -1,0 +1,17 @@
+﻿services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: paws_and_hearts
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5434:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres-data:

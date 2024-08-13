@@ -7,4 +7,6 @@ public class SocialNetwork
     public string Link { get; private set; } = default!;
 
     public string Name { get; private set; } = default!;
+
+    public Guid VolunteerId { get; private set; }
 }

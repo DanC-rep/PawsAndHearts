@@ -7,4 +7,8 @@ public class Requisite
     public string Name { get; private set; } = default!;
 
     public string Description { get; private set; } = default!;
+
+    public Guid PetId { get; private set; }
+
+    public Guid VolunteerId { get; private set; }
 }
