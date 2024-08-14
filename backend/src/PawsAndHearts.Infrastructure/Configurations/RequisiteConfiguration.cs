@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PawsAndHearts.Domain.Models;
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Infrastructure.Configurations;
 
@@ -16,7 +17,7 @@ public class RequisiteConfiguration : IEntityTypeConfiguration<Requisite>
         builder.Property(r => r.Id)
             .HasConversion(
                 id => id.Value,
-                value => BaseId.Create(value));
+                value => RequisiteId.Create(value));
 
         builder.Property(r => r.Name)
             .IsRequired()

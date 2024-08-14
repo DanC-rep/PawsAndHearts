@@ -1,10 +1,11 @@
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Domain.Models;
 
-public class SocialNetwork : Entity<BaseId>
+public class SocialNetwork : Entity<SocialNetworkId>
 {
-    private SocialNetwork(BaseId id) : base(id)
+    private SocialNetwork(SocialNetworkId id) : base(id)
     {
     }
 
@@ -12,5 +13,5 @@ public class SocialNetwork : Entity<BaseId>
 
     public string Name { get; private set; } = default!;
 
-    public BaseId VolunteerId { get; private set; }
+    public VolunteerId VolunteerId { get; private set; }
 }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PawsAndHearts.Domain.Models;
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Infrastructure.Configurations;
 
@@ -16,7 +17,7 @@ public class PetPhotoConfiguration : IEntityTypeConfiguration<PetPhoto>
         builder.Property(p => p.Id)
             .HasConversion(
                 id => id.Value,
-                value => BaseId.Create(value));
+                value => PetPhotoId.Create(value));
 
         builder.Property(p => p.Path)
             .IsRequired()

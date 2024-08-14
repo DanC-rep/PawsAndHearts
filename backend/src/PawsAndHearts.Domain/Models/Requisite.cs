@@ -1,10 +1,11 @@
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Domain.Models;
 
-public class Requisite : Entity<BaseId>
+public class Requisite : Entity<RequisiteId>
 {
-    private Requisite(BaseId id) : base(id)
+    private Requisite(RequisiteId id) : base(id)
     {
     }
 
@@ -12,7 +13,7 @@ public class Requisite : Entity<BaseId>
 
     public string Description { get; private set; } = default!;
 
-    public BaseId PetId { get; private set; }
+    public PetId PetId { get; private set; }
 
-    public BaseId VolunteerId { get; private set; }
+    public VolunteerId VolunteerId { get; private set; }
 }

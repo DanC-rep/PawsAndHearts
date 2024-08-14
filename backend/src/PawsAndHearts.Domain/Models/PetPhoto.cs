@@ -1,10 +1,11 @@
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Domain.Models;
 
-public class PetPhoto : Entity<BaseId>
+public class PetPhoto : Entity<PetPhotoId>
 {
-    private PetPhoto(BaseId id) : base(id)
+    private PetPhoto(PetPhotoId id) : base(id)
     {
     }
 
@@ -12,5 +13,5 @@ public class PetPhoto : Entity<BaseId>
     
     public bool IsMain { get; private set; }
 
-    public BaseId PetId { get; private set; }
+    public PetId PetId { get; private set; }
 }

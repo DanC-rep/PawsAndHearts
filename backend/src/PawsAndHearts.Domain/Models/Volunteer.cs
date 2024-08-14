@@ -1,10 +1,11 @@
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Domain.Models;
 
-public class Volunteer : Entity<BaseId>
+public class Volunteer : Entity<VolunteerId>
 {
-    private Volunteer(BaseId id) : base(id)
+    private Volunteer(VolunteerId id) : base(id)
     {
     }
 

@@ -1,11 +1,12 @@
 using PawsAndHearts.Domain.Enums;
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Domain.Models;
 
-public class Pet : Entity<BaseId>
+public class Pet : Entity<PetId>
 {
-    private Pet(BaseId id) : base(id)
+    private Pet(PetId id) : base(id)
     {
     }
 
