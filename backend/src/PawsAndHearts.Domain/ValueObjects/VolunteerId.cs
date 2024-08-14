@@ -1,5 +1,3 @@
-using PawsAndHearts.Domain.Models;
-
 namespace PawsAndHearts.Domain.ValueObjects;
 
 public record VolunteerId
