@@ -12,6 +12,11 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ToTable("volunteers");
 
         builder.HasKey(v => v.Id);
+        
+        builder.Property(v => v.Id)
+            .HasConversion(
+                id => id.Value,
+                value => BaseId.Create(value));
 
         builder.Property(v => v.Name)
             .IsRequired()

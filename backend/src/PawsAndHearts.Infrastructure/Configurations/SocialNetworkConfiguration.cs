@@ -12,6 +12,11 @@ public class SocialNetworkConfiguration : IEntityTypeConfiguration<SocialNetwork
         builder.ToTable("social_networks");
 
         builder.HasKey(s => s.Id);
+        
+        builder.Property(s => s.Id)
+            .HasConversion(
+                id => id.Value,
+                value => BaseId.Create(value));
 
         builder.Property(s => s.Link)
             .IsRequired()

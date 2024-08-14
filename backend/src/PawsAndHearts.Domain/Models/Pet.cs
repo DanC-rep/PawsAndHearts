@@ -1,10 +1,13 @@
 using PawsAndHearts.Domain.Enums;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.Models;
 
-public class Pet
+public class Pet : Entity<BaseId>
 {
-    public Guid Id { get; private set; }
+    private Pet(BaseId id) : base(id)
+    {
+    }
 
     public string Name { get; private set; } = default!;
 

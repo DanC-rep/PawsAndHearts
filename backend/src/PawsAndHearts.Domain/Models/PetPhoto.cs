@@ -1,12 +1,16 @@
+using PawsAndHearts.Domain.Shared;
+
 namespace PawsAndHearts.Domain.Models;
 
-public class PetPhoto
+public class PetPhoto : Entity<BaseId>
 {
-    public Guid Id { get; private set; }
+    private PetPhoto(BaseId id) : base(id)
+    {
+    }
 
     public string Path { get; private set; } = default!;
     
     public bool IsMain { get; private set; }
 
-    public Guid PetId { get; private set; }
+    public BaseId PetId { get; private set; }
 }

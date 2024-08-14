@@ -12,6 +12,11 @@ public class RequisiteConfiguration : IEntityTypeConfiguration<Requisite>
         builder.ToTable("requisites");
 
         builder.HasKey(r => r.Id);
+        
+        builder.Property(r => r.Id)
+            .HasConversion(
+                id => id.Value,
+                value => BaseId.Create(value));
 
         builder.Property(r => r.Name)
             .IsRequired()
