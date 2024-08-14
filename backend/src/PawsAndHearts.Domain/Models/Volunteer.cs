@@ -1,8 +1,13 @@
+using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.ValueObjects;
+
 namespace PawsAndHearts.Domain.Models;
 
-public class Volunteer
+public class Volunteer : Entity<VolunteerId>
 {
-    public Guid Id { get; private set; }
+    private Volunteer(VolunteerId id) : base(id)
+    {
+    }
 
     public string Name { get; private set; } = default!;
 

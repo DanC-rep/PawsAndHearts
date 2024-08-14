@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PawsAndHearts.Domain.Models;
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Infrastructure.Configurations;
 
@@ -12,6 +13,11 @@ public class SocialNetworkConfiguration : IEntityTypeConfiguration<SocialNetwork
         builder.ToTable("social_networks");
 
         builder.HasKey(s => s.Id);
+        
+        builder.Property(s => s.Id)
+            .HasConversion(
+                id => id.Value,
+                value => SocialNetworkId.Create(value));
 
         builder.Property(s => s.Link)
             .IsRequired()
