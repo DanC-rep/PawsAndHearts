@@ -18,21 +18,24 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.Property(v => v.Id)
             .HasConversion(
                 id => id.Value,
-                value => VolunteerId.Create(value).Value);
+                value => VolunteerId.Create(value));
 
         builder.ComplexProperty(v => v.FullName, fb =>
         {
             fb.Property(f => f.Name)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_NAME_LENGTH);
+                .HasMaxLength(Constants.MAX_NAME_LENGTH)
+                .HasColumnName("name");
 
             fb.Property(f => f.Surname)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_NAME_LENGTH);
+                .HasMaxLength(Constants.MAX_NAME_LENGTH)
+                .HasColumnName("surname");
 
             fb.Property(f => f.Patronymic)
                 .IsRequired(false)
-                .HasMaxLength(Constants.MAX_NAME_LENGTH);
+                .HasMaxLength(Constants.MAX_NAME_LENGTH)
+                .HasColumnName("patronymic");
         });
 
         builder.Property(v => v.Experience)
@@ -52,7 +55,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             pb.Property(p => p.Value)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_PHONE_LENGTH);
+                .HasMaxLength(Constants.MAX_PHONE_LENGTH)
+                .HasColumnName("phone_number");
         });
 
         builder.OwnsOne(v => v.VolunteerDetails, vb =>

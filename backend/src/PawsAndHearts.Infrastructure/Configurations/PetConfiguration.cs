@@ -17,7 +17,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Id)
             .HasConversion(
                 id => id.Value,
-                value => PetId.Create(value).Value);
+                value => PetId.Create(value));
 
         builder.Property(p => p.Name)
             .IsRequired()
@@ -47,19 +47,23 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             ab.Property(a => a.City)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH);
+                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH)
+                .HasColumnName("city");
 
             ab.Property(a => a.Street)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH);
+                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH)
+                .HasColumnName("street");
 
             ab.Property(a => a.House)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH);
+                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH)
+                .HasColumnName("house");
 
             ab.Property(a => a.Flat)
                 .IsRequired(false)
-                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH);
+                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH)
+                .HasColumnName("flat");
         });
 
         builder.Property(p => p.Weight)
@@ -72,13 +76,15 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             pb.Property(p => p.Value)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_PHONE_LENGTH);
+                .HasMaxLength(Constants.MAX_PHONE_LENGTH)
+                .HasColumnName("phone_number");
         });
 
         builder.ComplexProperty(p => p.BirthDate, bb =>
         {
             bb.Property(b => b.Value)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("birth_date");
         });
 
         builder.Property(p => p.IsVaccinated)
@@ -91,7 +97,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.ComplexProperty(p => p.CreationDate, cb =>
         {
             cb.Property(c => c.Value)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("creation_date");
         });
 
         builder.OwnsOne(p => p.PetDetails, peB =>
