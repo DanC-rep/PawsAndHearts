@@ -10,6 +10,8 @@ public class PawsAndHeartsDbContext(IConfiguration configuration) : DbContext
     private new const string Database = "PawsAndHearts";
     
     public DbSet<Volunteer> Volunteers { get; set; }
+    
+    public DbSet<Breed> Breeds { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
