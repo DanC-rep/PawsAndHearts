@@ -22,29 +22,23 @@ public class Pet : Entity<PetId>
 
     public string HealthInfo { get; private set; } = default!;
 
-    public string Address { get; private set; } = default!;
+    public Address Address { get; private set; }
 
     public double Weight { get; private set; }
     
     public double Height { get; private set; }
 
-    public string PhoneNumber { get; private set; } = default!;
+    public PhoneNumber PhoneNumber { get; private set; }
     
     public bool IsNeutered { get; private set; }
     
-    public DateOnly BirthDate { get; private set; }
+    public BirthDate BirthDate { get; private set; }
     
     public bool IsVaccinated { get; private set; }
     
     public HelpStatus HelpStatus { get; private set; }
-
-    private readonly List<Requisite> _requisites = [];
-
-    public IReadOnlyList<Requisite> Requisites => _requisites;
     
-    public DateOnly CreationDate { get; private set; }
+    public CreationDate CreationDate { get; private set; }
 
-    private readonly List<PetPhoto> _photos = [];
-
-    public IReadOnlyList<PetPhoto> Photos => _photos;
+    public PetDetails PetDetails { get; private set; }
 }

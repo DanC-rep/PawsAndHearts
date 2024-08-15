@@ -17,7 +17,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Id)
             .HasConversion(
                 id => id.Value,
-                value => PetId.Create(value));
+                value => PetId.Create(value).Value);
 
         builder.Property(p => p.Name)
             .IsRequired()
@@ -43,9 +43,24 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired()
             .HasMaxLength(Constants.MAX_HEATH_INFO_LENGTH);
 
-        builder.Property(p => p.Address)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_ADDRESS_LENGTH);
+        builder.ComplexProperty(p => p.Address, ab =>
+        {
+            ab.Property(a => a.City)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH);
+
+            ab.Property(a => a.Street)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH);
+
+            ab.Property(a => a.House)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH);
+
+            ab.Property(a => a.Flat)
+                .IsRequired(false)
+                .HasMaxLength(Constants.MAX_ADDRESS_LENGTH);
+        });
 
         builder.Property(p => p.Weight)
             .IsRequired();
@@ -53,12 +68,18 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Height)
             .IsRequired();
 
-        builder.Property(p => p.PhoneNumber)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_PHONE_LENGTH);
+        builder.ComplexProperty(p => p.PhoneNumber, pb =>
+        {
+            pb.Property(p => p.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_PHONE_LENGTH);
+        });
 
-        builder.Property(p => p.BirthDate)
-            .IsRequired();
+        builder.ComplexProperty(p => p.BirthDate, bb =>
+        {
+            bb.Property(b => b.Value)
+                .IsRequired();
+        });
 
         builder.Property(p => p.IsVaccinated)
             .IsRequired();
@@ -67,15 +88,36 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired()
             .HasConversion<string>();
 
-        builder.HasMany(p => p.Requisites)
-            .WithOne()
-            .HasForeignKey(r => r.PetId);
+        builder.ComplexProperty(p => p.CreationDate, cb =>
+        {
+            cb.Property(c => c.Value)
+                .IsRequired();
+        });
 
-        builder.Property(p => p.CreationDate)
-            .IsRequired();
+        builder.OwnsOne(p => p.PetDetails, peB =>
+        {
+            peB.ToJson();
+            
+            peB.OwnsMany(d => d.Photos, phB =>
+            {
+                phB.Property(p => p.Path)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_TEXT_LENGTH);
 
-        builder.HasMany(p => p.Photos)
-            .WithOne()
-            .HasForeignKey(p => p.PetId);
+                phB.Property(p => p.IsMain)
+                    .IsRequired();
+            });
+            
+            peB.OwnsMany(d => d.Requisites, rb =>
+            {
+                rb.Property(r => r.Description)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_TEXT_LENGTH);
+
+                rb.Property(r => r.Name)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_NAME_LENGTH);
+            });
+        });
     }
 }

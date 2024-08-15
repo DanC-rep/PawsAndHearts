@@ -1,3 +1,5 @@
+using CSharpFunctionalExtensions;
+
 namespace PawsAndHearts.Domain.ValueObjects;
 
 public record VolunteerId
@@ -9,9 +11,9 @@ public record VolunteerId
     
     public Guid Value { get; }
 
-    public static VolunteerId NewId() => new(Guid.NewGuid());
+    public static Result<VolunteerId> NewId() => new VolunteerId(Guid.NewGuid());
 
-    public static VolunteerId Empty() => new(Guid.Empty);
+    public static Result<VolunteerId> Empty() => new VolunteerId(Guid.Empty);
 
-    public static VolunteerId Create(Guid id) => new(id);
+    public static Result<VolunteerId> Create(Guid id) => new VolunteerId(id);
 }
