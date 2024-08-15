@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PawsAndHearts.Infrastructure;
@@ -12,9 +13,11 @@ using PawsAndHearts.Infrastructure;
 namespace PawsAndHearts.Infrastructure.Migrations
 {
     [DbContext(typeof(PawsAndHeartsDbContext))]
-    partial class PawsAndHeartsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815134833_RefactoredPetAndVolunteerEntities")]
+    partial class RefactoredPetAndVolunteerEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,24 +101,24 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(200)
                                 .HasColumnType("character varying(200)")
-                                .HasColumnName("city");
+                                .HasColumnName("address_city");
 
                             b1.Property<string>("Flat")
                                 .HasMaxLength(200)
                                 .HasColumnType("character varying(200)")
-                                .HasColumnName("flat");
+                                .HasColumnName("address_flat");
 
                             b1.Property<string>("House")
                                 .IsRequired()
                                 .HasMaxLength(200)
                                 .HasColumnType("character varying(200)")
-                                .HasColumnName("house");
+                                .HasColumnName("address_house");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
                                 .HasMaxLength(200)
                                 .HasColumnType("character varying(200)")
-                                .HasColumnName("street");
+                                .HasColumnName("address_street");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("BirthDate", "PawsAndHearts.Domain.Models.Pet.BirthDate#BirthDate", b1 =>
@@ -124,7 +127,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
 
                             b1.Property<DateOnly>("Value")
                                 .HasColumnType("date")
-                                .HasColumnName("birth_date");
+                                .HasColumnName("birth_date_value");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("CreationDate", "PawsAndHearts.Domain.Models.Pet.CreationDate#CreationDate", b1 =>
@@ -133,7 +136,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
 
                             b1.Property<DateOnly>("Value")
                                 .HasColumnType("date")
-                                .HasColumnName("creation_date");
+                                .HasColumnName("creation_date_value");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "PawsAndHearts.Domain.Models.Pet.PhoneNumber#PhoneNumber", b1 =>
@@ -144,7 +147,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(14)
                                 .HasColumnType("character varying(14)")
-                                .HasColumnName("phone_number");
+                                .HasColumnName("phone_number_value");
                         });
 
                     b.HasKey("Id")
@@ -187,18 +190,18 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(50)
                                 .HasColumnType("character varying(50)")
-                                .HasColumnName("name");
+                                .HasColumnName("full_name_name");
 
                             b1.Property<string>("Patronymic")
                                 .HasMaxLength(50)
                                 .HasColumnType("character varying(50)")
-                                .HasColumnName("patronymic");
+                                .HasColumnName("full_name_patronymic");
 
                             b1.Property<string>("Surname")
                                 .IsRequired()
                                 .HasMaxLength(50)
                                 .HasColumnType("character varying(50)")
-                                .HasColumnName("surname");
+                                .HasColumnName("full_name_surname");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "PawsAndHearts.Domain.Models.Volunteer.PhoneNumber#PhoneNumber", b1 =>
@@ -209,7 +212,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(14)
                                 .HasColumnType("character varying(14)")
-                                .HasColumnName("phone_number");
+                                .HasColumnName("phone_number_value");
                         });
 
                     b.HasKey("Id")

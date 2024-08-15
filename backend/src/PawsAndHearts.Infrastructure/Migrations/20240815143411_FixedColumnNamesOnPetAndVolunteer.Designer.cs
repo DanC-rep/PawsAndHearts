@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PawsAndHearts.Infrastructure;
@@ -12,9 +13,11 @@ using PawsAndHearts.Infrastructure;
 namespace PawsAndHearts.Infrastructure.Migrations
 {
     [DbContext(typeof(PawsAndHeartsDbContext))]
-    partial class PawsAndHeartsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815143411_FixedColumnNamesOnPetAndVolunteer")]
+    partial class FixedColumnNamesOnPetAndVolunteer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
