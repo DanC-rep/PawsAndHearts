@@ -23,17 +23,24 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired()
             .HasMaxLength(Constants.MAX_NAME_LENGTH);
 
-        builder.Property(p => p.Species)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_TEXT_LENGTH);
-
         builder.Property(p => p.Description)
             .IsRequired()
             .HasMaxLength(Constants.MAX_DESCRIPTION_LENGTH);
 
-        builder.Property(p => p.Breed)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_TEXT_LENGTH);
+        builder.ComplexProperty(p => p.PetIdentity, pb =>
+        {
+            pb.Property(p => p.SpeciesId)
+                .HasConversion(
+                    id => id.Value,
+                    value => SpeciesId.Create(value))
+                .HasColumnName("species_id");
+
+            pb.Property(p => p.BreedId)
+                .HasConversion(
+                    id => id.Value,
+                    value => BreedId.Create(value))
+                .HasColumnName("breed_id");
+        });
 
         builder.Property(p => p.Color)
             .IsRequired()
