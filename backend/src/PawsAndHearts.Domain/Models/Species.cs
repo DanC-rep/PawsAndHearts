@@ -14,6 +14,4 @@ public class Species : Entity<SpeciesId>
     private readonly List<Breed> _breeds = [];
     
     public IReadOnlyList<Breed> Breeds => _breeds;
-    
-    public Pet Pet { get; private set; }
 }
