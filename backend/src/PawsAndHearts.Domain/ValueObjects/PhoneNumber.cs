@@ -11,7 +11,7 @@ public record PhoneNumber
     
     public string Value { get; } = default!;
 
-    public Result<PhoneNumber> Create(string phoneNumber)
+    public static Result<PhoneNumber> Create(string phoneNumber)
     {
         if (string.IsNullOrWhiteSpace(phoneNumber))
         {

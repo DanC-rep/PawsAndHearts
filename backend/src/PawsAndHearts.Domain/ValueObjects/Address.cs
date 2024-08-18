@@ -20,7 +20,7 @@ public record Address
 
     public string? Flat { get; } = default!;
 
-    public Result<Address> Create(string city, string street, string house, string? flat)
+    public static Result<Address> Create(string city, string street, string house, string? flat)
     {
         if (string.IsNullOrWhiteSpace(city))
         {

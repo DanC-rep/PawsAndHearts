@@ -14,7 +14,7 @@ public record PetPhoto
     
     public bool IsMain { get; }
 
-    public Result<PetPhoto> Create(string path, bool isMain)
+    public static Result<PetPhoto> Create(string path, bool isMain)
     {
         if (string.IsNullOrWhiteSpace(path))
         {
