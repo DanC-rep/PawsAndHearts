@@ -279,7 +279,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         .HasForeignKey("volunteer_id")
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
 
-                    b.OwnsOne("PawsAndHearts.Domain.ValueObjects.PetDetails", "PetDetails", b1 =>
+                    b.OwnsOne("PawsAndHearts.Domain.Models.Pet.PetDetails#PawsAndHearts.Domain.ValueObjects.PetDetails", "PetDetails", b1 =>
                         {
                             b1.Property<Guid>("PetId")
                                 .HasColumnType("uuid")
@@ -287,7 +287,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
 
                             b1.HasKey("PetId");
 
-                            b1.ToTable("pets");
+                            b1.ToTable("pets", (string)null);
 
                             b1.ToJson("PetDetails");
 
@@ -295,7 +295,34 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                 .HasForeignKey("PetId")
                                 .HasConstraintName("fk_pets_pets_id");
 
-                            b1.OwnsMany("PawsAndHearts.Domain.ValueObjects.Requisite", "Requisites", b2 =>
+                            b1.OwnsMany("PawsAndHearts.Domain.Models.Pet.PetDetails#PawsAndHearts.Domain.ValueObjects.PetDetails.Photos#PawsAndHearts.Domain.ValueObjects.PetPhoto", "Photos", b2 =>
+                                {
+                                    b2.Property<Guid>("PetDetailsPetId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<bool>("IsMain")
+                                        .HasColumnType("boolean");
+
+                                    b2.Property<string>("Path")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("character varying(100)");
+
+                                    b2.HasKey("PetDetailsPetId", "Id")
+                                        .HasName("pk_pets");
+
+                                    b2.ToTable("pets", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("PetDetailsPetId")
+                                        .HasConstraintName("fk_pets_pets_pet_details_pet_id");
+                                });
+
+                            b1.OwnsMany("PawsAndHearts.Domain.Models.Pet.PetDetails#PawsAndHearts.Domain.ValueObjects.PetDetails.Requisites#PawsAndHearts.Domain.ValueObjects.Requisite", "Requisites", b2 =>
                                 {
                                     b2.Property<Guid>("PetDetailsPetId")
                                         .HasColumnType("uuid");
@@ -317,34 +344,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                     b2.HasKey("PetDetailsPetId", "Id")
                                         .HasName("pk_pets");
 
-                                    b2.ToTable("pets");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("PetDetailsPetId")
-                                        .HasConstraintName("fk_pets_pets_pet_details_pet_id");
-                                });
-
-                            b1.OwnsMany("PawsAndHearts.Domain.ValueObjects.PetPhoto", "Photos", b2 =>
-                                {
-                                    b2.Property<Guid>("PetDetailsPetId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<bool>("IsMain")
-                                        .HasColumnType("boolean");
-
-                                    b2.Property<string>("Path")
-                                        .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("character varying(100)");
-
-                                    b2.HasKey("PetDetailsPetId", "Id")
-                                        .HasName("pk_pets");
-
-                                    b2.ToTable("pets");
+                                    b2.ToTable("pets", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("PetDetailsPetId")
@@ -362,7 +362,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
 
             modelBuilder.Entity("PawsAndHearts.Domain.Models.Volunteer", b =>
                 {
-                    b.OwnsOne("PawsAndHearts.Domain.ValueObjects.VolunteerDetails", "VolunteerDetails", b1 =>
+                    b.OwnsOne("PawsAndHearts.Domain.Models.Volunteer.VolunteerDetails#PawsAndHearts.Domain.ValueObjects.VolunteerDetails", "VolunteerDetails", b1 =>
                         {
                             b1.Property<Guid>("VolunteerId")
                                 .HasColumnType("uuid")
@@ -370,7 +370,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
 
                             b1.HasKey("VolunteerId");
 
-                            b1.ToTable("volunteers");
+                            b1.ToTable("volunteers", (string)null);
 
                             b1.ToJson("VolunteerDetails");
 
@@ -378,7 +378,36 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                 .HasForeignKey("VolunteerId")
                                 .HasConstraintName("fk_volunteers_volunteers_id");
 
-                            b1.OwnsMany("PawsAndHearts.Domain.ValueObjects.SocialNetwork", "SocialNetworks", b2 =>
+                            b1.OwnsMany("PawsAndHearts.Domain.Models.Volunteer.VolunteerDetails#PawsAndHearts.Domain.ValueObjects.VolunteerDetails.Requisites#PawsAndHearts.Domain.ValueObjects.Requisite", "Requisites", b2 =>
+                                {
+                                    b2.Property<Guid>("VolunteerDetailsVolunteerId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("Description")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("character varying(100)");
+
+                                    b2.Property<string>("Name")
+                                        .IsRequired()
+                                        .HasMaxLength(50)
+                                        .HasColumnType("character varying(50)");
+
+                                    b2.HasKey("VolunteerDetailsVolunteerId", "Id")
+                                        .HasName("pk_volunteers");
+
+                                    b2.ToTable("volunteers", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("VolunteerDetailsVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_volunteer_details_volunteer_id");
+                                });
+
+                            b1.OwnsMany("PawsAndHearts.Domain.Models.Volunteer.VolunteerDetails#PawsAndHearts.Domain.ValueObjects.VolunteerDetails.SocialNetworks#PawsAndHearts.Domain.ValueObjects.SocialNetwork", "SocialNetworks", b2 =>
                                 {
                                     b2.Property<Guid>("VolunteerDetailsVolunteerId")
                                         .HasColumnType("uuid");
@@ -400,36 +429,7 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                     b2.HasKey("VolunteerDetailsVolunteerId", "Id")
                                         .HasName("pk_volunteers");
 
-                                    b2.ToTable("volunteers");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("VolunteerDetailsVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_volunteer_details_volunteer_id");
-                                });
-
-                            b1.OwnsMany("PawsAndHearts.Domain.ValueObjects.Requisite", "Requisites", b2 =>
-                                {
-                                    b2.Property<Guid>("VolunteerDetailsVolunteerId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<string>("Description")
-                                        .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("character varying(100)");
-
-                                    b2.Property<string>("Name")
-                                        .IsRequired()
-                                        .HasMaxLength(50)
-                                        .HasColumnType("character varying(50)");
-
-                                    b2.HasKey("VolunteerDetailsVolunteerId", "Id")
-                                        .HasName("pk_volunteers");
-
-                                    b2.ToTable("volunteers");
+                                    b2.ToTable("volunteers", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("VolunteerDetailsVolunteerId")

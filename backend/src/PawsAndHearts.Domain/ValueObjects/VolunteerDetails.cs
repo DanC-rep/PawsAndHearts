@@ -4,6 +4,10 @@ namespace PawsAndHearts.Domain.ValueObjects;
 
 public record VolunteerDetails
 {
+    private VolunteerDetails()
+    {
+    }
+    
     private VolunteerDetails(List<SocialNetwork> socialNetworks, List<Requisite> requisites)
     {
         _socialNetworks = socialNetworks;

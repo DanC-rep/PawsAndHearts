@@ -42,7 +42,7 @@ public class CreateVolunteerHandler
 
         var volunteerResult = Volunteer.Create(volunteerId, fullNameResult.Value,
             request.Experience, request.PetsFoundHome, request.PetsLookingForHome,
-            request.PetsBeingTreated, phoneNumberResult.Value, volunteerDetailsResult.Value, request.Pets);
+            request.PetsBeingTreated, phoneNumberResult.Value, volunteerDetailsResult.Value);
 
         if (volunteerResult.IsFailure)
             return volunteerResult.Error;
