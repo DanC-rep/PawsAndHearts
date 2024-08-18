@@ -29,20 +29,54 @@ public class CreateVolunteerHandler
         if (phoneNumberResult.IsFailure)
             return phoneNumberResult.Error;
 
-        var socialNetworks = request.SocialNetworks?.Select(s =>
-            SocialNetwork.Create(s.Name, s.Link).Value).ToList();
+        var socialNetworks = new List<SocialNetwork>();
 
-        var requisites = request.Requisites?.Select(r =>
-            Requisite.Create(r.Name, r.Description).Value).ToList();
+        if (request.SocialNetworks != null)
+        {
+            foreach (var socialNetworkDto in request.SocialNetworks)
+            {
+                var socialNetworkResult = SocialNetwork.Create(
+                    socialNetworkDto.Name,
+                    socialNetworkDto.Link);
+
+                if (socialNetworkResult.IsFailure)
+                    return socialNetworkResult.Error;
+
+                socialNetworks.Add(socialNetworkResult.Value);
+            }
+        }
+        
+        var requisites = new List<Requisite>();
+
+        if (request.Requisites != null)
+        {
+            foreach (var requisiteDto in request.Requisites)
+            {
+                var requisiteResult = Requisite.Create(
+                    requisiteDto.Name,
+                    requisiteDto.Description);
+
+                if (requisiteResult.IsFailure)
+                    return requisiteResult.Error;
+
+                requisites.Add(requisiteResult.Value);
+            }
+        }
         
         var volunteerDetailsResult = VolunteerDetails.Create(socialNetworks, requisites);
 
         if (volunteerDetailsResult.IsFailure)
             return volunteerDetailsResult.Error;
 
-        var volunteerResult = Volunteer.Create(volunteerId, fullNameResult.Value,
-            request.Experience, request.PetsFoundHome, request.PetsLookingForHome,
-            request.PetsBeingTreated, phoneNumberResult.Value, volunteerDetailsResult.Value);
+        var volunteerResult = Volunteer.Create(
+            volunteerId, 
+            fullNameResult.Value,
+            request.Experience, 
+            request.PetsFoundHome, 
+            request.PetsLookingForHome,
+            request.PetsBeingTreated, 
+            phoneNumberResult.Value, 
+            volunteerDetailsResult.Value);
 
         if (volunteerResult.IsFailure)
             return volunteerResult.Error;

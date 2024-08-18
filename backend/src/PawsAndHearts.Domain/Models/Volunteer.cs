@@ -9,8 +9,15 @@ public class Volunteer : Shared.Entity<VolunteerId>
     {
     }
     
-    private Volunteer(VolunteerId id, FullName fullName, int experience, int petsFoundHome,
-        int petsLookingForHome, int petsBeingTreated, PhoneNumber phoneNumber, VolunteerDetails volunteerDetails) : base(id)
+    private Volunteer(
+        VolunteerId id, 
+        FullName fullName, 
+        int experience, 
+        int petsFoundHome,
+        int petsLookingForHome, 
+        int petsBeingTreated, 
+        PhoneNumber phoneNumber, 
+        VolunteerDetails volunteerDetails) : base(id)
     {
         FullName = fullName;
         Experience = experience;
@@ -39,10 +46,24 @@ public class Volunteer : Shared.Entity<VolunteerId>
 
     public IReadOnlyList<Pet> Pets => _pets;
 
-    public static Result<Volunteer> Create(VolunteerId id, FullName fullName, int experience, int petsFoundHome,
-        int petsLookingForHone, int petsBeingTreated, PhoneNumber phoneNumber, VolunteerDetails volunteerDetails)
+    public static Result<Volunteer> Create(
+        VolunteerId id, 
+        FullName fullName, 
+        int experience, 
+        int petsFoundHome,
+        int petsLookingForHone, 
+        int petsBeingTreated, 
+        PhoneNumber phoneNumber, 
+        VolunteerDetails volunteerDetails)
     {
-        return new Volunteer(id, fullName, experience, petsFoundHome, petsLookingForHone, petsBeingTreated,
-            phoneNumber, volunteerDetails);
+        return new Volunteer(
+            id, 
+            fullName, 
+            experience, 
+            petsFoundHome, 
+            petsLookingForHone, 
+            petsBeingTreated,
+            phoneNumber, 
+            volunteerDetails);
     }
 }

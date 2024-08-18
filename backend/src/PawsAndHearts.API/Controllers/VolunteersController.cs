@@ -9,8 +9,10 @@ namespace PawsAndHearts.API.Controllers;
 public class VolunteersController : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult> Create([FromServices] CreateVolunteerHandler handler,
-        [FromBody] CreateVolunteerRequest request, CancellationToken cancellationToken = default)
+    public async Task<ActionResult> Create(
+        [FromServices] CreateVolunteerHandler handler,
+        [FromBody] CreateVolunteerRequest request, 
+        CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request, cancellationToken);
 

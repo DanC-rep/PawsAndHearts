@@ -24,7 +24,7 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id;
     }
 
-    public async Task<Result<Volunteer>> GetById(VolunteerId volunteerId)
+    public async Task<Result<Volunteer>> GetById(VolunteerId volunteerId, CancellationToken cancellationToken = default)
     {
         var volunteer = await _pawsAndHeartsDbContext.Volunteers
             .Include(v => v.Pets)
