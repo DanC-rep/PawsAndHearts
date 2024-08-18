@@ -29,10 +29,10 @@ public class CreateVolunteerHandler
         if (phoneNumberResult.IsFailure)
             return phoneNumberResult.Error;
 
-        var socialNetworks = request.SocialNetworks.Select(s =>
+        var socialNetworks = request.SocialNetworks?.Select(s =>
             SocialNetwork.Create(s.Name, s.Link).Value).ToList();
 
-        var requisites = request.Requisites.Select(r =>
+        var requisites = request.Requisites?.Select(r =>
             Requisite.Create(r.Name, r.Description).Value).ToList();
         
         var volunteerDetailsResult = VolunteerDetails.Create(socialNetworks, requisites);
