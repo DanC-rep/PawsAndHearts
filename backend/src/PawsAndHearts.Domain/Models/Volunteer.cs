@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Domain.Models;
@@ -46,7 +47,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
 
     public IReadOnlyList<Pet> Pets => _pets;
 
-    public static Result<Volunteer> Create(
+    public static Result<Volunteer, Error> Create(
         VolunteerId id, 
         FullName fullName, 
         int experience, 

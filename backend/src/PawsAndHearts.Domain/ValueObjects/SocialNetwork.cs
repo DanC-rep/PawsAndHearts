@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.ValueObjects;
 
@@ -14,13 +15,14 @@ public record SocialNetwork
 
     public string Name { get; } = default!;
 
-    public static Result<SocialNetwork> Create(string link, string name)
+    public static Result<SocialNetwork, Error> Create(string link, string name)
     {
-        if (string.IsNullOrWhiteSpace(link) || string.IsNullOrWhiteSpace(name))
-        {
-            return Result.Failure<SocialNetwork>("Link or name can not be empty");
-        }
+        if (string.IsNullOrWhiteSpace(link))
+            return Errors.General.ValueIsRequired("link");
 
+        if (string.IsNullOrWhiteSpace(name))
+            return Errors.General.ValueIsRequired("name");
+                
         return new SocialNetwork(link, name);
     }
 }

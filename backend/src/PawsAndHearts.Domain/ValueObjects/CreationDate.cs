@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.ValueObjects;
 
@@ -11,7 +12,7 @@ public record CreationDate
     
     public DateOnly Value { get; } = default!;
 
-    public static Result<CreationDate> Create(DateOnly birthDate)
+    public static Result<CreationDate, Error> Create(DateOnly birthDate)
     {
         return new CreationDate(birthDate);
     }

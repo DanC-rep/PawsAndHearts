@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.ValueObjects;
 
@@ -14,12 +15,10 @@ public record PetPhoto
     
     public bool IsMain { get; }
 
-    public static Result<PetPhoto> Create(string path, bool isMain)
+    public static Result<PetPhoto, Error> Create(string path, bool isMain)
     {
         if (string.IsNullOrWhiteSpace(path))
-        {
-            return Result.Failure<PetPhoto>("Path can not be empty");
-        }
+            return Errors.General.ValueIsRequired("path");
         
         return new PetPhoto(path, isMain);
     }

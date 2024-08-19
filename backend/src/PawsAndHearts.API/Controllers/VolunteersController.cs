@@ -1,26 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
+using PawsAndHearts.API.Extensions;
 using PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
 
 namespace PawsAndHearts.API.Controllers;
 
-
-[ApiController]
-[Route("[controller]")]
-public class VolunteersController : ControllerBase
+public class VolunteersController : ApplicationController 
 {
     [HttpPost]
-    public async Task<ActionResult> Create(
+    public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateVolunteerHandler handler,
         [FromBody] CreateVolunteerRequest request, 
         CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            return BadRequest(result.Error);
-        }
-
-        return Ok(result);
+        return result.ToResponse();
     }
 }
