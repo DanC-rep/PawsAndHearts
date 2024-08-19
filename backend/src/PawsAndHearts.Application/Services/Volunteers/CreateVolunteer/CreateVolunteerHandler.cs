@@ -29,39 +29,27 @@ public class CreateVolunteerHandler
         if (phoneNumberResult.IsFailure)
             return phoneNumberResult.Error;
 
-        var socialNetworks = new List<SocialNetwork>();
+        var socialNetworksResult = request.SocialNetworks?.Select(s =>
+            SocialNetwork.Create(s.Name, s.Link)).ToList();
 
-        if (request.SocialNetworks != null)
+        if (socialNetworksResult != null && socialNetworksResult.Any(s => s.IsFailure))
         {
-            foreach (var socialNetworkDto in request.SocialNetworks)
-            {
-                var socialNetworkResult = SocialNetwork.Create(
-                    socialNetworkDto.Name,
-                    socialNetworkDto.Link);
-
-                if (socialNetworkResult.IsFailure)
-                    return socialNetworkResult.Error;
-
-                socialNetworks.Add(socialNetworkResult.Value);
-            }
+            return Result.Failure<Guid, string>("Для всех соц. сетей требуется указать название и ссылку");
         }
-        
-        var requisites = new List<Requisite>();
 
-        if (request.Requisites != null)
+        var socialNetworks = socialNetworksResult?.Select(s => s.Value)
+            .ToList();
+
+        var requisitesResult = request.Requisites?.Select(r =>
+            Requisite.Create(r.Name, r.Description)).ToList();
+
+        if (requisitesResult != null && requisitesResult.Any(r => r.IsFailure))
         {
-            foreach (var requisiteDto in request.Requisites)
-            {
-                var requisiteResult = Requisite.Create(
-                    requisiteDto.Name,
-                    requisiteDto.Description);
-
-                if (requisiteResult.IsFailure)
-                    return requisiteResult.Error;
-
-                requisites.Add(requisiteResult.Value);
-            }
+            return Result.Failure<Guid, string>("Для всех реквизитов требуется указать название и описание");
         }
+
+        var requisites = requisitesResult?.Select(r => r.Value)
+            .ToList();
         
         var volunteerDetailsResult = VolunteerDetails.Create(socialNetworks, requisites);
 
