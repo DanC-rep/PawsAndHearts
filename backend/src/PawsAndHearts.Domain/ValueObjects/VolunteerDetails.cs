@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.ValueObjects;
 
@@ -22,7 +23,9 @@ public record VolunteerDetails
 
     public IReadOnlyList<Requisite>? Requisites => _requisites;
 
-    public static Result<VolunteerDetails> Create(List<SocialNetwork>? socialNetworks, List<Requisite>? requisites)
+    public static Result<VolunteerDetails, Error> Create(
+        List<SocialNetwork>? socialNetworks, 
+        List<Requisite>? requisites)
     {
         return new VolunteerDetails(socialNetworks, requisites);
     }

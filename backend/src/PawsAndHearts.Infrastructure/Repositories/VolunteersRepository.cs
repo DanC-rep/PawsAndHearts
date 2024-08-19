@@ -2,6 +2,7 @@ using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Domain.Models;
+using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Infrastructure.Repositories;
@@ -24,7 +25,9 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id;
     }
 
-    public async Task<Result<Volunteer>> GetById(VolunteerId volunteerId, CancellationToken cancellationToken = default)
+    public async Task<Result<Volunteer, Error>> GetById(
+        VolunteerId volunteerId, 
+        CancellationToken cancellationToken = default)
     {
         var volunteer = await _pawsAndHeartsDbContext.Volunteers
             .Include(v => v.Pets)
@@ -32,7 +35,7 @@ public class VolunteersRepository : IVolunteersRepository
 
         if (volunteer is null)
         {
-            return Result.Failure<Volunteer>("Volunteer not found");
+            return Errors.General.NotFound(volunteerId);
         }
 
         return volunteer;

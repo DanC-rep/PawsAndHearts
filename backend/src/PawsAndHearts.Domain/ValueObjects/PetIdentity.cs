@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.ValueObjects;
 
@@ -14,7 +15,7 @@ public record PetIdentity
 
     public BreedId BreedId { get; } = default!;
 
-    public Result<PetIdentity> Create(SpeciesId speciesId, BreedId breedId)
+    public Result<PetIdentity, Error> Create(SpeciesId speciesId, BreedId breedId)
     {
         return new PetIdentity(speciesId, breedId);
     }

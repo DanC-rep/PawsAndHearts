@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Domain.Models;
+using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
@@ -14,7 +15,7 @@ public class CreateVolunteerHandler
         _volunteersRepository = volunteersRepository;
     }
 
-    public async Task<Result<Guid, string>> Handle(CreateVolunteerRequest request,
+    public async Task<Result<Guid, Error>> Handle(CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
         var volunteerId = VolunteerId.NewId();
@@ -33,23 +34,19 @@ public class CreateVolunteerHandler
             SocialNetwork.Create(s.Name, s.Link)).ToList();
 
         if (socialNetworksResult != null && socialNetworksResult.Any(s => s.IsFailure))
-        {
-            return Result.Failure<Guid, string>("Для всех соц. сетей требуется указать название и ссылку");
-        }
+            return Errors.General.ValueIsRequired("name or link in social network");
 
-        var socialNetworks = socialNetworksResult?.Select(s => s.Value)
-            .ToList();
+        var socialNetworks = socialNetworksResult?.Select(s => 
+                s.Value).ToList();
 
         var requisitesResult = request.Requisites?.Select(r =>
             Requisite.Create(r.Name, r.Description)).ToList();
 
         if (requisitesResult != null && requisitesResult.Any(r => r.IsFailure))
-        {
-            return Result.Failure<Guid, string>("Для всех реквизитов требуется указать название и описание");
-        }
+            return Errors.General.ValueIsRequired("name or description in requisite");
 
-        var requisites = requisitesResult?.Select(r => r.Value)
-            .ToList();
+        var requisites = requisitesResult?.Select(r => 
+                r.Value).ToList();
         
         var volunteerDetailsResult = VolunteerDetails.Create(socialNetworks, requisites);
 

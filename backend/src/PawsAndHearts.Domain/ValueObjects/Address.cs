@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.ValueObjects;
 
@@ -20,20 +21,16 @@ public record Address
 
     public string? Flat { get; } = default!;
 
-    public static Result<Address> Create(string city, string street, string house, string? flat)
+    public static Result<Address, Error> Create(string city, string street, string house, string? flat)
     {
         if (string.IsNullOrWhiteSpace(city))
-        {
-            return Result.Failure<Address>("City can not be empty");
-        }
-        else if (string.IsNullOrWhiteSpace(street))
-        {
-            return Result.Failure<Address>("Street can not be empty");
-        }
-        else if (string.IsNullOrWhiteSpace(house))
-        {
-            return Result.Failure<Address>("House can not be empty");
-        }
+            return Errors.General.ValueIsRequired("city");
+
+        if (string.IsNullOrWhiteSpace(street))
+            return Errors.General.ValueIsRequired("street");
+
+        if (string.IsNullOrWhiteSpace(house))
+            return Errors.General.ValueIsRequired("house");
 
         return new Address(city, street, house, flat);
     }

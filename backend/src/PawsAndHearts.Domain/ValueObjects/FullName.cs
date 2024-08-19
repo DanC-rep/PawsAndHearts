@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.ValueObjects;
 
@@ -17,16 +18,13 @@ public record FullName
 
     public string? Patronymic { get; } = default!;
 
-    public static Result<FullName> Create(string name, string surname, string? patronymic)
+    public static Result<FullName, Error> Create(string name, string surname, string? patronymic)
     {
         if (string.IsNullOrWhiteSpace(name))
-        {
-            return Result.Failure<FullName>("Name can not be empty");
-        }
-        else if (string.IsNullOrWhiteSpace(surname))
-        {
-            return Result.Failure<FullName>("Surname can not be empty");
-        }
+            return Errors.General.ValueIsRequired("name");
+
+        if (string.IsNullOrWhiteSpace(surname))
+            return Errors.General.ValueIsRequired("surname");
 
         return new FullName(name, surname, patronymic);
     }

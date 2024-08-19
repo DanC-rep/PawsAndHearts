@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.ValueObjects;
 
@@ -14,12 +15,13 @@ public record Requisite
 
     public string Description { get; private set; } = default!;
 
-    public static Result<Requisite> Create(string name, string description)
+    public static Result<Requisite, Error> Create(string name, string description)
     {
-        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(description))
-        {
-            return Result.Failure<Requisite>("Name or description can not be empty");
-        }
+        if (string.IsNullOrWhiteSpace(name))
+            return Errors.General.ValueIsRequired("name");
+
+        if (string.IsNullOrWhiteSpace(description))
+            return Errors.General.ValueIsRequired("description");
 
         return new Requisite(name, description);
     }
