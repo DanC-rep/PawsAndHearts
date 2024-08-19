@@ -17,7 +17,7 @@ public record FullName
 
     public string? Patronymic { get; } = default!;
 
-    public Result<FullName> Create(string name, string surname, string? patronymic)
+    public static Result<FullName> Create(string name, string surname, string? patronymic)
     {
         if (string.IsNullOrWhiteSpace(name))
         {

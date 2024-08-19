@@ -1,12 +1,31 @@
-using PawsAndHearts.Domain.Shared;
+using CSharpFunctionalExtensions;
 using PawsAndHearts.Domain.ValueObjects;
 
 namespace PawsAndHearts.Domain.Models;
 
-public class Volunteer : Entity<VolunteerId>
+public class Volunteer : Shared.Entity<VolunteerId>
 {
     private Volunteer(VolunteerId id) : base(id)
     {
+    }
+    
+    private Volunteer(
+        VolunteerId id, 
+        FullName fullName, 
+        int experience, 
+        int petsFoundHome,
+        int petsLookingForHome, 
+        int petsBeingTreated, 
+        PhoneNumber phoneNumber, 
+        VolunteerDetails volunteerDetails) : base(id)
+    {
+        FullName = fullName;
+        Experience = experience;
+        PetsFoundHome = petsFoundHome;
+        PetsLookingForHome = petsLookingForHome;
+        PetsBeingTreated = petsBeingTreated;
+        PhoneNumber = phoneNumber;
+        VolunteerDetails = volunteerDetails;
     }
 
     public FullName FullName { get; private set; }
@@ -26,4 +45,25 @@ public class Volunteer : Entity<VolunteerId>
     private readonly List<Pet> _pets = [];
 
     public IReadOnlyList<Pet> Pets => _pets;
+
+    public static Result<Volunteer> Create(
+        VolunteerId id, 
+        FullName fullName, 
+        int experience, 
+        int petsFoundHome,
+        int petsLookingForHone, 
+        int petsBeingTreated, 
+        PhoneNumber phoneNumber, 
+        VolunteerDetails volunteerDetails)
+    {
+        return new Volunteer(
+            id, 
+            fullName, 
+            experience, 
+            petsFoundHome, 
+            petsLookingForHone, 
+            petsBeingTreated,
+            phoneNumber, 
+            volunteerDetails);
+    }
 }

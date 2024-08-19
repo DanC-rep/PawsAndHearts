@@ -11,7 +11,7 @@ public record CreationDate
     
     public DateOnly Value { get; } = default!;
 
-    public Result<CreationDate> Create(DateOnly birthDate)
+    public static Result<CreationDate> Create(DateOnly birthDate)
     {
         return new CreationDate(birthDate);
     }

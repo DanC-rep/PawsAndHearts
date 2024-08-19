@@ -14,7 +14,7 @@ public record Requisite
 
     public string Description { get; private set; } = default!;
 
-    public Result<Requisite> Create(string name, string description)
+    public static Result<Requisite> Create(string name, string description)
     {
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(description))
         {
