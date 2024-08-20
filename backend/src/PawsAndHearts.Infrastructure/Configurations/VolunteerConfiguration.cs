@@ -41,21 +41,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .IsRequired()
             .HasMaxLength(Constants.MAX_EXPERIENCE_VALUE);
 
-        builder.ComplexProperty(v => v.VolunteerPetsMetrics, vb =>
-        {
-            vb.Property(vp => vp.PetsFoundHome)
-                .IsRequired()
-                .HasColumnName("pets_found_home");
-
-            vb.Property(vp => vp.PetsLookingForHome)
-                .IsRequired()
-                .HasColumnName("pets_looking_for_home");
-
-            vb.Property(vp => vp.PetsBeingTreated)
-                .IsRequired()
-                .HasColumnName("pets_being_treated");
-        });
-
         builder.ComplexProperty(v => v.PhoneNumber, pb =>
         {
             pb.Property(p => p.Value)
@@ -66,7 +51,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsOne(v => v.SocialNetworks, snb =>
         {
-            snb.ToJson();
+            snb.ToJson("social_networks");
 
             snb.OwnsMany(sn => sn.Value, sb =>
             {
@@ -77,12 +62,12 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 sb.Property(s => s.Link)
                     .IsRequired()
                     .HasMaxLength(Constants.MAX_TEXT_LENGTH);
-            }).ToJson("social_networks");
+            });
         });
         
         builder.OwnsOne(v => v.Requisites, reb =>
         {
-            reb.ToJson();
+            reb.ToJson("requisites");
 
             reb.OwnsMany(re => re.Value, rb =>
             {
@@ -93,7 +78,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 rb.Property(r => r.Description)
                     .IsRequired()
                     .HasMaxLength(Constants.MAX_TEXT_LENGTH);
-            }).ToJson("requisites");
+            });
         });
 
         builder.HasMany(v => v.Pets)

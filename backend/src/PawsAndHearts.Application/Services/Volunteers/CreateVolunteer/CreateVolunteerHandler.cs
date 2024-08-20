@@ -27,14 +27,6 @@ public class CreateVolunteerHandler
         if (fullNameResult.IsFailure)
             return fullNameResult.Error;
 
-        var volunteerPetsMetricsResult = VolunteerPetsMetrics.Create(
-            request.PetsFoundHome,
-            request.PetsLookingForHome,
-            request.PetsBeingTreated);
-
-        if (volunteerPetsMetricsResult.IsFailure)
-            return volunteerPetsMetricsResult.Error;
-
         var phoneNumberResult = PhoneNumber.Create(request.PhoneNumber);
 
         if (phoneNumberResult.IsFailure)
@@ -63,8 +55,7 @@ public class CreateVolunteerHandler
         var volunteerResult = Volunteer.Create(
             volunteerId, 
             fullNameResult.Value,
-            request.Experience, 
-            volunteerPetsMetricsResult.Value, 
+            request.Experience,
             phoneNumberResult.Value, 
             socialNetworks,
             requisites);

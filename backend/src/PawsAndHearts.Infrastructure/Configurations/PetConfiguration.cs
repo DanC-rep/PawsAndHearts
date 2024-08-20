@@ -107,7 +107,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         
         builder.OwnsOne(p => p.Requisites, reb =>
         {
-            reb.ToJson();
+            reb.ToJson("requisites");
 
             reb.OwnsMany(re => re.Value, rb =>
             {
@@ -118,12 +118,12 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 rb.Property(r => r.Description)
                     .IsRequired()
                     .HasMaxLength(Constants.MAX_TEXT_LENGTH);
-            }).ToJson("requisites");
+            });
         });
         
         builder.OwnsOne(p => p.PetPhotos, phb =>
         {
-            phb.ToJson();
+            phb.ToJson("pet_photos");
 
             phb.OwnsMany(p => p.Value, pb =>
             {
@@ -133,7 +133,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
                 pb.Property(p => p.IsMain)
                     .IsRequired();
-            }).ToJson("pet_photos"); 
+            }); 
         });
     }
 }
