@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PawsAndHearts.Domain.Models;
 using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
+using PawsAndHearts.Domain.Species.Entities;
 
 namespace PawsAndHearts.Infrastructure.Configurations;
 

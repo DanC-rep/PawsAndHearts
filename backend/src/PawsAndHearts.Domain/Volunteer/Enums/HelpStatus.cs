@@ -1,4 +1,4 @@
-namespace PawsAndHearts.Domain.Enums;
+namespace PawsAndHearts.Domain.Volunteer.Enums;
 
 public enum HelpStatus
 {

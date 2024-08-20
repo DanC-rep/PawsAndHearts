@@ -1,8 +1,10 @@
 using CSharpFunctionalExtensions;
 using PawsAndHearts.Application.Interfaces;
-using PawsAndHearts.Domain.Models;
 using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
+using PawsAndHearts.Domain.Volunteer.Entities;
+using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 namespace PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
 
@@ -36,8 +38,9 @@ public class CreateVolunteerHandler
         if (socialNetworksResult != null && socialNetworksResult.Any(s => s.IsFailure))
             return Errors.General.ValueIsRequired("name or link in social network");
 
-        var socialNetworks = socialNetworksResult?.Select(s => 
-                s.Value).ToList();
+        var socialNetworks = new SocialNetworks(
+            socialNetworksResult?.Select(s => 
+                s.Value).ToList());
 
         var requisitesResult = request.Requisites?.Select(r =>
             Requisite.Create(r.Name, r.Description)).ToList();
@@ -45,23 +48,17 @@ public class CreateVolunteerHandler
         if (requisitesResult != null && requisitesResult.Any(r => r.IsFailure))
             return Errors.General.ValueIsRequired("name or description in requisite");
 
-        var requisites = requisitesResult?.Select(r => 
-                r.Value).ToList();
-        
-        var volunteerDetailsResult = VolunteerDetails.Create(socialNetworks, requisites);
-
-        if (volunteerDetailsResult.IsFailure)
-            return volunteerDetailsResult.Error;
+        var requisites = new Requisites(
+            requisitesResult?.Select(r => 
+                r.Value).ToList());
 
         var volunteerResult = Volunteer.Create(
             volunteerId, 
             fullNameResult.Value,
-            request.Experience, 
-            request.PetsFoundHome, 
-            request.PetsLookingForHome,
-            request.PetsBeingTreated, 
+            request.Experience,
             phoneNumberResult.Value, 
-            volunteerDetailsResult.Value);
+            socialNetworks,
+            requisites);
 
         if (volunteerResult.IsFailure)
             return volunteerResult.Error;

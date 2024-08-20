@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
 using PawsAndHearts.Domain.Shared;
 
-namespace PawsAndHearts.Domain.ValueObjects;
+namespace PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 public record PetPhoto
 {

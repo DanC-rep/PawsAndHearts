@@ -1,8 +1,10 @@
-using PawsAndHearts.Domain.Enums;
 using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
+using PawsAndHearts.Domain.Volunteer.Enums;
+using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
-namespace PawsAndHearts.Domain.Models;
+namespace PawsAndHearts.Domain.Volunteer.Entities;
 
 public class Pet : Entity<PetId>
 {
@@ -38,5 +40,7 @@ public class Pet : Entity<PetId>
     
     public CreationDate CreationDate { get; private set; }
 
-    public PetDetails PetDetails { get; private set; }
+    public Requisites Requisites { get; private set; }
+    
+    public PetPhotos PetPhotos { get; private set; }
 }

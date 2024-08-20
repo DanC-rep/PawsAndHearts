@@ -1,6 +1,4 @@
-using CSharpFunctionalExtensions;
-
-namespace PawsAndHearts.Domain.ValueObjects;
+namespace PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 
 public record VolunteerId
 {

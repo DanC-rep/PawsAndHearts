@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PawsAndHearts.Domain.Models;
 using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
+using PawsAndHearts.Domain.Volunteer.Entities;
 
 namespace PawsAndHearts.Infrastructure.Configurations;
 
@@ -42,15 +41,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .IsRequired()
             .HasMaxLength(Constants.MAX_EXPERIENCE_VALUE);
 
-        builder.Property(v => v.PetsFoundHome)
-            .IsRequired();
-
-        builder.Property(v => v.PetsLookingForHome)
-            .IsRequired();
-
-        builder.Property(v => v.PetsBeingTreated)
-            .IsRequired();
-
         builder.ComplexProperty(v => v.PhoneNumber, pb =>
         {
             pb.Property(p => p.Value)
@@ -59,11 +49,11 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasColumnName("phone_number");
         });
 
-        builder.OwnsOne(v => v.VolunteerDetails, vb =>
+        builder.OwnsOne(v => v.SocialNetworks, snb =>
         {
-            vb.ToJson();
+            snb.ToJson("social_networks");
 
-            vb.OwnsMany(d => d.SocialNetworks, sb =>
+            snb.OwnsMany(sn => sn.Value, sb =>
             {
                 sb.Property(s => s.Name)
                     .IsRequired()
@@ -73,8 +63,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                     .IsRequired()
                     .HasMaxLength(Constants.MAX_TEXT_LENGTH);
             });
+        });
+        
+        builder.OwnsOne(v => v.Requisites, reb =>
+        {
+            reb.ToJson("requisites");
 
-            vb.OwnsMany(d => d.Requisites, rb =>
+            reb.OwnsMany(re => re.Value, rb =>
             {
                 rb.Property(r => r.Name)
                     .IsRequired()

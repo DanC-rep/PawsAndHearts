@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PawsAndHearts.Domain.Models;
+using PawsAndHearts.Domain.Species.Entities;
+using PawsAndHearts.Domain.Volunteer.Entities;
 
 namespace PawsAndHearts.Infrastructure;
 

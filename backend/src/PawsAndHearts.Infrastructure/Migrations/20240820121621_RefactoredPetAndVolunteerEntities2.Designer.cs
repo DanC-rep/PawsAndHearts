@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PawsAndHearts.Infrastructure;
@@ -12,9 +13,11 @@ using PawsAndHearts.Infrastructure;
 namespace PawsAndHearts.Infrastructure.Migrations
 {
     [DbContext(typeof(PawsAndHeartsDbContext))]
-    partial class PawsAndHeartsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240820121621_RefactoredPetAndVolunteerEntities2")]
+    partial class RefactoredPetAndVolunteerEntities2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,6 +245,23 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                 .HasMaxLength(14)
                                 .HasColumnType("character varying(14)")
                                 .HasColumnName("phone_number");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("VolunteerPetsMetrics", "PawsAndHearts.Domain.Volunteer.Entities.Volunteer.VolunteerPetsMetrics#VolunteerPetsMetrics", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("PetsBeingTreated")
+                                .HasColumnType("integer")
+                                .HasColumnName("pets_being_treated");
+
+                            b1.Property<int>("PetsFoundHome")
+                                .HasColumnType("integer")
+                                .HasColumnName("pets_found_home");
+
+                            b1.Property<int>("PetsLookingForHome")
+                                .HasColumnType("integer")
+                                .HasColumnName("pets_looking_for_home");
                         });
 
                     b.HasKey("Id")

@@ -1,7 +1,7 @@
 using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 
-namespace PawsAndHearts.Domain.Models;
+namespace PawsAndHearts.Domain.Species.Entities;
 
 public class Breed : Entity<BreedId>
 {

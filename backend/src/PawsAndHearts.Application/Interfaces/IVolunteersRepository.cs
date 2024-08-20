@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
-using PawsAndHearts.Domain.Models;
 using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
+using PawsAndHearts.Domain.Volunteer.Entities;
 
 namespace PawsAndHearts.Application.Interfaces;
 
