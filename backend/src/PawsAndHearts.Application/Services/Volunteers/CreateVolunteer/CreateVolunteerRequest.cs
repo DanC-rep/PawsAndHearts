@@ -11,5 +11,5 @@ public record CreateVolunteerRequest(
     int PetsLookingForHome, 
     int PetsBeingTreated, 
     string PhoneNumber, 
-    List<RequisiteDto>? Requisites, 
-    List<SocialNetworkDto>? SocialNetworks);
+    IEnumerable<RequisiteDto>? Requisites, 
+    IEnumerable<SocialNetworkDto>? SocialNetworks);

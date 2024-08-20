@@ -1,8 +1,7 @@
 using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
-using PawsAndHearts.Domain.Shared;
 
-namespace PawsAndHearts.Domain.ValueObjects;
+namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
 public record PhoneNumber
 {
@@ -16,10 +15,9 @@ public record PhoneNumber
     
     public string Value { get; } = default!;
 
-    public static Result<PhoneNumber, Error> Create(string phoneNumber)
+    public static Result<PhoneNumber, Error> Create(string input)
     {
-        if (string.IsNullOrWhiteSpace(phoneNumber))
-            return Errors.General.ValueIsRequired("phone number");
+        var phoneNumber = input.Trim();
 
         if (!PhoneNumberRegex.IsMatch(phoneNumber))
             return Errors.General.ValueIsInvalid("phone number");

@@ -1,8 +1,8 @@
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.API.Response;
-using PawsAndHearts.Domain.Enums;
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.Shared.Enums;
 
 namespace PawsAndHearts.API.Extensions;
 

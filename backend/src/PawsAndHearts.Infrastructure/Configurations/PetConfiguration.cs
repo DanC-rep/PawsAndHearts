@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PawsAndHearts.Domain.Models;
 using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
+using PawsAndHearts.Domain.Volunteer.Entities;
 
 namespace PawsAndHearts.Infrastructure.Configurations;
 
@@ -36,9 +36,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("species_id");
 
             pb.Property(p => p.BreedId)
-                .HasConversion(
-                    id => id.Value,
-                    value => BreedId.Create(value))
                 .HasColumnName("breed_id");
         });
 
@@ -107,31 +104,36 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .IsRequired()
                 .HasColumnName("creation_date");
         });
-
-        builder.OwnsOne(p => p.PetDetails, peB =>
+        
+        builder.OwnsOne(p => p.Requisites, reb =>
         {
-            peB.ToJson();
-            
-            peB.OwnsMany(d => d.Photos, phB =>
-            {
-                phB.Property(p => p.Path)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_TEXT_LENGTH);
+            reb.ToJson();
 
-                phB.Property(p => p.IsMain)
-                    .IsRequired();
-            });
-            
-            peB.OwnsMany(d => d.Requisites, rb =>
+            reb.OwnsMany(re => re.Value, rb =>
             {
-                rb.Property(r => r.Description)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_TEXT_LENGTH);
-
                 rb.Property(r => r.Name)
                     .IsRequired()
                     .HasMaxLength(Constants.MAX_NAME_LENGTH);
-            });
+
+                rb.Property(r => r.Description)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_TEXT_LENGTH);
+            }).ToJson("requisites");
+        });
+        
+        builder.OwnsOne(p => p.PetPhotos, phb =>
+        {
+            phb.ToJson();
+
+            phb.OwnsMany(p => p.Value, pb =>
+            {
+                pb.Property(p => p.Path)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_TEXT_LENGTH);
+
+                pb.Property(p => p.IsMain)
+                    .IsRequired();
+            }).ToJson("pet_photos"); 
         });
     }
 }

@@ -1,4 +1,4 @@
-using PawsAndHearts.Domain.Enums;
+using PawsAndHearts.Domain.Shared.Enums;
 
 namespace PawsAndHearts.Domain.Shared;
 

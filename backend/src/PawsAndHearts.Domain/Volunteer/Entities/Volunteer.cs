@@ -1,8 +1,10 @@
 using CSharpFunctionalExtensions;
 using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects;
+using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
+using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
-namespace PawsAndHearts.Domain.Models;
+namespace PawsAndHearts.Domain.Volunteer.Entities;
 
 public class Volunteer : Shared.Entity<VolunteerId>
 {
@@ -14,34 +16,30 @@ public class Volunteer : Shared.Entity<VolunteerId>
         VolunteerId id, 
         FullName fullName, 
         int experience, 
-        int petsFoundHome,
-        int petsLookingForHome, 
-        int petsBeingTreated, 
+        VolunteerPetsMetrics volunteerPetsMetrics,
         PhoneNumber phoneNumber, 
-        VolunteerDetails volunteerDetails) : base(id)
+        SocialNetworks socialNetworks,
+        Requisites requisites) : base(id)
     {
         FullName = fullName;
         Experience = experience;
-        PetsFoundHome = petsFoundHome;
-        PetsLookingForHome = petsLookingForHome;
-        PetsBeingTreated = petsBeingTreated;
+        VolunteerPetsMetrics = volunteerPetsMetrics;
         PhoneNumber = phoneNumber;
-        VolunteerDetails = volunteerDetails;
+        SocialNetworks = socialNetworks;
+        Requisites = requisites;
     }
 
     public FullName FullName { get; private set; }
     
     public int Experience { get; private set; }
     
-    public int PetsFoundHome { get; private set; }
-    
-    public int PetsLookingForHome { get; private set; }
-    
-    public int PetsBeingTreated { get; private set; }
+    public VolunteerPetsMetrics VolunteerPetsMetrics { get; private set; }
 
     public PhoneNumber PhoneNumber { get; private set; }
 
-    public VolunteerDetails VolunteerDetails { get; private set; }
+    public SocialNetworks SocialNetworks { get; private set; }
+    
+    public Requisites Requisites { get; private set; }
 
     private readonly List<Pet> _pets = [];
 
@@ -51,20 +49,18 @@ public class Volunteer : Shared.Entity<VolunteerId>
         VolunteerId id, 
         FullName fullName, 
         int experience, 
-        int petsFoundHome,
-        int petsLookingForHone, 
-        int petsBeingTreated, 
+        VolunteerPetsMetrics volunteerPetsMetrics,
         PhoneNumber phoneNumber, 
-        VolunteerDetails volunteerDetails)
+        SocialNetworks socialNetworks,
+        Requisites requisites)
     {
         return new Volunteer(
             id, 
             fullName, 
             experience, 
-            petsFoundHome, 
-            petsLookingForHone, 
-            petsBeingTreated,
+            volunteerPetsMetrics,
             phoneNumber, 
-            volunteerDetails);
+            socialNetworks,
+            requisites);
     }
 }

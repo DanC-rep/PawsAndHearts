@@ -1,4 +1,4 @@
-namespace PawsAndHearts.Domain.Enums;
+namespace PawsAndHearts.Domain.Shared.Enums;
 
 public enum ErrorType
 {

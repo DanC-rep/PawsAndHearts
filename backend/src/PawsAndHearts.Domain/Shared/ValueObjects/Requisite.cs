@@ -1,7 +1,6 @@
 using CSharpFunctionalExtensions;
-using PawsAndHearts.Domain.Shared;
 
-namespace PawsAndHearts.Domain.ValueObjects;
+namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
 public record Requisite
 {
