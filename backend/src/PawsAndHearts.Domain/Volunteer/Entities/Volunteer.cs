@@ -13,7 +13,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
     {
     }
     
-    private Volunteer(
+    public Volunteer(
         VolunteerId id, 
         FullName fullName, 
         int experience,
@@ -47,21 +47,4 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public int GetPetsLookingForHome() => _pets.Count(p => p.HelpStatus == HelpStatus.LookingForHome);
 
     public int GetPetsBeingTreated() => _pets.Count(p => p.HelpStatus == HelpStatus.NeedForHelp);
-    
-    public static Result<Volunteer, Error> Create(
-        VolunteerId id, 
-        FullName fullName, 
-        int experience,
-        PhoneNumber phoneNumber, 
-        SocialNetworks socialNetworks,
-        Requisites requisites)
-    {
-        return new Volunteer(
-            id, 
-            fullName, 
-            experience,
-            phoneNumber, 
-            socialNetworks,
-            requisites);
-    }
 }

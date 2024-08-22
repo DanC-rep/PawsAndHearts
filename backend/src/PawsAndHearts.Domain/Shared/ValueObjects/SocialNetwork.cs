@@ -23,5 +23,5 @@ public record SocialNetwork
             return Errors.General.ValueIsRequired("name");
                 
         return new SocialNetwork(link, name);
-    }
+    } 
 }

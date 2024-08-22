@@ -15,7 +15,8 @@ namespace PawsAndHearts.API
 
             builder.Services
                 .AddInfrastructure()
-                .AddApplication();
+                .AddApplication()
+                .AddAPI();
 
             var app = builder.Build();
             
