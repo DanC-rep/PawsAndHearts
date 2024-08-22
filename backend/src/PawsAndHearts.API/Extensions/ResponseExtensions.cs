@@ -22,7 +22,9 @@ public static class ResponseExtensions
             _ => StatusCodes.Status500InternalServerError
         };
 
-        var envelope = Envelope.Error(result.Error);
+        var responseError = new ResponseError(result.Error.Code, result.Error.Message, null);
+
+        var envelope = Envelope.Error([responseError]);
 
         return new ObjectResult(envelope)
         {
@@ -44,7 +46,9 @@ public static class ResponseExtensions
             _ => StatusCodes.Status500InternalServerError
         };
 
-        var envelope = Envelope.Error(result.Error);
+        var responseError = new ResponseError(result.Error.Code, result.Error.Message, null);
+
+        var envelope = Envelope.Error([responseError]);
 
         return new ObjectResult(envelope)
         {
