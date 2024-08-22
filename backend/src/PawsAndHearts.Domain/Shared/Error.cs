@@ -40,7 +40,7 @@ public record Error
     {
         var parts = serialized.Split(SEPARATOR);
 
-        if (parts.Length < 2)
+        if (parts.Length < 3)
         {
             throw new ArgumentException("Invalid serialized format");
         }
