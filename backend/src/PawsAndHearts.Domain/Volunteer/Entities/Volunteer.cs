@@ -16,7 +16,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public Volunteer(
         VolunteerId id, 
         FullName fullName, 
-        int experience,
+        Experience experience,
         PhoneNumber phoneNumber, 
         SocialNetworks socialNetworks,
         Requisites requisites) : base(id)
@@ -30,7 +30,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
 
     public FullName FullName { get; private set; }
     
-    public int Experience { get; private set; }
+    public Experience Experience { get; private set; }
 
     public PhoneNumber PhoneNumber { get; private set; }
 
