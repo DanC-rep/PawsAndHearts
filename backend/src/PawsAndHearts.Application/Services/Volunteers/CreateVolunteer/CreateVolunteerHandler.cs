@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using Microsoft.Extensions.Logging;
 using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.ValueObjects;
@@ -10,11 +11,14 @@ namespace PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
 public class CreateVolunteerHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
+    private readonly ILogger<CreateVolunteerHandler> _logger;
 
     public CreateVolunteerHandler(
-        IVolunteersRepository volunteersRepository)
+        IVolunteersRepository volunteersRepository,
+        ILogger<CreateVolunteerHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
+        _logger = logger;
     }
 
     public async Task<Result<Guid, Error>> Handle(CreateVolunteerRequest request,
@@ -22,9 +26,15 @@ public class CreateVolunteerHandler
     {
         var volunteerId = VolunteerId.NewId();
         
-        var fullName = FullName.Create(request.Name, request.Surname, request.Patronymic).Value;
+        var fullName = FullName.Create(
+            request.FullName.Name, 
+            request.FullName.Surname, 
+            request.FullName.Patronymic)
+            .Value;
 
         var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
+
+        var experience = Experience.Create(request.Experience).Value;
 
         var socialNetworks = new SocialNetworks(
             request.SocialNetworks?.Select(s =>
@@ -37,12 +47,14 @@ public class CreateVolunteerHandler
         var volunteerResult = new Volunteer(
             volunteerId, 
             fullName,
-            request.Experience,
+            experience,
             phoneNumber, 
             socialNetworks,
             requisites);
 
         await _volunteersRepository.Add(volunteerResult, cancellationToken);
+        
+        _logger.LogInformation("Created volunteer with id {volunteerId}", (Guid)volunteerId);
 
         return (Guid)volunteerResult.Id;
     }

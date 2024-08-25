@@ -37,9 +37,12 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasColumnName("patronymic");
         });
 
-        builder.Property(v => v.Experience)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_EXPERIENCE_VALUE);
+        builder.ComplexProperty(v => v.Experience, eb =>
+        {
+            eb.Property(e => e.Value)
+                .IsRequired()
+                .HasColumnName("experience");
+        });
 
         builder.ComplexProperty(v => v.PhoneNumber, pb =>
         {

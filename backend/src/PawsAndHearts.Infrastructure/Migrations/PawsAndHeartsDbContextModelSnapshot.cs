@@ -206,10 +206,14 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<int>("Experience")
-                        .HasMaxLength(90)
-                        .HasColumnType("integer")
-                        .HasColumnName("experience");
+                    b.ComplexProperty<Dictionary<string, object>>("Experience", "PawsAndHearts.Domain.Volunteer.Entities.Volunteer.Experience#Experience", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("integer")
+                                .HasColumnName("experience");
+                        });
 
                     b.ComplexProperty<Dictionary<string, object>>("FullName", "PawsAndHearts.Domain.Volunteer.Entities.Volunteer.FullName#FullName", b1 =>
                         {
