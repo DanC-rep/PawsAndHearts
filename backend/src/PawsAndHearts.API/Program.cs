@@ -33,6 +33,8 @@ namespace PawsAndHearts.API
 
             var app = builder.Build();
 
+            app.UseExceptionMiddleware();
+
             app.UseSerilogRequestLogging();
             
             if (app.Environment.IsDevelopment())
