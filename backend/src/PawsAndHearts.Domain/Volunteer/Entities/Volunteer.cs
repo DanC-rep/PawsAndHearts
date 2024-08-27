@@ -54,4 +54,14 @@ public class Volunteer : Shared.Entity<VolunteerId>
         PhoneNumber = phoneNumber;
         Experience = experience;
     }
+
+    public void UpdateSocialNetworks(SocialNetworks socialNetworks)
+    {
+        SocialNetworks = socialNetworks;
+    }
+
+    public void UpdateRequisites(Requisites requisites)
+    {
+        Requisites = requisites;
+    }
 }

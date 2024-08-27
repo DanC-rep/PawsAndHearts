@@ -10,6 +10,6 @@ public record Requisites
     {
         Value = requisites?.ToList();
     }
-
-    public IReadOnlyList<Requisite>? Value { get; } = [];
+    
+    public IReadOnlyList<Requisite>? Value { get; }
 }
