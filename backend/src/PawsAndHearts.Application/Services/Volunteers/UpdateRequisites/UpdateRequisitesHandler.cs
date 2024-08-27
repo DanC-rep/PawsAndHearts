@@ -29,7 +29,7 @@ public class UpdateRequisitesHandler
             return volunteerResult.Error;
 
         var requisites = new Requisites(
-            request.Dto.Requisites?.Select(r =>
+            request.Dto.Requisites.Select(r =>
                 Requisite.Create(r.Name, r.Description).Value).ToList());
 
         volunteerResult.Value.UpdateRequisites(requisites);

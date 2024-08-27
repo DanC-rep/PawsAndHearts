@@ -29,7 +29,7 @@ public class UpdateSocialNetworksHandler
             return volunteerResult.Error;
         
         var socialNetworks = new SocialNetworks(
-            request.Dto.SocialNetworks?.Select(s =>
+            request.Dto.SocialNetworks.Select(s =>
                 SocialNetwork.Create(s.Name, s.Link).Value).ToList());
         
         volunteerResult.Value.UpdateSocialNetworks(socialNetworks);
