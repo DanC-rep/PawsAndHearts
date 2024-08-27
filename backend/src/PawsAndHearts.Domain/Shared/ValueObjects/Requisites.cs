@@ -8,10 +8,8 @@ public record Requisites
     
     public Requisites(IEnumerable<Requisite>? requisites)
     {
-        _value = requisites?.ToList();
+        Value = requisites?.ToList();
     }
-    
-    private readonly List<Requisite>? _value;
 
-    public IReadOnlyList<Requisite>? Value => _value;
+    public IReadOnlyList<Requisite>? Value { get; } = [];
 }
