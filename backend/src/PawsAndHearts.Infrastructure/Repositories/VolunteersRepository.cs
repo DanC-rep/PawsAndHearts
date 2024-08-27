@@ -20,7 +20,7 @@ public class VolunteersRepository : IVolunteersRepository
     {
         await _pawsAndHeartsDbContext.AddAsync(volunteer, cancellationToken);
 
-        await _pawsAndHeartsDbContext.SaveChangesAsync();
+        await _pawsAndHeartsDbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id;
     }
@@ -31,13 +31,22 @@ public class VolunteersRepository : IVolunteersRepository
     {
         var volunteer = await _pawsAndHeartsDbContext.Volunteers
             .Include(v => v.Pets)
-            .FirstOrDefaultAsync(v => v.Id == volunteerId);
+            .FirstOrDefaultAsync(v => v.Id == volunteerId, cancellationToken);
 
         if (volunteer is null)
-        {
+        {  
             return Errors.General.NotFound(volunteerId);
         }
 
         return volunteer;
+    }
+
+    public async Task<Guid> Save(Volunteer volunteer, CancellationToken cancellationToken = default)
+    {
+        _pawsAndHeartsDbContext.Attach(volunteer);
+
+        await _pawsAndHeartsDbContext.SaveChangesAsync(cancellationToken);
+
+        return volunteer.Id;
     }
 }

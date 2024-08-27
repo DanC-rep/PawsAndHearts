@@ -15,6 +15,8 @@ public record BreedId
 
     public static BreedId Create(Guid id) => new(id);
 
+    public static implicit operator BreedId(Guid id) => new(id);
+
     public static implicit operator Guid(BreedId breedId)
     {
         ArgumentNullException.ThrowIfNull(breedId);

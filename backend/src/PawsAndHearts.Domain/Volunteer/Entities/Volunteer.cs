@@ -47,4 +47,21 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public int GetPetsLookingForHome() => _pets.Count(p => p.HelpStatus == HelpStatus.LookingForHome);
 
     public int GetPetsBeingTreated() => _pets.Count(p => p.HelpStatus == HelpStatus.NeedForHelp);
+
+    public void UpdateMainInfo(FullName fullName, PhoneNumber phoneNumber, Experience experience)
+    {
+        FullName = fullName;
+        PhoneNumber = phoneNumber;
+        Experience = experience;
+    }
+
+    public void UpdateSocialNetworks(SocialNetworks socialNetworks)
+    {
+        SocialNetworks = socialNetworks;
+    }
+
+    public void UpdateRequisites(Requisites requisites)
+    {
+        Requisites = requisites;
+    }
 }

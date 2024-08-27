@@ -15,6 +15,8 @@ public record PetId
 
     public static PetId Create(Guid id) => new(id);
 
+    public static implicit operator PetId(Guid id) => new(id);
+
     public static implicit operator Guid(PetId petId)
     {
         ArgumentNullException.ThrowIfNull(petId);
