@@ -25,7 +25,9 @@ public class DeleteVolunteerHandler
         if (volunteerResult.IsFailure)
             return volunteerResult.Error;
 
-        var result = await _repository.Delete(volunteerResult.Value, cancellationToken);
+        volunteerResult.Value.Delete();
+
+        var result = await _repository.Save(volunteerResult.Value, cancellationToken);
         
         _logger.LogInformation("Volunteer was deleted with id {volunteerId}", request.VolunteerId);
 

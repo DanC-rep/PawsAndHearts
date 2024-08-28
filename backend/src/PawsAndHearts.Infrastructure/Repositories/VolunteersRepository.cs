@@ -49,13 +49,4 @@ public class VolunteersRepository : IVolunteersRepository
 
         return volunteer.Id;
     }
-
-    public async Task<Guid> Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
-    {
-        volunteer.Delete();
-
-        await _pawsAndHeartsDbContext.SaveChangesAsync(cancellationToken);
-
-        return volunteer.Id;
-    }
 }
