@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.API.Extensions;
 using PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
+using PawsAndHearts.Application.Services.Volunteers.Delete;
 using PawsAndHearts.Application.Services.Volunteers.UpdateMainInfo;
 using PawsAndHearts.Application.Services.Volunteers.UpdateRequisites;
 using PawsAndHearts.Application.Services.Volunteers.UpdateSocialNetworks;
@@ -70,6 +71,25 @@ public class VolunteersController : ApplicationController
         CancellationToken cancellationToken = default)
     {
         var request = new UpdateRequisitesRequest(id, dto);
+
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToValidationErrorsResponse();
+
+        var result = await handler.Handle(request, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult<Guid>> Delete(
+        [FromRoute] Guid id,
+        [FromServices] DeleteVolunteerHandler handler,
+        [FromServices] IValidator<DeleteVolunteerRequest> validator,
+        CancellationToken cancellationToken = default)
+    {
+        var request = new DeleteVolunteerRequest(id);
 
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 

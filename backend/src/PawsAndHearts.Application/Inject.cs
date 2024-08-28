@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
+using PawsAndHearts.Application.Services.Volunteers.Delete;
 using PawsAndHearts.Application.Services.Volunteers.UpdateMainInfo;
 using PawsAndHearts.Application.Services.Volunteers.UpdateRequisites;
 using PawsAndHearts.Application.Services.Volunteers.UpdateSocialNetworks;
@@ -18,6 +19,8 @@ public static class Inject
         services.AddScoped<UpdateSocialNetworksHandler>();
 
         services.AddScoped<UpdateRequisitesHandler>();
+
+        services.AddScoped<DeleteVolunteerHandler>();
 
         services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
 
