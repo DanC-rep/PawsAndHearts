@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.Shared.Interfaces;
 using PawsAndHearts.Domain.Shared.ValueObjects;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 using PawsAndHearts.Domain.Volunteer.Enums;
@@ -7,8 +8,10 @@ using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 namespace PawsAndHearts.Domain.Volunteer.Entities;
 
-public class Volunteer : Shared.Entity<VolunteerId>
+public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 {
+    private bool _isDeleted = false;
+    
     private Volunteer(VolunteerId id) : base(id)
     {
     }
@@ -63,5 +66,21 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public void UpdateRequisites(Requisites requisites)
     {
         Requisites = requisites;
+    }
+
+    public void Delete()
+    {
+        _isDeleted = true;
+
+        foreach (var pet in _pets)
+            pet.Delete();
+    }
+
+    public void Restore()
+    {
+        _isDeleted = false;
+
+        foreach (var pet in _pets)
+            pet.Restore();
     }
 }
