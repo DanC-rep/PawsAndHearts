@@ -27,7 +27,7 @@ namespace PawsAndHearts.API
             builder.Services.AddSerilog();
 
             builder.Services
-                .AddInfrastructure()
+                .AddInfrastructure(builder.Configuration)
                 .AddApplication()
                 .AddAPI();
 
