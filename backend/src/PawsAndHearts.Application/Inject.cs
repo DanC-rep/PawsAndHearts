@@ -1,5 +1,9 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using PawsAndHearts.Application.Services.Files;
+using PawsAndHearts.Application.Services.Files.DeleteFile;
+using PawsAndHearts.Application.Services.Files.GetFile;
+using PawsAndHearts.Application.Services.Files.UploadFile;
 using PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
 using PawsAndHearts.Application.Services.Volunteers.Delete;
 using PawsAndHearts.Application.Services.Volunteers.UpdateMainInfo;
@@ -21,6 +25,12 @@ public static class Inject
         services.AddScoped<UpdateRequisitesHandler>();
 
         services.AddScoped<DeleteVolunteerHandler>();
+
+        services.AddScoped<UploadFileHandler>();
+
+        services.AddScoped<DeleteFileHandler>();
+
+        services.AddScoped<GetFileHandler>();
 
         services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
 
