@@ -9,13 +9,6 @@ namespace PawsAndHearts.API.Controllers;
 
 public class FileController : ApplicationController
 {
-    private readonly IMinioClient _minioClient;
-
-    public FileController(IMinioClient minioClient)
-    {
-        _minioClient = minioClient;
-    }
-
     [HttpGet]
     public async Task<ActionResult<string>> GetFile(
         [FromQuery] GetFileRequest request,
