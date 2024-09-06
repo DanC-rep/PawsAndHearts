@@ -2,7 +2,7 @@ using FluentValidation;
 using PawsAndHearts.Application.Validators;
 using PawsAndHearts.Domain.Shared;
 
-namespace PawsAndHearts.Application.Services.Volunteers.Delete;
+namespace PawsAndHearts.Application.Services.Volunteers.DeleteVolunteer;
 
 public class DeleteVolunteerValidator : AbstractValidator<DeleteVolunteerRequest>
 {

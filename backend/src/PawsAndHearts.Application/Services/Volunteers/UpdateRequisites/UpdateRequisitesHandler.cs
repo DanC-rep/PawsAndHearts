@@ -9,13 +9,16 @@ namespace PawsAndHearts.Application.Services.Volunteers.UpdateRequisites;
 public class UpdateRequisitesHandler
 {
     private readonly IVolunteersRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdateRequisitesHandler> _logger;
 
     public UpdateRequisitesHandler(
         IVolunteersRepository repository, 
+        IUnitOfWork unitOfWork,
         ILogger<UpdateRequisitesHandler> logger)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -34,11 +37,11 @@ public class UpdateRequisitesHandler
 
         volunteerResult.Value.UpdateRequisites(requisites);
 
-        var result = await _repository.Save(volunteerResult.Value, cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
         
         _logger.LogInformation("Requisites were updated for volunteer with id {volunteerId}",
             request.VolunteerId);
 
-        return result;
+        return (Guid)volunteerResult.Value.Id;
     }
 }

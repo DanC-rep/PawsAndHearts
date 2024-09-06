@@ -83,4 +83,21 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         foreach (var pet in _pets)
             pet.Restore();
     }
+
+    public UnitResult<Error> AddPet(Pet pet)
+    {
+        _pets.Add(pet);
+
+        return Result.Success<Error>();
+    }
+
+    public Result<Pet, Error> GetPet(Guid id)
+    {
+        var pet = _pets.FirstOrDefault(p => (Guid)p.Id == id);
+
+        if (pet is null)
+            return Errors.General.NotFound(id);
+
+        return pet;
+    }
 }

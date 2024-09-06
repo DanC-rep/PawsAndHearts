@@ -1,20 +1,25 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using PawsAndHearts.API.Contracts;
 using PawsAndHearts.API.Extensions;
+using PawsAndHearts.API.Processors;
+using PawsAndHearts.Application.Dto;
+using PawsAndHearts.Application.Services.Volunteers.AddPhotosToPet;
+using PawsAndHearts.Application.Services.Volunteers.CreatePet;
 using PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
-using PawsAndHearts.Application.Services.Volunteers.Delete;
+using PawsAndHearts.Application.Services.Volunteers.DeleteVolunteer;
 using PawsAndHearts.Application.Services.Volunteers.UpdateMainInfo;
 using PawsAndHearts.Application.Services.Volunteers.UpdateRequisites;
 using PawsAndHearts.Application.Services.Volunteers.UpdateSocialNetworks;
 
 namespace PawsAndHearts.API.Controllers;
 
-public class VolunteersController : ApplicationController 
+public class VolunteersController : ApplicationController
 {
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateVolunteerHandler handler,
-        [FromBody] CreateVolunteerRequest request, 
+        [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request, cancellationToken);
@@ -38,7 +43,7 @@ public class VolunteersController : ApplicationController
             return validationResult.ToValidationErrorsResponse();
 
         var result = await handler.Handle(request, cancellationToken);
-        
+
         return result.ToResponse();
     }
 
@@ -97,6 +102,66 @@ public class VolunteersController : ApplicationController
             return validationResult.ToValidationErrorsResponse();
 
         var result = await handler.Handle(request, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPost("{id:guid}/pet")]
+    public async Task<ActionResult<Guid>> CreatePet(
+        [FromRoute] Guid id,
+        [FromBody] CreatePetRequest request,
+        [FromServices] CreatePetHandler handler,
+        [FromServices] IValidator<CreatePetCommand> validator,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new CreatePetCommand(
+            id,
+            request.Name,
+            request.Description,
+            request.Color,
+            request.HealthInfo,
+            request.Address,
+            request.PetMetrics,
+            request.PhoneNumber,
+            request.IsNeutered,
+            request.BirthDate,
+            request.IsVaccinated,
+            request.HelpStatus,
+            request.CreationDate,
+            request.Requisites);
+
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToValidationErrorsResponse();
+
+        var result = await handler.Handle(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPost("{id:guid}/pet/photos")]
+    public async Task<ActionResult<IEnumerable<string>>> AddPhotosToPet(
+        [FromRoute] Guid id,
+        [FromForm] AddPhotosToPetRequest request,
+        [FromServices] AddPhotosToPetHandler handler,
+        [FromServices] IValidator<AddPhotosToPetCommand> validator,
+        CancellationToken cancellationToken = default
+        )
+    {
+        await using var fileProcessor = new FormFileProcessor();
+
+        var fileDtos = fileProcessor.Process(request.Files);
+
+        var command = new AddPhotosToPetCommand(id, request.PetId, fileDtos);
+
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToValidationErrorsResponse();
+
+
+        var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();
     }

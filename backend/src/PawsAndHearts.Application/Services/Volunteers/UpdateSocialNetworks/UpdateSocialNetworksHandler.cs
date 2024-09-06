@@ -9,13 +9,16 @@ namespace PawsAndHearts.Application.Services.Volunteers.UpdateSocialNetworks;
 public class UpdateSocialNetworksHandler
 {
     private readonly IVolunteersRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdateSocialNetworksHandler> _logger;
     
     public UpdateSocialNetworksHandler(
         IVolunteersRepository repository, 
+        IUnitOfWork unitOfWork,
         ILogger<UpdateSocialNetworksHandler> logger)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -34,11 +37,11 @@ public class UpdateSocialNetworksHandler
         
         volunteerResult.Value.UpdateSocialNetworks(socialNetworks);
 
-        var result = await _repository.Save(volunteerResult.Value, cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
         
         _logger.LogInformation("Social networks were updated for volunteer with id {volunteerId}",
             request.VolunteerId);
 
-        return result;
+        return (Guid)volunteerResult.Value.Id;
     }
 }

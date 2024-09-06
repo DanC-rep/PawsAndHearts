@@ -1,20 +1,13 @@
 using CSharpFunctionalExtensions;
 using PawsAndHearts.Application.FIleProvider;
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.Application.Interfaces;
 
 public interface IFileProvider
 {
-    Task<Result<string, Error>> UploadFile(
-        UploadFileData uploadFileData,
-        CancellationToken cancellationToken = default);
-
-    Task<Result<string, Error>> DeleteFile(
-        DeleteFileData deleteFileData,
-        CancellationToken cancellationToken = default);
-
-    Task<Result<string, Error>> GetFile(
-        GetFileData getFileData,
+    Task<Result<IReadOnlyList<FilePath>, Error>> UploadFiles(
+        IEnumerable<UploadFileData> uploadFilesData,
         CancellationToken cancellationToken = default);
 }

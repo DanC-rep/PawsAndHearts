@@ -12,6 +12,6 @@ public record PetIdentity
     
     public SpeciesId SpeciesId { get; } = default!;
 
-    public Guid BreedId { get; } = default!;
+    public Guid BreedId { get; }
     
 }

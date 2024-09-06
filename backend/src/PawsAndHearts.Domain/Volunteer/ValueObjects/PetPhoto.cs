@@ -1,25 +1,23 @@
 using CSharpFunctionalExtensions;
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 public record PetPhoto
 {
-    private PetPhoto(string path, bool isMain)
+    private PetPhoto(FilePath path, bool isMain)
     {
         Path = path;
         IsMain = isMain;
     }
     
-    public string Path { get; } = default!;
+    public FilePath Path { get; }
     
     public bool IsMain { get; }
 
-    public static Result<PetPhoto, Error> Create(string path, bool isMain)
+    public static Result<PetPhoto, Error> Create(FilePath path, bool isMain)
     {
-        if (string.IsNullOrWhiteSpace(path))
-            return Errors.General.ValueIsRequired("path");
-        
         return new PetPhoto(path, isMain);
     }
 }
