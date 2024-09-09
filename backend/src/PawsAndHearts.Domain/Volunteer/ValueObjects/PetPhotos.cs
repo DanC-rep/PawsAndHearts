@@ -11,5 +11,5 @@ public record PetPhotos
         Value = petPhotos?.ToList();
     }
 
-    public IReadOnlyList<PetPhoto>? Value { get; } = [];
+    public IReadOnlyList<PetPhoto>? Value { get; }
 }

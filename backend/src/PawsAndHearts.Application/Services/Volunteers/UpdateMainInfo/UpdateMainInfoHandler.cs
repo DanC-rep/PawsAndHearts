@@ -9,13 +9,16 @@ namespace PawsAndHearts.Application.Services.Volunteers.UpdateMainInfo;
 public class UpdateMainInfoHandler
 {
     private readonly IVolunteersRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdateMainInfoHandler> _logger;
 
     public UpdateMainInfoHandler(
         IVolunteersRepository repository,
+        IUnitOfWork unitOfWork,
         ILogger<UpdateMainInfoHandler> logger)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
     
@@ -39,10 +42,10 @@ public class UpdateMainInfoHandler
         
         volunteerResult.Value.UpdateMainInfo(fullName, phoneNumber, experience);
 
-        var result = await _repository.Save(volunteerResult.Value, cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
         
         _logger.LogInformation("Updated volunteer with id {volunteerId}", request.VolunteerId);
 
-        return result;
+        return (Guid)volunteerResult.Value.Id;
     }
 }

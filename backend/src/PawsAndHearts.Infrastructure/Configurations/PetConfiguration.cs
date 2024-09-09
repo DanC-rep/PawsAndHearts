@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.Shared.ValueObjects;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 using PawsAndHearts.Domain.Volunteer.Entities;
 
@@ -39,9 +40,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("breed_id");
         });
 
-        builder.Property(p => p.Color)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_TEXT_LENGTH);
+        builder.ComplexProperty(p => p.Color, cb =>
+        {
+            cb.Property(c => c.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_TEXT_LENGTH)
+                .HasColumnName("color");
+        });
 
         builder.Property(p => p.HealthInfo)
             .IsRequired()
@@ -70,11 +75,16 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("flat");
         });
 
-        builder.Property(p => p.Weight)
-            .IsRequired();
+        builder.ComplexProperty(p => p.PetMetrics, mb =>
+        {
+            mb.Property(m => m.Height)
+                .IsRequired()
+                .HasColumnName("height");
 
-        builder.Property(p => p.Height)
-            .IsRequired();
+            mb.Property(m => m.Weight)
+                .IsRequired()
+                .HasColumnName("weight");
+        });
 
         builder.ComplexProperty(p => p.PhoneNumber, pb =>
         {
@@ -128,8 +138,9 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             phb.OwnsMany(p => p.Value, pb =>
             {
                 pb.Property(p => p.Path)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_TEXT_LENGTH);
+                    .HasConversion(
+                        p => p.Path,
+                        value => FilePath.Create(value).Value);
 
                 pb.Property(p => p.IsMain)
                     .IsRequired();

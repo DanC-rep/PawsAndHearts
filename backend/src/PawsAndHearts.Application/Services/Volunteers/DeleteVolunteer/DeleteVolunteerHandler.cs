@@ -3,16 +3,20 @@ using Microsoft.Extensions.Logging;
 using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Domain.Shared;
 
-namespace PawsAndHearts.Application.Services.Volunteers.Delete;
+namespace PawsAndHearts.Application.Services.Volunteers.DeleteVolunteer;
 
 public class DeleteVolunteerHandler
 {
     private readonly IVolunteersRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DelegatingHandler> _logger;
 
-    public DeleteVolunteerHandler(IVolunteersRepository repository, ILogger<DelegatingHandler> logger)
+    public DeleteVolunteerHandler(IVolunteersRepository repository,
+        IUnitOfWork unitOfWork,
+        ILogger<DelegatingHandler> logger)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -20,17 +24,17 @@ public class DeleteVolunteerHandler
         DeleteVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
-        var volunteerResult = await _repository.GetById(request.VolunteerId);
+        var volunteerResult = await _repository.GetById(request.VolunteerId, cancellationToken);
 
         if (volunteerResult.IsFailure)
             return volunteerResult.Error;
 
         volunteerResult.Value.Delete();
 
-        var result = await _repository.Save(volunteerResult.Value, cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
         
         _logger.LogInformation("Volunteer was deleted with id {volunteerId}", request.VolunteerId);
 
-        return result;
+        return (Guid)volunteerResult.Value.Id;
     }
 }

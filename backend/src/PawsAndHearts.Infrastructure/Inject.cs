@@ -17,6 +17,8 @@ public static class Inject
 
         services.AddScoped<IVolunteersRepository, VolunteersRepository>();
 
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         services.AddMinio(configuration);
 
         return services;

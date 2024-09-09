@@ -20,8 +20,6 @@ public class VolunteersRepository : IVolunteersRepository
     {
         await _pawsAndHeartsDbContext.AddAsync(volunteer, cancellationToken);
 
-        await _pawsAndHeartsDbContext.SaveChangesAsync(cancellationToken);
-
         return volunteer.Id;
     }
 
@@ -44,8 +42,6 @@ public class VolunteersRepository : IVolunteersRepository
     public async Task<Guid> Save(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
         _pawsAndHeartsDbContext.Attach(volunteer);
-
-        await _pawsAndHeartsDbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id;
     }

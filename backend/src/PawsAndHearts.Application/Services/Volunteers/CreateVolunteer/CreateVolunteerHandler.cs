@@ -11,13 +11,16 @@ namespace PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
 public class CreateVolunteerHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CreateVolunteerHandler> _logger;
 
     public CreateVolunteerHandler(
         IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
         ILogger<CreateVolunteerHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -53,6 +56,7 @@ public class CreateVolunteerHandler
             requisites);
 
         await _volunteersRepository.Add(volunteerResult, cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
         
         _logger.LogInformation("Created volunteer with id {volunteerId}", (Guid)volunteerId);
 
