@@ -7,7 +7,7 @@ namespace PawsAndHearts.Application.Interfaces;
 
 public interface IFileProvider
 {
-    Task<Result<IReadOnlyList<FilePath>, Error>> UploadFiles(
+    Task<Result<FilePathList, Error>> UploadFiles(
         IEnumerable<UploadFileData> uploadFilesData,
         CancellationToken cancellationToken = default);
 }

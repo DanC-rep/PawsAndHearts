@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.API.Contracts;
 using PawsAndHearts.API.Extensions;
 using PawsAndHearts.API.Processors;
-using PawsAndHearts.Application.Dto;
 using PawsAndHearts.Application.Services.Volunteers.AddPhotosToPet;
 using PawsAndHearts.Application.Services.Volunteers.CreatePet;
 using PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
@@ -11,6 +10,7 @@ using PawsAndHearts.Application.Services.Volunteers.DeleteVolunteer;
 using PawsAndHearts.Application.Services.Volunteers.UpdateMainInfo;
 using PawsAndHearts.Application.Services.Volunteers.UpdateRequisites;
 using PawsAndHearts.Application.Services.Volunteers.UpdateSocialNetworks;
+using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.API.Controllers;
 
@@ -129,7 +129,7 @@ public class VolunteersController : ApplicationController
             request.HelpStatus,
             request.CreationDate,
             request.Requisites);
-
+        
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
 
         if (!validationResult.IsValid)
@@ -141,13 +141,12 @@ public class VolunteersController : ApplicationController
     }
 
     [HttpPost("{id:guid}/pet/photos")]
-    public async Task<ActionResult<IEnumerable<string>>> AddPhotosToPet(
+    public async Task<ActionResult<FilePathList>> AddPhotosToPet(
         [FromRoute] Guid id,
         [FromForm] AddPhotosToPetRequest request,
         [FromServices] AddPhotosToPetHandler handler,
         [FromServices] IValidator<AddPhotosToPetCommand> validator,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         await using var fileProcessor = new FormFileProcessor();
 
@@ -159,8 +158,7 @@ public class VolunteersController : ApplicationController
 
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorsResponse();
-
-
+        
         var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();

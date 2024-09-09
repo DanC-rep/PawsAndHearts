@@ -91,12 +91,12 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         return Result.Success<Error>();
     }
 
-    public Result<Pet, Error> GetPet(Guid id)
+    public Result<Pet, Error> GetPetById(PetId petId)
     {
-        var pet = _pets.FirstOrDefault(p => (Guid)p.Id == id);
+        var pet = _pets.FirstOrDefault(p => p.Id == petId);
 
         if (pet is null)
-            return Errors.General.NotFound(id);
+            return Errors.General.NotFound(petId);
 
         return pet;
     }

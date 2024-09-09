@@ -29,7 +29,7 @@ public class AddPhotosToPetHandler
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<IEnumerable<string>, Error>> Handle(
+    public async Task<Result<FilePathList, Error>> Handle(
         AddPhotosToPetCommand command, 
         CancellationToken cancellationToken = default)
     {
@@ -42,7 +42,7 @@ public class AddPhotosToPetHandler
             if (volunteerResult.IsFailure)
                 return volunteerResult.Error;
 
-            var petResult = volunteerResult.Value.GetPet(command.PetId);
+            var petResult = volunteerResult.Value.GetPetById(command.PetId);
 
             if (petResult.IsFailure)
                 return petResult.Error;
@@ -81,7 +81,7 @@ public class AddPhotosToPetHandler
 
             _logger.LogInformation("Files was uploaded for pet {petId}", command.PetId);
 
-            return uploadResult.Value.Select(f => f.Path).ToList();
+            return uploadResult.Value;
         }
         catch (Exception ex)
         {

@@ -22,7 +22,7 @@ public class MinioProvider : IFileProvider
         _logger = logger;
     }
     
-    public async Task<Result<IReadOnlyList<FilePath>, Error>> UploadFiles(
+    public async Task<Result<FilePathList, Error>> UploadFiles(
         IEnumerable<UploadFileData> filesData, 
         CancellationToken cancellationToken = default)
     {
@@ -43,7 +43,7 @@ public class MinioProvider : IFileProvider
 
             var results = pathsResult.Select(p => p.Value).ToList();
 
-            return results;
+            return (FilePathList)results;
 
         }
         catch (Exception ex)
