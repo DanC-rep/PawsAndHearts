@@ -1,4 +1,5 @@
 using PawsAndHearts.API.Response;
+using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.API.Middlewares;
 
@@ -23,8 +24,8 @@ public class ExceptionMiddleware
         {
             _logger.LogError(e, e.Message);
             
-            var responseError = new ResponseError("server.internal", e.Message, null);
-            var envelope = Envelope.Error([responseError]);
+            var error = Error.Failure("server.internal", e.Message);
+            var envelope = Envelope.Error(error);
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;

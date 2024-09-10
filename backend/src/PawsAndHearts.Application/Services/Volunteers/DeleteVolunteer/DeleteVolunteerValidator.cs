@@ -4,7 +4,7 @@ using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Application.Services.Volunteers.DeleteVolunteer;
 
-public class DeleteVolunteerValidator : AbstractValidator<DeleteVolunteerRequest>
+public class DeleteVolunteerValidator : AbstractValidator<DeleteVolunteerCommand>
 {
     public DeleteVolunteerValidator()
     {

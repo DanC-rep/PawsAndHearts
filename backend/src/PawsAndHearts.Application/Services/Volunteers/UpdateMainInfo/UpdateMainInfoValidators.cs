@@ -5,18 +5,12 @@ using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.Application.Services.Volunteers.UpdateMainInfo;
 
-public class UpdateMainInfoRequestValidator : AbstractValidator<UpdateMainInfoRequest>
+public class UpdateMainInfoCommandValidator : AbstractValidator<UpdateMainInfoCommand>
 {
-    public UpdateMainInfoRequestValidator()
+    public UpdateMainInfoCommandValidator()
     {
         RuleFor(c => c.VolunteerId).NotEmpty().WithError(Errors.General.ValueIsRequired());
-    }
-}
 
-public class UpdateMainInfoDtoValidator : AbstractValidator<UpdateMainInfoDto>
-{
-    public UpdateMainInfoDtoValidator()
-    {
         RuleFor(c => c.PhoneNumber)
             .MustBeValueObject(PhoneNumber.Create);
         

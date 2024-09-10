@@ -13,19 +13,10 @@ public static class ResponseExtensions
     {
         if (result.IsSuccess)
             return new OkResult();
-        
-        var statusCode = result.Error.Type switch
-        {
-            ErrorType.Validation => StatusCodes.Status400BadRequest,
-            ErrorType.NotFound => StatusCodes.Status404NotFound,
-            ErrorType.Conflict => StatusCodes.Status409Conflict,
-            ErrorType.Failure => StatusCodes.Status500InternalServerError,
-            _ => StatusCodes.Status500InternalServerError
-        };
 
-        var responseError = new ResponseError(result.Error.Code, result.Error.Message, null);
+        var statusCode = GetStatusCodeForErrorType(result.Error.Type);
 
-        var envelope = Envelope.Error([responseError]);
+        var envelope = Envelope.Error(result.Error);
 
         return new ObjectResult(envelope)
         {
@@ -37,19 +28,32 @@ public static class ResponseExtensions
     {
         if (result.IsSuccess)
             return new OkObjectResult(Envelope.Ok(result.Value));
-        
-        var statusCode = result.Error.Type switch
+
+        var statusCode = GetStatusCodeForErrorType(result.Error.Type);
+
+        var envelope = Envelope.Error(result.Error);
+
+        return new ObjectResult(envelope)
         {
-            ErrorType.Validation => StatusCodes.Status400BadRequest,
-            ErrorType.NotFound => StatusCodes.Status404NotFound,
-            ErrorType.Conflict => StatusCodes.Status409Conflict,
-            ErrorType.Failure => StatusCodes.Status500InternalServerError,
-            _ => StatusCodes.Status500InternalServerError
+            StatusCode = statusCode
         };
+    }
+    
+    public static ActionResult<T> ToResponse<T>(this Result<T, ErrorList> result)
+    {
+        if (result.IsSuccess)
+            return new OkObjectResult(Envelope.Ok(result.Value));
 
-        var responseError = new ResponseError(result.Error.Code, result.Error.Message, null);
+        var distinctErrorTypes = result.Error
+            .Select(x => x.Type)
+            .Distinct()
+            .ToList();
 
-        var envelope = Envelope.Error([responseError]);
+        var statusCode = distinctErrorTypes.Count > 1
+            ? StatusCodes.Status500InternalServerError
+            : GetStatusCodeForErrorType(distinctErrorTypes.First());
+
+        var envelope = Envelope.Error(result.Error);
 
         return new ObjectResult(envelope)
         {
@@ -57,23 +61,13 @@ public static class ResponseExtensions
         };
     }
 
-    public static ActionResult ToValidationErrorsResponse(this ValidationResult result)
-    {
-        if (result.IsValid)
-            throw new InvalidOperationException("Result can not be succeed");
-
-        var validationErrors = result.Errors;
-
-        var responseErrors = from validationError in validationErrors
-            let errorMessage = validationError.ErrorMessage
-            let error = Error.Deserialize(errorMessage)
-            select new ResponseError(error.Code, error.Message, validationError.PropertyName);
-
-        var envelope = Envelope.Error(responseErrors);
-
-        return new ObjectResult(envelope)
+    private static int GetStatusCodeForErrorType(ErrorType errorType) =>
+        errorType switch
         {
-            StatusCode = StatusCodes.Status400BadRequest
+            ErrorType.Validation => StatusCodes.Status400BadRequest,
+            ErrorType.NotFound => StatusCodes.Status404NotFound,
+            ErrorType.Conflict => StatusCodes.Status409Conflict,
+            ErrorType.Failure => StatusCodes.Status500InternalServerError,
+            _ => StatusCodes.Status500InternalServerError
         };
-    }
 }

@@ -13,13 +13,19 @@ public record Envelope
 
     public object? Result { get; }
     
-    public List<ResponseError>? ResponseErrors { get; }
+    public IReadOnlyList<ResponseError>? ResponseErrors { get; }
     
     public DateTime TimeGenerated { get; }
 
     public static Envelope Ok(object? result) =>
         new Envelope(result, null);
 
-    public static Envelope Error(IEnumerable<ResponseError> errors) =>
-        new Envelope(null, errors);
+    public static Envelope Error(ErrorList errors)
+    {
+        var responseErrors = errors
+            .Select(e => new ResponseError(e.Code, e.Message, e.InvalidField)).ToList();
+
+        return new Envelope(null, responseErrors);
+    }
+        
 }

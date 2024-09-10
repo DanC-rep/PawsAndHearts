@@ -1,5 +1,7 @@
 using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PawsAndHearts.Application.Extensions;
 using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.ValueObjects;
@@ -13,26 +15,34 @@ public class CreatePetHandler
 {
     private readonly IVolunteersRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<CreatePetCommand> _validator;
     private readonly ILogger<CreatePetHandler> _logger;
 
     public CreatePetHandler(
         IVolunteersRepository repository,
         IUnitOfWork unitOfWork,
+        IValidator<CreatePetCommand> validator,
         ILogger<CreatePetHandler> logger)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
+        _validator = validator;
         _logger = logger;
     }
 
-    public async Task<Result<Guid, Error>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         CreatePetCommand command,
         CancellationToken cancellationToken = default)
     {
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
+        
         var volunteerResult = await _repository.GetById(command.VolunteerId, cancellationToken);
 
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
 
         var petId = PetId.NewId();
 
@@ -54,9 +64,8 @@ public class CreatePetHandler
 
         var creationDate = CreationDate.Create(DateOnly.FromDateTime(command.CreationDate)).Value;
 
-        var requisites = new Requisites(
-            command.Requisites.Select(f =>
-                Requisite.Create(f.Name, f.Description).Value).ToList());
+        var requisites = command.Requisites.Select(f =>
+                Requisite.Create(f.Name, f.Description).Value).ToList();
 
         var petIdentity = new PetIdentity(Guid.Empty, Guid.Empty);
             

@@ -119,7 +119,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             reb.ToJson("requisites");
 
-            reb.OwnsMany(re => re.Value, rb =>
+            reb.OwnsMany(re => re.Values, rb =>
             {
                 rb.Property(r => r.Name)
                     .IsRequired()
@@ -135,7 +135,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             phb.ToJson("pet_photos");
 
-            phb.OwnsMany(p => p.Value, pb =>
+            phb.OwnsMany(p => p.Values, pb =>
             {
                 pb.Property(p => p.Path)
                     .HasConversion(
