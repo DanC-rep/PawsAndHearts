@@ -31,7 +31,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         bool isVaccinated,
         HelpStatus helpStatus,
         CreationDate creationDate,
-        Requisites requisites) : base(id)
+        ValueObjectList<Requisite> requisites) : base(id)
     {
         Name = name;
         Description = description;
@@ -75,9 +75,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     
     public CreationDate CreationDate { get; private set; }
 
-    public Requisites Requisites { get; private set; }
+    public ValueObjectList<Requisite> Requisites { get; private set; }
     
-    public PetPhotos? PetPhotos { get; private set; }
+    public ValueObjectList<PetPhoto>? PetPhotos { get; private set; }
 
     public void Delete()
     {
@@ -85,7 +85,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
             _isDeleted = true;
     }
 
-    public UnitResult<Error> AddPhotos(PetPhotos petPhotos)
+    public UnitResult<Error> AddPhotos(ValueObjectList<PetPhoto> petPhotos)
     {
         PetPhotos = petPhotos;
 

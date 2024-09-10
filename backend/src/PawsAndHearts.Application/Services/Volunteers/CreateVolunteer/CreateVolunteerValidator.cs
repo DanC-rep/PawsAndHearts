@@ -4,7 +4,7 @@ using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
 
-public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerRequest>
+public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerCommand>
 {
     public CreateVolunteerValidator()
     {

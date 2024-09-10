@@ -1,6 +1,5 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using PawsAndHearts.API.Contracts;
+using PawsAndHearts.API.Controllers.Volunteers.Requests;
 using PawsAndHearts.API.Extensions;
 using PawsAndHearts.API.Processors;
 using PawsAndHearts.Application.Services.Volunteers.AddPhotosToPet;
@@ -12,7 +11,7 @@ using PawsAndHearts.Application.Services.Volunteers.UpdateRequisites;
 using PawsAndHearts.Application.Services.Volunteers.UpdateSocialNetworks;
 using PawsAndHearts.Domain.Shared.ValueObjects;
 
-namespace PawsAndHearts.API.Controllers;
+namespace PawsAndHearts.API.Controllers.Volunteers;
 
 public class VolunteersController : ApplicationController
 {
@@ -22,7 +21,9 @@ public class VolunteersController : ApplicationController
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
-        var result = await handler.Handle(request, cancellationToken);
+        var command = request.ToCommand();
+        
+        var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -30,19 +31,13 @@ public class VolunteersController : ApplicationController
     [HttpPut("{id:guid}/main-info")]
     public async Task<ActionResult<Guid>> UpdateMainInfo(
         [FromRoute] Guid id,
-        [FromBody] UpdateMainInfoDto dto,
+        [FromBody] UpdateMainInfoRequest request,
         [FromServices] UpdateMainInfoHandler handler,
-        [FromServices] IValidator<UpdateMainInfoRequest> validator,
         CancellationToken cancellationToken = default)
     {
-        var request = new UpdateMainInfoRequest(id, dto);
+        var command = new UpdateMainInfoCommand(id, request.FullName, request.Experience, request.PhoneNumber);
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorsResponse();
-
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -50,19 +45,13 @@ public class VolunteersController : ApplicationController
     [HttpPut("{id:guid}/social-networks")]
     public async Task<ActionResult<Guid>> UpdateSocialNetworks(
         [FromRoute] Guid id,
-        [FromBody] UpdateSocialNetworksDto dto,
+        [FromBody] UpdateSocialNetworksRequest request,
         [FromServices] UpdateSocialNetworksHandler handler,
-        [FromServices] IValidator<UpdateSocialNetworksRequest> validator,
         CancellationToken cancellationToken = default)
     {
-        var request = new UpdateSocialNetworksRequest(id, dto);
+        var command = new UpdateSocialNetworksCommand(id, request.SocialNetworks);
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorsResponse();
-
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -70,19 +59,13 @@ public class VolunteersController : ApplicationController
     [HttpPut("{id:guid}/requisites")]
     public async Task<ActionResult<Guid>> UpdateRequisites(
         [FromRoute] Guid id,
-        [FromBody] UpdateRequisitesDto dto,
+        [FromBody] UpdateRequisitesRequest request,
         [FromServices] UpdateRequisitesHandler handler,
-        [FromServices] IValidator<UpdateRequisitesRequest> validator,
         CancellationToken cancellationToken = default)
     {
-        var request = new UpdateRequisitesRequest(id, dto);
+        var command = new UpdateRequisitesCommand(id, request.Requisites);
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorsResponse();
-
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -91,17 +74,11 @@ public class VolunteersController : ApplicationController
     public async Task<ActionResult<Guid>> Delete(
         [FromRoute] Guid id,
         [FromServices] DeleteVolunteerHandler handler,
-        [FromServices] IValidator<DeleteVolunteerRequest> validator,
         CancellationToken cancellationToken = default)
     {
-        var request = new DeleteVolunteerRequest(id);
+        var command = new DeleteVolunteerCommand(id);
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorsResponse();
-
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -111,29 +88,9 @@ public class VolunteersController : ApplicationController
         [FromRoute] Guid id,
         [FromBody] CreatePetRequest request,
         [FromServices] CreatePetHandler handler,
-        [FromServices] IValidator<CreatePetCommand> validator,
         CancellationToken cancellationToken = default)
     {
-        var command = new CreatePetCommand(
-            id,
-            request.Name,
-            request.Description,
-            request.Color,
-            request.HealthInfo,
-            request.Address,
-            request.PetMetrics,
-            request.PhoneNumber,
-            request.IsNeutered,
-            request.BirthDate,
-            request.IsVaccinated,
-            request.HelpStatus,
-            request.CreationDate,
-            request.Requisites);
-        
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorsResponse();
+        var command = request.ToCommand(id);
 
         var result = await handler.Handle(command, cancellationToken);
 
@@ -145,7 +102,6 @@ public class VolunteersController : ApplicationController
         [FromRoute] Guid id,
         [FromForm] AddPhotosToPetRequest request,
         [FromServices] AddPhotosToPetHandler handler,
-        [FromServices] IValidator<AddPhotosToPetCommand> validator,
         CancellationToken cancellationToken = default)
     {
         await using var fileProcessor = new FormFileProcessor();
@@ -153,11 +109,6 @@ public class VolunteersController : ApplicationController
         var fileDtos = fileProcessor.Process(request.Files);
 
         var command = new AddPhotosToPetCommand(id, request.PetId, fileDtos);
-
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorsResponse();
         
         var result = await handler.Handle(command, cancellationToken);
 

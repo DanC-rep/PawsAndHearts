@@ -15,4 +15,6 @@ public static class Constants
     public static readonly int MAX_HEATH_INFO_LENGTH = 250;
     
     public static readonly int MAX_ADDRESS_LENGTH = 200;
+
+    public static readonly string[] PERMITTED_FILE_EXTENSIONS = [".jpg", ".png"];
 }
