@@ -53,6 +53,8 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
     public string Description { get; private set; } = default!;
     
+    public Position Position { get; private set; }
+    
     public PetIdentity PetIdentity { get; private set; }
 
     public Color Color { get; private set; }
@@ -79,6 +81,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     
     public ValueObjectList<PetPhoto>? PetPhotos { get; private set; }
 
+    public void SetPosition(Position position) =>
+        Position = position;
+
     public void Delete()
     {
         if (!_isDeleted)
@@ -96,5 +101,36 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
         if (_isDeleted)
             _isDeleted = false;
+    }
+
+    public UnitResult<Error> MoveForward()
+    {
+        var newPosition = Position.Forward();
+
+        if (newPosition.IsFailure)
+            return newPosition.Error;
+
+        Position = newPosition.Value;
+
+        return Result.Success<Error>();
+    }
+    
+    public UnitResult<Error> MoveBack()
+    {
+        var newPosition = Position.Back();
+
+        if (newPosition.IsFailure)
+            return newPosition.Error;
+
+        Position = newPosition.Value;
+
+        return Result.Success<Error>();
+    }
+
+    public UnitResult<Error> Move(Position newPosition)
+    {
+        Position = newPosition;
+
+        return Result.Success<Error>();
     }
 }
