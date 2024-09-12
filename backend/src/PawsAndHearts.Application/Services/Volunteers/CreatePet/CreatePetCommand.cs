@@ -15,6 +15,6 @@ public record CreatePetCommand(
     bool IsNeutered,
     DateTime BirthDate,
     bool IsVaccinated,
-    HelpStatus HelpStatus,
+    string HelpStatus,
     DateTime CreationDate,
     IEnumerable<RequisiteDto> Requisites);

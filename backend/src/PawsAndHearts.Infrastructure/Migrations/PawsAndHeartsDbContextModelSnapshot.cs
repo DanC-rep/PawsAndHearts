@@ -205,6 +205,15 @@ namespace PawsAndHearts.Infrastructure.Migrations
                                 .HasColumnName("phone_number");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("Position", "PawsAndHearts.Domain.Volunteer.Entities.Pet.Position#Position", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("integer")
+                                .HasColumnName("position");
+                        });
+
                     b.HasKey("Id")
                         .HasName("pk_pets");
 

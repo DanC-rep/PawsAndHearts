@@ -35,7 +35,7 @@ public class VolunteersController : ApplicationController
         [FromServices] UpdateMainInfoHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateMainInfoCommand(id, request.FullName, request.Experience, request.PhoneNumber);
+        var command = request.ToCommand(id);
 
         var result = await handler.Handle(command, cancellationToken);
 
@@ -49,7 +49,7 @@ public class VolunteersController : ApplicationController
         [FromServices] UpdateSocialNetworksHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateSocialNetworksCommand(id, request.SocialNetworks);
+        var command = request.ToCommand(id);
 
         var result = await handler.Handle(command, cancellationToken);
 
@@ -63,7 +63,7 @@ public class VolunteersController : ApplicationController
         [FromServices] UpdateRequisitesHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateRequisitesCommand(id, request.Requisites);
+        var command = request.ToCommand(id);
 
         var result = await handler.Handle(command, cancellationToken);
 
@@ -108,7 +108,7 @@ public class VolunteersController : ApplicationController
 
         var fileDtos = fileProcessor.Process(request.Files);
 
-        var command = new AddPhotosToPetCommand(id, request.PetId, fileDtos);
+        var command = request.ToCommand(id, fileDtos);
         
         var result = await handler.Handle(command, cancellationToken);
 

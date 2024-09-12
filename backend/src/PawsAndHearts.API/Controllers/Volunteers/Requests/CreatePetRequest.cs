@@ -15,12 +15,12 @@ public record CreatePetRequest(
     bool IsNeutered,
     DateTime BirthDate,
     bool IsVaccinated,
-    HelpStatus HelpStatus,
+    string HelpStatus,
     DateTime CreationDate,
     IEnumerable<RequisiteDto> Requisites)
 {
     public CreatePetCommand ToCommand(Guid volunteerId) =>
-        new CreatePetCommand(
+        new(
             volunteerId,
             Name,
             Description,

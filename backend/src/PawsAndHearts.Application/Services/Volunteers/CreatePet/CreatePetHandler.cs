@@ -7,6 +7,7 @@ using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.ValueObjects;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 using PawsAndHearts.Domain.Volunteer.Entities;
+using PawsAndHearts.Domain.Volunteer.Enums;
 using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 namespace PawsAndHearts.Application.Services.Volunteers.CreatePet;
@@ -46,6 +47,9 @@ public class CreatePetHandler
 
         var petId = PetId.NewId();
 
+        if (!Enum.TryParse(command.HelpStatus, out HelpStatus helpStatus))
+            return Errors.General.ValueIsInvalid("help status").ToErrorList();
+
         var color = Color.Create(command.Color).Value;
 
         var address = Address.Create(
@@ -82,7 +86,7 @@ public class CreatePetHandler
             command.IsNeutered,
             birthDate,
             command.IsVaccinated,
-            command.HelpStatus,
+            helpStatus,
             creationDate,
             requisites);
 

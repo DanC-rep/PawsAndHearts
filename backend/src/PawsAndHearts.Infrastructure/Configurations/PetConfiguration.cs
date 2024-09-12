@@ -27,6 +27,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Description)
             .IsRequired()
             .HasMaxLength(Constants.MAX_DESCRIPTION_LENGTH);
+        
+        builder.ComplexProperty(p => p.Position, cb =>
+        {
+            cb.Property(c => c.Value)
+                .IsRequired()
+                .HasColumnName("position");
+        });
 
         builder.ComplexProperty(p => p.PetIdentity, pb =>
         {
