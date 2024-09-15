@@ -127,7 +127,7 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         if (newPosition.Value <= _pets.Count)
             return newPosition;
         
-        var lastPosition = Position.Create(_pets.Count - 1);
+        var lastPosition = Position.Create(_pets.Count);
         
         if (lastPosition.IsFailure)
             return lastPosition.Error;
