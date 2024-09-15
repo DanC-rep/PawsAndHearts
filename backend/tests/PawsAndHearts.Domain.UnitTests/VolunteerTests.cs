@@ -6,7 +6,7 @@ using PawsAndHearts.Domain.Volunteer.Entities;
 using PawsAndHearts.Domain.Volunteer.Enums;
 using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
-namespace PawsAndHearts.UnitTests.PawsAndHearts.Domain.UnitTests;
+namespace PawsAndHearts.UnitTests;
 
 public class VolunteerTests
 {
@@ -197,13 +197,13 @@ public class VolunteerTests
         fourthPet.Position.Should().Be(Position.Create(3).Value);
         fifthPet.Position.Should().Be(Position.Create(4).Value);
     }
-
+    
     private Volunteer CreateVolunteerWithPets(int petsCount)
     {
         var petId = PetId.NewId();
         var fullName = FullName.Create("123", "123", "123").Value;
         var experience = Experience.Create(1).Value;
-        var phoneNumber = PhoneNumber.Create("89202068434").Value;
+        var phoneNumber = PhoneNumber.Create("89785578809").Value;
         var petIdentity = new PetIdentity(SpeciesId.Empty(), Guid.Empty);
         var color = Color.Create("123").Value;
         var address = Address.Create("123", "123", "123", "213").Value;
