@@ -7,6 +7,7 @@ using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.ValueObjects;
 using PawsAndHearts.Domain.Volunteer.ValueObjects;
+using FileInfo = PawsAndHearts.Application.FIleProvider.FileInfo;
 
 namespace PawsAndHearts.Application.Services.Volunteers.AddPhotosToPet;
 
@@ -17,6 +18,7 @@ public class AddPhotosToPetHandler
     private readonly IVolunteersRepository _repository;
     private readonly IFileProvider _fileProvider;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMessageQueue<IEnumerable<FileInfo>> _messageQueue;
     private readonly IValidator<AddPhotosToPetCommand> _validator;
     private readonly ILogger<AddPhotosToPetHandler> _logger;
 
@@ -25,13 +27,15 @@ public class AddPhotosToPetHandler
         ILogger<AddPhotosToPetHandler> logger, 
         IFileProvider fileProvider,
         IValidator<AddPhotosToPetCommand> validator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork, 
+        IMessageQueue<IEnumerable<FileInfo>> messageQueue)
     {
         _repository = repository;
         _logger = logger;
         _fileProvider = fileProvider;
         _validator = validator;
         _unitOfWork = unitOfWork;
+        _messageQueue = messageQueue;
     }
 
     public async Task<Result<FilePathList, ErrorList>> Handle(
@@ -68,13 +72,13 @@ public class AddPhotosToPetHandler
                 if (filePathResult.IsFailure)
                     return filePathResult.Error.ToErrorList();
 
-                var fileData = new UploadFileData(file.Content, filePathResult.Value, BUCKET_NAME);
+                var fileData = new UploadFileData(file.Content, new FileInfo(filePathResult.Value, BUCKET_NAME));
 
                 fileDatas.Add(fileData);
             }
 
             var petPhotos = fileDatas
-                .Select(f => f.FilePath)
+                .Select(f => f.Info.FilePath)
                 .Select(f => PetPhoto.Create(f, false).Value)
                 .ToList();
 
@@ -85,7 +89,10 @@ public class AddPhotosToPetHandler
             var uploadResult = await _fileProvider.UploadFiles(fileDatas, cancellationToken);
 
             if (uploadResult.IsFailure)
+            {
+                await _messageQueue.WriteAsync(fileDatas.Select(f => f.Info), cancellationToken);
                 return uploadResult.Error.ToErrorList();
+            }
 
             transaction.Commit();
 

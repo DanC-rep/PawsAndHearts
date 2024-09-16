@@ -2,9 +2,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
 using PawsAndHearts.Application.Interfaces;
+using PawsAndHearts.Infrastructure.BackgroundServices;
+using PawsAndHearts.Infrastructure.Files;
+using PawsAndHearts.Infrastructure.MessageQueues;
 using PawsAndHearts.Infrastructure.Options;
 using PawsAndHearts.Infrastructure.Providers;
 using PawsAndHearts.Infrastructure.Repositories;
+using FileInfo = PawsAndHearts.Application.FIleProvider.FileInfo;
 
 namespace PawsAndHearts.Infrastructure;
 
@@ -21,10 +25,17 @@ public static class Inject
 
         services.AddMinio(configuration);
 
+        services.AddHostedService<FilesCleanerBackgroundService>();
+
+        services.AddSingleton<IMessageQueue<IEnumerable<FileInfo>>,
+            FilesCleanerMessageQueue<IEnumerable<FileInfo>>>();
+
+        services.AddScoped<IFilesCleanerService, FilesCleanerService>();
+
         return services;
     }
 
-    public static IServiceCollection AddMinio(
+    private static IServiceCollection AddMinio(
         this IServiceCollection services, IConfiguration configuration)
     {
         services.AddMinio(options =>
