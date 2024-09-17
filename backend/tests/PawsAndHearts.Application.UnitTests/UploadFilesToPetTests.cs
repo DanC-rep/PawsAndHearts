@@ -16,6 +16,7 @@ using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 using PawsAndHearts.Domain.Volunteer.Entities;
 using PawsAndHearts.Domain.Volunteer.Enums;
 using PawsAndHearts.Domain.Volunteer.ValueObjects;
+using FileInfo = PawsAndHearts.Application.FIleProvider.FileInfo;
 
 namespace PawsAndHearts.Application.UnitTests;
 
@@ -26,6 +27,7 @@ public class UploadFilesToPetTests
     private readonly Mock<ILogger<AddPhotosToPetHandler>> _loggerMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<IValidator<AddPhotosToPetCommand>> _validatorMock = new();
+    private readonly Mock<IMessageQueue<IEnumerable<FileInfo>>> _messageQueueMock = new();
     
     [Fact]
     public async Task Handle_Should_Upload_Files_To_Pet()
@@ -73,7 +75,8 @@ public class UploadFilesToPetTests
             _loggerMock.Object,
             _fileProviderMock.Object,
             _validatorMock.Object,
-            _unitOfWorkMock.Object);
+            _unitOfWorkMock.Object,
+            _messageQueueMock.Object);
         
         // act
         var result = await handler.Handle(command, cancellationToken);
@@ -107,7 +110,8 @@ public class UploadFilesToPetTests
             _loggerMock.Object,
             _fileProviderMock.Object,
             _validatorMock.Object,
-            _unitOfWorkMock.Object);
+            _unitOfWorkMock.Object,
+            _messageQueueMock.Object);
         
         // act
         var result = await handler.Handle(command, cancellationToken);
@@ -149,7 +153,8 @@ public class UploadFilesToPetTests
             _loggerMock.Object,
             _fileProviderMock.Object,
             _validatorMock.Object,
-            _unitOfWorkMock.Object);
+            _unitOfWorkMock.Object,
+            _messageQueueMock.Object);
         
         // arrange
         var result = await handler.Handle(command, cancellationToken);
@@ -185,6 +190,9 @@ public class UploadFilesToPetTests
         _fileProviderMock.Setup(f => 
                 f.UploadFiles(It.IsAny<List<UploadFileData>>(), cancellationToken))
             .ReturnsAsync(Error.Failure("file.upload", "Fail to upload file in minio"));
+
+        _messageQueueMock.Setup(m =>
+            m.WriteAsync(It.IsAny<List<FileInfo>>(), cancellationToken));
         
         _volunteersRepositoryMock.Setup(v =>
                 v.GetById(volunteer.Id, cancellationToken))
@@ -209,7 +217,8 @@ public class UploadFilesToPetTests
             _loggerMock.Object,
             _fileProviderMock.Object,
             _validatorMock.Object,
-            _unitOfWorkMock.Object);
+            _unitOfWorkMock.Object,
+            _messageQueueMock.Object);
         
         // act
         var result = await handler.Handle(command, cancellationToken);
