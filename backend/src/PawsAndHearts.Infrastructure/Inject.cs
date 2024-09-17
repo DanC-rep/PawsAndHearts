@@ -3,12 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Minio;
 using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Infrastructure.BackgroundServices;
+using PawsAndHearts.Infrastructure.DbContexts;
 using PawsAndHearts.Infrastructure.Files;
 using PawsAndHearts.Infrastructure.MessageQueues;
 using PawsAndHearts.Infrastructure.Options;
 using PawsAndHearts.Infrastructure.Providers;
 using PawsAndHearts.Infrastructure.Repositories;
-using FileInfo = PawsAndHearts.Application.FIleProvider.FileInfo;
+using FileInfo = PawsAndHearts.Application.FileProvider.FileInfo;
 
 namespace PawsAndHearts.Infrastructure;
 
@@ -17,7 +18,9 @@ public static class Inject
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<PawsAndHeartsDbContext>();
+        services.AddScoped<WriteDbContext>();
+
+        services.AddScoped<IReadDbContext, ReadDbContext>();
 
         services.AddScoped<IVolunteersRepository, VolunteersRepository>();
 

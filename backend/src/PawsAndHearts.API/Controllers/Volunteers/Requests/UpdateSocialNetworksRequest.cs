@@ -1,5 +1,5 @@
 using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.Services.Volunteers.UpdateSocialNetworks;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateSocialNetworks;
 
 namespace PawsAndHearts.API.Controllers.Volunteers.Requests;
 

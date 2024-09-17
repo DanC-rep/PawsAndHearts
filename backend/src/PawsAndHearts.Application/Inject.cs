@@ -1,13 +1,14 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PawsAndHearts.Application.Interfaces;
-using PawsAndHearts.Application.Services.Volunteers.AddPhotosToPet;
-using PawsAndHearts.Application.Services.Volunteers.CreatePet;
-using PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
-using PawsAndHearts.Application.Services.Volunteers.DeleteVolunteer;
-using PawsAndHearts.Application.Services.Volunteers.UpdateMainInfo;
-using PawsAndHearts.Application.Services.Volunteers.UpdateRequisites;
-using PawsAndHearts.Application.Services.Volunteers.UpdateSocialNetworks;
+using PawsAndHearts.Application.VolunteerManagement.Queries.GetVolunteersWithPagination;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.AddPhotosToPet;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.CreateVolunteer;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.DeleteVolunteer;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateMainInfo;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateRequisites;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateSocialNetworks;
 
 namespace PawsAndHearts.Application;
 
@@ -28,6 +29,8 @@ public static class Inject
         services.AddScoped<CreatePetHandler>();
 
         services.AddScoped<AddPhotosToPetHandler>();
+
+        services.AddScoped<GetVolunteersWithPaginationHandler>();
 
         services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
 

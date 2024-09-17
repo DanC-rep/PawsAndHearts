@@ -13,7 +13,7 @@ public record Experience
 
     public static Result<Experience, Error> Create(int experience)
     {
-        if (experience < 0)
+        if (experience < 0 || experience > Constants.MAX_EXPERIENCE_VALUE)
             return Errors.General.ValueIsInvalid("experience");
 
         return new Experience(experience);

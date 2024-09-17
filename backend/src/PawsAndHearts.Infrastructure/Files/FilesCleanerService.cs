@@ -1,5 +1,5 @@
 using PawsAndHearts.Application.Interfaces;
-using FileInfo = PawsAndHearts.Application.FIleProvider.FileInfo;
+using FileInfo = PawsAndHearts.Application.FileProvider.FileInfo;
 
 namespace PawsAndHearts.Infrastructure.Files;
 

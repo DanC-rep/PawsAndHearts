@@ -1,5 +1,5 @@
 using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.Services.Volunteers.AddPhotosToPet;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.AddPhotosToPet;
 
 namespace PawsAndHearts.API.Controllers.Volunteers.Requests;
 

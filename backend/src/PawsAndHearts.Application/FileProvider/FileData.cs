@@ -1,4 +1,4 @@
-namespace PawsAndHearts.Application.FIleProvider;
+namespace PawsAndHearts.Application.FileProvider;
 
 public record UploadFileData(Stream Stream, FileInfo Info);
 

@@ -1,8 +1,8 @@
 using CSharpFunctionalExtensions;
-using PawsAndHearts.Application.FIleProvider;
+using PawsAndHearts.Application.FileProvider;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.ValueObjects;
-using FileInfo = PawsAndHearts.Application.FIleProvider.FileInfo;
+using FileInfo = PawsAndHearts.Application.FileProvider.FileInfo;
 
 namespace PawsAndHearts.Application.Interfaces;
 

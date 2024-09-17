@@ -4,21 +4,22 @@ using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 using PawsAndHearts.Domain.Volunteer.Entities;
+using PawsAndHearts.Infrastructure.DbContexts;
 
 namespace PawsAndHearts.Infrastructure.Repositories;
 
 public class VolunteersRepository : IVolunteersRepository
 {
-    private readonly PawsAndHeartsDbContext _pawsAndHeartsDbContext;
+    private readonly WriteDbContext _writeDbContext;
 
-    public VolunteersRepository(PawsAndHeartsDbContext pawsAndHeartsDbContext)
+    public VolunteersRepository(WriteDbContext writeDbContext)
     {
-        _pawsAndHeartsDbContext = pawsAndHeartsDbContext;
+        _writeDbContext = writeDbContext;
     }
     
     public async Task<Guid> Add(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
-        await _pawsAndHeartsDbContext.AddAsync(volunteer, cancellationToken);
+        await _writeDbContext.AddAsync(volunteer, cancellationToken);
 
         return volunteer.Id;
     }
@@ -27,7 +28,7 @@ public class VolunteersRepository : IVolunteersRepository
         VolunteerId volunteerId, 
         CancellationToken cancellationToken = default)
     {
-        var volunteer = await _pawsAndHeartsDbContext.Volunteers
+        var volunteer = await _writeDbContext.Volunteers
             .Include(v => v.Pets)
             .FirstOrDefaultAsync(v => v.Id == volunteerId, cancellationToken);
 
@@ -41,7 +42,7 @@ public class VolunteersRepository : IVolunteersRepository
 
     public async Task<Guid> Save(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
-        _pawsAndHeartsDbContext.Attach(volunteer);
+        _writeDbContext.Attach(volunteer);
 
         return volunteer.Id;
     }
