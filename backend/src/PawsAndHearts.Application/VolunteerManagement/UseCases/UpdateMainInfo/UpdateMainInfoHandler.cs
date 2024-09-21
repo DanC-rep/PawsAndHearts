@@ -8,7 +8,7 @@ using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateMainInfo;
 
-public class UpdateMainInfoHandler
+public class UpdateMainInfoHandler : ICommandHandler<Guid, UpdateMainInfoCommand>
 {
     private readonly IVolunteersRepository _repository;
     private readonly IUnitOfWork _unitOfWork;

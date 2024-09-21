@@ -1,4 +1,5 @@
 using PawsAndHearts.Application.Dto;
+using PawsAndHearts.Application.Interfaces;
 
 namespace PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
 
@@ -16,4 +17,4 @@ public record CreatePetCommand(
     bool IsVaccinated,
     string HelpStatus,
     DateTime CreationDate,
-    IEnumerable<RequisiteDto> Requisites);
+    IEnumerable<RequisiteDto> Requisites) : ICommand;

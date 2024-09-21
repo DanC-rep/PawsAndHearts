@@ -8,7 +8,7 @@ using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateSocialNetworks;
 
-public class UpdateSocialNetworksHandler
+public class UpdateSocialNetworksHandler : ICommandHandler<Guid, UpdateSocialNetworksCommand>
 {
     private readonly IVolunteersRepository _repository;
     private readonly IUnitOfWork _unitOfWork;

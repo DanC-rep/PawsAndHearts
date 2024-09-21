@@ -16,24 +16,29 @@ public static class Inject
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<CreateVolunteerHandler>();
-
-        services.AddScoped<UpdateMainInfoHandler>();
-
-        services.AddScoped<UpdateSocialNetworksHandler>();
-
-        services.AddScoped<UpdateRequisitesHandler>();
-
-        services.AddScoped<DeleteVolunteerHandler>();
-
-        services.AddScoped<CreatePetHandler>();
-
-        services.AddScoped<AddPhotosToPetHandler>();
-
-        services.AddScoped<GetVolunteersWithPaginationHandler>();
-
-        services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
+        services
+            .AddCommands()
+            .AddQueries()
+            .AddValidatorsFromAssembly(typeof(Inject).Assembly);
 
         return services;
+    }
+
+    private static IServiceCollection AddCommands(this IServiceCollection services)
+    {
+        return services.Scan(scan => scan.FromAssemblies(typeof(Inject).Assembly)
+            .AddClasses(classes => classes
+                .AssignableToAny(typeof(ICommandHandler<,>), typeof(ICommandHandler<>)))
+            .AsSelfWithInterfaces()
+            .WithScopedLifetime());
+    }
+
+    private static IServiceCollection AddQueries(this IServiceCollection services)
+    {
+        return services.Scan(scan => scan.FromAssemblies(typeof(Inject).Assembly)
+            .AddClasses(classes => classes
+                .AssignableTo(typeof(IQueryHandler<,>)))
+            .AsSelfWithInterfaces()
+            .WithScopedLifetime());
     }
 }

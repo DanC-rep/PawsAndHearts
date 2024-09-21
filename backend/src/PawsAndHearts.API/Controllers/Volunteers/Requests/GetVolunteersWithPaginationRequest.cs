@@ -2,8 +2,12 @@ using PawsAndHearts.Application.VolunteerManagement.Queries.GetVolunteersWithPag
 
 namespace PawsAndHearts.API.Controllers.Volunteers.Requests;
 
-public record GetVolunteersWithPaginationRequest(int Page, int PageSize)
+public record GetVolunteersWithPaginationRequest(
+    string? SortBy,
+    string? SortDirection,
+    int Page, 
+    int PageSize)
 {
     public GetVolunteersWithPaginationQuery ToQuery() =>
-        new (Page, PageSize);
+        new (SortBy, SortDirection, Page, PageSize);
 }

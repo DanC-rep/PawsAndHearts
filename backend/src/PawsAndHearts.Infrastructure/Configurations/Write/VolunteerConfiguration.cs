@@ -1,7 +1,11 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PawsAndHearts.Application.Dto;
+using PawsAndHearts.Domain.Shared.ValueObjects;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 using PawsAndHearts.Domain.Volunteer.Entities;
+using PawsAndHearts.Infrastructure.Extensions;
 
 namespace PawsAndHearts.Infrastructure.Configurations.Write;
 
@@ -50,38 +54,18 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(Domain.Shared.Constants.MAX_PHONE_LENGTH)
                 .HasColumnName("phone_number");
         });
-
-        builder.OwnsOne(v => v.SocialNetworks, snb =>
-        {
-            snb.ToJson("social_networks");
-
-            snb.OwnsMany(sn => sn.Values, sb =>
-            {
-                sb.Property(s => s.Name)
-                    .IsRequired()
-                    .HasMaxLength(Domain.Shared.Constants.MAX_NAME_LENGTH);
-
-                sb.Property(s => s.Link)
-                    .IsRequired()
-                    .HasMaxLength(Domain.Shared.Constants.MAX_TEXT_LENGTH);
-            });
-        });
         
-        builder.OwnsOne(v => v.Requisites, reb =>
-        {
-            reb.ToJson("requisites");
+        builder.Property(v => v.Requisites)
+            .HasValueObjectsJsonConversion(
+                requisite => new RequisiteDto(requisite.Name, requisite.Description),
+                dto => Requisite.Create(dto.Name, dto.Description).Value)
+            .HasColumnName("requisites");
 
-            reb.OwnsMany(re => re.Values, rb =>
-            {
-                rb.Property(r => r.Name)
-                    .IsRequired()
-                    .HasMaxLength(Domain.Shared.Constants.MAX_NAME_LENGTH);
-
-                rb.Property(r => r.Description)
-                    .IsRequired()
-                    .HasMaxLength(Domain.Shared.Constants.MAX_TEXT_LENGTH);
-            });
-        });
+        builder.Property(v => v.SocialNetworks)
+            .HasValueObjectsJsonConversion(
+                socialNetwork => new SocialNetworkDto(socialNetwork.Name, socialNetwork.Link),
+                dto => SocialNetwork.Create(dto.Link, dto.Name).Value)
+            .HasColumnName("social_networks");
 
         builder.HasMany(v => v.Pets)
             .WithOne()

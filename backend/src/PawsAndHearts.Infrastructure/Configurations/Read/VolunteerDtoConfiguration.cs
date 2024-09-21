@@ -12,5 +12,18 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
         builder.ToTable("volunteers");
 
         builder.HasKey(v => v.Id);
+
+        builder.Property(v => v.Requisites)
+            .HasConversion(
+                values => JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default),
+                json => JsonSerializer.Deserialize<IEnumerable<RequisiteDto>>
+                    (json, JsonSerializerOptions.Default)!);
+        
+        builder.Property(v => v.SocialNetworks)
+            .HasConversion(
+                values => JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default),
+                json => JsonSerializer.Deserialize<IEnumerable<SocialNetworkDto>>
+                    (json, JsonSerializerOptions.Default)!);
+
     }
 }

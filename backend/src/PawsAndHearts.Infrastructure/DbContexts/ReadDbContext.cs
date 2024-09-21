@@ -8,7 +8,7 @@ namespace PawsAndHearts.Infrastructure.DbContexts;
 
 public class ReadDbContext(IConfiguration configuration) : DbContext, IReadDbContext
 {
-    public DbSet<VolunteerDto> Volunteers => Set<VolunteerDto>();
+    public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -16,6 +16,8 @@ public class ReadDbContext(IConfiguration configuration) : DbContext, IReadDbCon
         optionsBuilder.UseSnakeCaseNamingConvention();
         optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
+
+        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

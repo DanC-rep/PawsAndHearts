@@ -7,7 +7,7 @@ using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Application.VolunteerManagement.UseCases.DeleteVolunteer;
 
-public class DeleteVolunteerHandler
+public class DeleteVolunteerHandler : ICommandHandler<Guid, DeleteVolunteerCommand>
 {
     private readonly IVolunteersRepository _repository;
     private readonly IUnitOfWork _unitOfWork;

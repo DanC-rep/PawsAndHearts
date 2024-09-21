@@ -28,14 +28,14 @@ namespace PawsAndHearts.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    social_networks = table.Column<string>(type: "jsonb", nullable: false),
+                    requisites = table.Column<string>(type: "jsonb", nullable: false),
                     is_deleted = table.Column<bool>(type: "boolean", nullable: false),
                     experience = table.Column<int>(type: "integer", nullable: false),
                     name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     patronymic = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     surname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    phone_number = table.Column<string>(type: "character varying(14)", maxLength: 14, nullable: false),
-                    requisites = table.Column<string>(type: "jsonb", nullable: false),
-                    social_networks = table.Column<string>(type: "jsonb", nullable: false)
+                    phone_number = table.Column<string>(type: "character varying(14)", maxLength: 14, nullable: false)
                 },
                 constraints: table =>
                 {

@@ -11,7 +11,7 @@ using FileInfo = PawsAndHearts.Application.FileProvider.FileInfo;
 
 namespace PawsAndHearts.Application.VolunteerManagement.UseCases.AddPhotosToPet;
 
-public class AddPhotosToPetHandler
+public class AddPhotosToPetHandler : ICommandHandler<FilePathList, AddPhotosToPetCommand>
 {
     private const string BUCKET_NAME = "photos";
     

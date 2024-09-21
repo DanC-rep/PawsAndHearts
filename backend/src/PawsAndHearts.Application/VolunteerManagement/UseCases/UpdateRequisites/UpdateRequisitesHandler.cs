@@ -8,7 +8,7 @@ using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateRequisites;
 
-public class UpdateRequisitesHandler
+public class UpdateRequisitesHandler : ICommandHandler<Guid, UpdateRequisitesCommand>
 {
     private readonly IVolunteersRepository _repository;
     private readonly IUnitOfWork _unitOfWork;

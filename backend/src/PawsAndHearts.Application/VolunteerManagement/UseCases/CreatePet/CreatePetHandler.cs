@@ -12,7 +12,7 @@ using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 namespace PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
 
-public class CreatePetHandler
+public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
 {
     private readonly IVolunteersRepository _repository;
     private readonly IUnitOfWork _unitOfWork;

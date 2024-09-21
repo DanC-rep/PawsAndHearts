@@ -10,7 +10,7 @@ using PawsAndHearts.Domain.Volunteer.Entities;
 
 namespace PawsAndHearts.Application.VolunteerManagement.UseCases.CreateVolunteer;
 
-public class CreateVolunteerHandler
+public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IUnitOfWork _unitOfWork;
