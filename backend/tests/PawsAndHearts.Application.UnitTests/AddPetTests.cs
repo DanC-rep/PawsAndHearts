@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using PawsAndHearts.Application.Dto;
 using PawsAndHearts.Application.Interfaces;
-using PawsAndHearts.Application.Services.Volunteers.CreatePet;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.Enums;
 using PawsAndHearts.Domain.Shared.ValueObjects;

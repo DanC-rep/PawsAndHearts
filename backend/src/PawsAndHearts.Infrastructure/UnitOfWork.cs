@@ -1,14 +1,15 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore.Storage;
 using PawsAndHearts.Application.Interfaces;
+using PawsAndHearts.Infrastructure.DbContexts;
 
 namespace PawsAndHearts.Infrastructure;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly PawsAndHeartsDbContext _dbContext;
+    private readonly WriteDbContext _dbContext;
 
-    public UnitOfWork(PawsAndHeartsDbContext dbContext)
+    public UnitOfWork(WriteDbContext dbContext)
     {
         _dbContext = dbContext;
     }

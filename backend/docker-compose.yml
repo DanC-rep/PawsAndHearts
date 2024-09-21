@@ -1,4 +1,4 @@
-﻿ervices:
+﻿services:
   postgres:
     container_name: postgres
     image: postgres

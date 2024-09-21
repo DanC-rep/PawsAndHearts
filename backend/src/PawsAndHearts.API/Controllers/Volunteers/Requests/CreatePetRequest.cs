@@ -1,5 +1,5 @@
 using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.Services.Volunteers.CreatePet;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Domain.Volunteer.Enums;
 
 namespace PawsAndHearts.API.Controllers.Volunteers.Requests;

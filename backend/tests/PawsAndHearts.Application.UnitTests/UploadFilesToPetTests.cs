@@ -6,9 +6,9 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.FIleProvider;
+using PawsAndHearts.Application.FileProvider;
 using PawsAndHearts.Application.Interfaces;
-using PawsAndHearts.Application.Services.Volunteers.AddPhotosToPet;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.AddPhotosToPet;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.Enums;
 using PawsAndHearts.Domain.Shared.ValueObjects;
@@ -16,7 +16,7 @@ using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 using PawsAndHearts.Domain.Volunteer.Entities;
 using PawsAndHearts.Domain.Volunteer.Enums;
 using PawsAndHearts.Domain.Volunteer.ValueObjects;
-using FileInfo = PawsAndHearts.Application.FIleProvider.FileInfo;
+using FileInfo = PawsAndHearts.Application.FileProvider.FileInfo;
 
 namespace PawsAndHearts.Application.UnitTests;
 

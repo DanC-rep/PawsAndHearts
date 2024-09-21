@@ -2,13 +2,15 @@ using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.API.Controllers.Volunteers.Requests;
 using PawsAndHearts.API.Extensions;
 using PawsAndHearts.API.Processors;
-using PawsAndHearts.Application.Services.Volunteers.AddPhotosToPet;
-using PawsAndHearts.Application.Services.Volunteers.CreatePet;
-using PawsAndHearts.Application.Services.Volunteers.CreateVolunteer;
-using PawsAndHearts.Application.Services.Volunteers.DeleteVolunteer;
-using PawsAndHearts.Application.Services.Volunteers.UpdateMainInfo;
-using PawsAndHearts.Application.Services.Volunteers.UpdateRequisites;
-using PawsAndHearts.Application.Services.Volunteers.UpdateSocialNetworks;
+using PawsAndHearts.API.Response;
+using PawsAndHearts.Application.VolunteerManagement.Queries.GetVolunteersWithPagination;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.AddPhotosToPet;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.CreateVolunteer;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.DeleteVolunteer;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateMainInfo;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateRequisites;
+using PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateSocialNetworks;
 using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.API.Controllers.Volunteers;
@@ -113,5 +115,18 @@ public class VolunteersController : ApplicationController
         var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> Get(
+        [FromQuery] GetVolunteersWithPaginationRequest request, 
+        [FromServices] GetVolunteersWithPaginationHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var query = request.ToQuery();
+
+        var response = await handler.Handle(query, cancellationToken);
+
+        return Ok(response);
     }
 }

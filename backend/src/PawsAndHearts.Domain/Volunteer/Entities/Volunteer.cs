@@ -37,9 +37,9 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 
     public PhoneNumber PhoneNumber { get; private set; }
 
-    public ValueObjectList<SocialNetwork> SocialNetworks { get; private set; }
-    
-    public ValueObjectList<Requisite> Requisites { get; private set; }
+    public IReadOnlyList<SocialNetwork> SocialNetworks { get; private set; }
+
+    public IReadOnlyList<Requisite> Requisites { get; private set; }
 
     private readonly List<Pet> _pets = [];
 

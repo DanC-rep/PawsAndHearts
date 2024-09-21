@@ -2,11 +2,11 @@ using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
-using PawsAndHearts.Application.FIleProvider;
+using PawsAndHearts.Application.FileProvider;
 using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.ValueObjects;
-using FileInfo = PawsAndHearts.Application.FIleProvider.FileInfo;
+using FileInfo = PawsAndHearts.Application.FileProvider.FileInfo;
 
 namespace PawsAndHearts.Infrastructure.Providers;
 
