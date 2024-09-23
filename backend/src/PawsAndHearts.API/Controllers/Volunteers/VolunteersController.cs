@@ -3,6 +3,8 @@ using PawsAndHearts.API.Controllers.Volunteers.Requests;
 using PawsAndHearts.API.Extensions;
 using PawsAndHearts.API.Processors;
 using PawsAndHearts.API.Response;
+using PawsAndHearts.Application.Dto;
+using PawsAndHearts.Application.VolunteerManagement.Queries.GetVolunteerById;
 using PawsAndHearts.Application.VolunteerManagement.Queries.GetVolunteersWithPagination;
 using PawsAndHearts.Application.VolunteerManagement.UseCases.AddPhotosToPet;
 using PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
@@ -128,5 +130,18 @@ public class VolunteersController : ApplicationController
         var response = await handler.Handle(query, cancellationToken);
 
         return Ok(response);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<VolunteerDto>> GetById(
+        [FromRoute] Guid id,
+        [FromServices] GetVolunteerByIdHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetVolunteerByIdQuery(id);
+
+        var result = await handler.Handle(query, cancellationToken);
+
+        return result.ToResponse();
     }
 }
