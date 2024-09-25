@@ -9,6 +9,10 @@ namespace PawsAndHearts.Infrastructure.DbContexts;
 public class ReadDbContext(IConfiguration configuration) : DbContext, IReadDbContext
 {
     public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
+    
+    public IQueryable<SpeciesDto> Species => Set<SpeciesDto>();
+
+    public IQueryable<BreedDto> Breeds => Set<BreedDto>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

@@ -33,17 +33,8 @@ public class VolunteersRepository : IVolunteersRepository
             .FirstOrDefaultAsync(v => v.Id == volunteerId, cancellationToken);
 
         if (volunteer is null)
-        {  
             return Errors.General.NotFound(volunteerId);
-        }
 
         return volunteer;
-    }
-
-    public async Task<Guid> Save(Volunteer volunteer, CancellationToken cancellationToken = default)
-    {
-        _writeDbContext.Attach(volunteer);
-
-        return volunteer.Id;
     }
 }

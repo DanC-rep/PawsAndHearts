@@ -39,6 +39,10 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("species_id");
 
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.HasKey("Id")
                         .HasName("pk_breeds");
 
@@ -59,6 +63,10 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("name");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.HasKey("Id")
                         .HasName("pk_species");

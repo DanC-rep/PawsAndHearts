@@ -25,5 +25,9 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
         builder.HasMany(s => s.Breeds)
             .WithOne()
             .HasForeignKey(b => b.SpeciesId);
+        
+        builder.Property<bool>("_isDeleted")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("is_deleted");
     }
 }

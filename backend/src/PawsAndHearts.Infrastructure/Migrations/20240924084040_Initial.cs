@@ -16,7 +16,8 @@ namespace PawsAndHearts.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                    name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,7 +49,8 @@ namespace PawsAndHearts.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    species_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    species_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {

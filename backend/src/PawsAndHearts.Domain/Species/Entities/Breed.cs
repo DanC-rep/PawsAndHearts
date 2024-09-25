@@ -1,15 +1,34 @@
 using PawsAndHearts.Domain.Shared;
+using PawsAndHearts.Domain.Shared.Interfaces;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 
 namespace PawsAndHearts.Domain.Species.Entities;
 
-public class Breed : Entity<BreedId>
+public class Breed : Entity<BreedId>, ISoftDeletable
 {
+    private bool _isDeleted = false;
+    
     private Breed(BreedId id) : base(id)
     {
+    }
+
+    public Breed(BreedId id, string name, SpeciesId speciesId) : base(id)
+    {
+        Name = name;
+        SpeciesId = speciesId;
     }
     
     public string Name { get; private set; }
     
     public SpeciesId SpeciesId { get; private set; }
+
+    public void Delete()
+    {
+        _isDeleted = true;
+    }
+
+    public void Restore()
+    {
+        _isDeleted = false;
+    }
 }

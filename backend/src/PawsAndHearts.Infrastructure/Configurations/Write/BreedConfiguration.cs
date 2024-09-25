@@ -21,5 +21,9 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
         builder.Property(b => b.Name)
             .IsRequired()
             .HasMaxLength(Domain.Shared.Constants.MAX_NAME_LENGTH);
+        
+        builder.Property<bool>("_isDeleted")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("is_deleted");
     }
 }

@@ -13,7 +13,7 @@ using PawsAndHearts.Infrastructure.DbContexts;
 namespace PawsAndHearts.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20240921122141_Initial")]
+    [Migration("20240924084040_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -42,6 +42,10 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("species_id");
 
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.HasKey("Id")
                         .HasName("pk_breeds");
 
@@ -62,6 +66,10 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("name");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.HasKey("Id")
                         .HasName("pk_species");

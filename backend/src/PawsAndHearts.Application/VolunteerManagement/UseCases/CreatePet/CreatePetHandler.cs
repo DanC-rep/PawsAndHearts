@@ -14,18 +14,21 @@ namespace PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
 
 public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
 {
-    private readonly IVolunteersRepository _repository;
+    private readonly IVolunteersRepository _volunteersRepository;
+    private readonly ISpeciesRepository _speciesRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<CreatePetCommand> _validator;
     private readonly ILogger<CreatePetHandler> _logger;
 
     public CreatePetHandler(
-        IVolunteersRepository repository,
+        IVolunteersRepository volunteersRepository,
+        ISpeciesRepository speciesRepository,
         IUnitOfWork unitOfWork,
         IValidator<CreatePetCommand> validator,
         ILogger<CreatePetHandler> logger)
     {
-        _repository = repository;
+        _volunteersRepository = volunteersRepository;
+        _speciesRepository = speciesRepository;
         _unitOfWork = unitOfWork;
         _validator = validator;
         _logger = logger;
@@ -40,10 +43,20 @@ public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
         
-        var volunteerResult = await _repository.GetById(command.VolunteerId, cancellationToken);
+        var volunteerResult = await _volunteersRepository.GetById(command.VolunteerId, cancellationToken);
 
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
+        
+        var speciesResult = await _speciesRepository.GetById(command.SpeciesId, cancellationToken);
+
+        if (speciesResult.IsFailure)
+            return Errors.General.NotFound(command.SpeciesId).ToErrorList();
+
+        var breedResult = speciesResult.Value.GetBreedById(command.BreedId);
+        
+        if (breedResult.IsFailure)
+            return Errors.General.NotFound(command.BreedId).ToErrorList();
 
         var petId = PetId.NewId();
 
@@ -71,7 +84,7 @@ public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
         var requisites = command.Requisites.Select(f =>
                 Requisite.Create(f.Name, f.Description).Value).ToList();
 
-        var petIdentity = new PetIdentity(Guid.Empty, Guid.Empty);
+        var petIdentity = new PetIdentity(command.SpeciesId, command.BreedId);
             
         var pet = new Pet(
             petId,
@@ -93,9 +106,9 @@ public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
         volunteerResult.Value.AddPet(pet);
 
         await _unitOfWork.SaveChanges(cancellationToken);
-
+        
         _logger.LogInformation("Pet was created with id {petId}", (Guid)petId);
-
+        
         return (Guid)pet.Id;
     }
 }
