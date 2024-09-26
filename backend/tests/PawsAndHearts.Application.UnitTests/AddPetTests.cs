@@ -4,8 +4,8 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PawsAndHearts.Application.Dto;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Application.Interfaces;
-using PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.Enums;
 using PawsAndHearts.Domain.Shared.ValueObjects;
@@ -60,11 +60,11 @@ public class AddPetTests
         _volunteersRepositoryMock.Setup(v => v.GetById(volunteer.Id, cancellationToken))
             .ReturnsAsync(volunteer);
 
-        _speciesRepositoryMock.Setup(s => s.GetById(species.Id, cancellationToken))
-            .ReturnsAsync(species);
-
         _unitOfWorkMock.Setup(u => u.SaveChanges(cancellationToken))
             .Returns(Task.CompletedTask);
+
+        _speciesRepositoryMock.Setup(s => s.GetById(species.Id, cancellationToken))
+            .ReturnsAsync(species);
 
         var handler = new CreatePetHandler(
             _volunteersRepositoryMock.Object,

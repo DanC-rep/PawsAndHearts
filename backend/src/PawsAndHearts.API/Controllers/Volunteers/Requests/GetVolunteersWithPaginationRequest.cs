@@ -1,4 +1,4 @@
-using PawsAndHearts.Application.VolunteerManagement.Queries.GetVolunteersWithPagination;
+using PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
 
 namespace PawsAndHearts.API.Controllers.Volunteers.Requests;
 

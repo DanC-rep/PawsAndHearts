@@ -6,10 +6,8 @@ using PawsAndHearts.Domain.Volunteer.Entities;
 
 namespace PawsAndHearts.Domain.Species.Entities;
 
-public class Species : Shared.Entity<SpeciesId>, ISoftDeletable
+public class Species : Shared.Entity<SpeciesId>
 {
-    private bool _isDeleted = false;
-    
     private Species(SpeciesId id) : base(id)
     {
     }
@@ -27,30 +25,18 @@ public class Species : Shared.Entity<SpeciesId>, ISoftDeletable
 
     public UnitResult<Error> AddBreed(Breed breed)
     {
-        _breeds.Add(breed);
-
-        return Result.Success<Error>();
-    }
-
-    public void Delete()
-    {
-        _isDeleted = true;
-
-        foreach (var breed in _breeds)
+        if (CheckBreedNameNotExists(breed))
         {
-            breed.Delete();
+            _breeds.Add(breed);
+
+            return Result.Success<Error>();
         }
+
+        return Errors.General.AlreadyExists("breed", "name", breed.Name);
     }
 
-    public void Restore()
-    {
-        _isDeleted = false;
-
-        foreach (var breed in _breeds)
-        {
-            breed.Restore();
-        }
-    }
+    private bool CheckBreedNameNotExists(Breed breed) =>
+        _breeds.All(b => b.Name != breed.Name);
 
     public Result<Breed, Error> GetBreedById(BreedId breedId)
     {
@@ -60,5 +46,10 @@ public class Species : Shared.Entity<SpeciesId>, ISoftDeletable
             return Errors.General.NotFound(breedId);
 
         return breed;
+    }
+
+    public void RemoveBreed(Breed breed)
+    {
+        _breeds.Remove(breed);
     }
 }

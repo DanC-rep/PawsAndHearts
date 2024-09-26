@@ -1,4 +1,4 @@
-﻿using PawsAndHearts.Application.SpeciesManagement.UseCases.CreateBreed;
+﻿using PawsAndHearts.Application.Features.SpeciesManagement.UseCases.CreateBreed;
 
 namespace PawsAndHearts.API.Controllers.Species.Requests;
 

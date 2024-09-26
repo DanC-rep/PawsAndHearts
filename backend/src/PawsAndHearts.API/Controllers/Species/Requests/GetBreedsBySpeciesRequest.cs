@@ -1,4 +1,4 @@
-﻿using PawsAndHearts.Application.SpeciesManagement.Queries.GetBreedsBySpecies;
+﻿using PawsAndHearts.Application.Features.SpeciesManagement.Queries.GetBreedsBySpecies;
 
 namespace PawsAndHearts.API.Controllers.Species.Requests;
 

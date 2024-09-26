@@ -9,7 +9,7 @@ public record Address
         City = city;
         Street = street;
         House = house;
-        flat = flat;
+        Flat = flat;
     }
     
     public string City { get; } = default!;

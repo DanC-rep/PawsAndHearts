@@ -37,4 +37,11 @@ public class SpeciesRepository : ISpeciesRepository
 
         return species;
     }
+
+    public Result<Guid, Error> Delete(Species species, CancellationToken cancellationToken = default)
+    {
+        _writeDbContext.Species.Remove(species);
+
+        return (Guid)species.Id;
+    }
 }

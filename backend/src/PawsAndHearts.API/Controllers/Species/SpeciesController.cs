@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.API.Controllers.Species.Requests;
 using PawsAndHearts.API.Extensions;
-using PawsAndHearts.Application.SpeciesManagement.Queries.GetBreedsBySpecies;
-using PawsAndHearts.Application.SpeciesManagement.Queries.GetSpeciesWithPagination;
-using PawsAndHearts.Application.SpeciesManagement.UseCases.CreateBreed;
-using PawsAndHearts.Application.SpeciesManagement.UseCases.CreateSpecies;
-using PawsAndHearts.Application.SpeciesManagement.UseCases.DeleteBreed;
-using PawsAndHearts.Application.SpeciesManagement.UseCases.DeleteSpecies;
+using PawsAndHearts.Application.Features.SpeciesManagement.Queries.GetBreedsBySpecies;
+using PawsAndHearts.Application.Features.SpeciesManagement.Queries.GetSpeciesWithPagination;
+using PawsAndHearts.Application.Features.SpeciesManagement.UseCases.CreateBreed;
+using PawsAndHearts.Application.Features.SpeciesManagement.UseCases.CreateSpecies;
+using PawsAndHearts.Application.Features.SpeciesManagement.UseCases.DeleteBreed;
+using PawsAndHearts.Application.Features.SpeciesManagement.UseCases.DeleteSpecies;
 
 namespace PawsAndHearts.API.Controllers.Species;
 

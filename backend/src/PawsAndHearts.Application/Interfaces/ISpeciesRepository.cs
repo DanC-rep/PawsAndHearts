@@ -10,4 +10,6 @@ public interface ISpeciesRepository
     Task<Guid> Add(Species species, CancellationToken cancellationToken = default);
     
     Task<Result<Species, Error>> GetById(SpeciesId speciesId, CancellationToken cancellationToken = default);
+    
+    Result<Guid, Error> Delete(Species species, CancellationToken cancellationToken = default);
 }

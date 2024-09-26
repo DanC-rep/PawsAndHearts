@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PawsAndHearts.Application.Dto;
 using PawsAndHearts.Domain.Shared.ValueObjects;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 using PawsAndHearts.Domain.Volunteer.Entities;
+using PawsAndHearts.Domain.Volunteer.ValueObjects;
+using PawsAndHearts.Infrastructure.Extensions;
 
 namespace PawsAndHearts.Infrastructure.Configurations.Write;
 
@@ -121,37 +124,17 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("creation_date");
         });
         
-        builder.OwnsOne(p => p.Requisites, reb =>
-        {
-            reb.ToJson("requisites");
+        builder.Property(v => v.Requisites)
+            .HasValueObjectsJsonConversion(
+                requisite => new RequisiteDto(requisite.Name, requisite.Description),
+                dto => Requisite.Create(dto.Name, dto.Description).Value)
+            .HasColumnName("requisites");
 
-            reb.OwnsMany(re => re.Values, rb =>
-            {
-                rb.Property(r => r.Name)
-                    .IsRequired()
-                    .HasMaxLength(Domain.Shared.Constants.MAX_NAME_LENGTH);
-
-                rb.Property(r => r.Description)
-                    .IsRequired()
-                    .HasMaxLength(Domain.Shared.Constants.MAX_TEXT_LENGTH);
-            });
-        });
-        
-        builder.OwnsOne(p => p.PetPhotos, phb =>
-        {
-            phb.ToJson("pet_photos");
-
-            phb.OwnsMany(p => p.Values, pb =>
-            {
-                pb.Property(p => p.Path)
-                    .HasConversion(
-                        p => p.Path,
-                        value => FilePath.Create(value).Value);
-
-                pb.Property(p => p.IsMain)
-                    .IsRequired();
-            }); 
-        });
+        builder.Property(v => v.PetPhotos)!
+            .HasValueObjectsJsonConversion(
+                petPhoto => new PetPhotoDto(petPhoto.Path.Path),
+                dto => PetPhoto.Create(FilePath.Create(dto.PathToStorage).Value, false).Value)
+            .HasColumnName("pet_photos");
         
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)

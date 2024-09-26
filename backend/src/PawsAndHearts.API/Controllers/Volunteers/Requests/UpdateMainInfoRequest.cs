@@ -1,5 +1,5 @@
 using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.VolunteerManagement.UseCases.UpdateMainInfo;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateMainInfo;
 
 namespace PawsAndHearts.API.Controllers.Volunteers.Requests;
 

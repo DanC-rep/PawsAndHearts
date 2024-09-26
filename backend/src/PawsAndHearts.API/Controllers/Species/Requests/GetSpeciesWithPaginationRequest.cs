@@ -1,4 +1,4 @@
-﻿using PawsAndHearts.Application.SpeciesManagement.Queries.GetSpeciesWithPagination;
+﻿using PawsAndHearts.Application.Features.SpeciesManagement.Queries.GetSpeciesWithPagination;
 
 namespace PawsAndHearts.API.Controllers.Species.Requests;
 

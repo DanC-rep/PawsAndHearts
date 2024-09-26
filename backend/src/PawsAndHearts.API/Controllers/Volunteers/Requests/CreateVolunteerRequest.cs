@@ -1,5 +1,5 @@
 using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.VolunteerManagement.UseCases.CreateVolunteer;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreateVolunteer;
 
 namespace PawsAndHearts.API.Controllers.Volunteers.Requests;
 

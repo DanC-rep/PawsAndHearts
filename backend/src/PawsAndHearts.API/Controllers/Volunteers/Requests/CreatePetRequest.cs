@@ -1,5 +1,5 @@
 using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Domain.Volunteer.Enums;
 using PawsAndHearts.Domain.Volunteer.ValueObjects;
 

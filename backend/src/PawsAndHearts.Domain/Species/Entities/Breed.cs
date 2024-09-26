@@ -4,10 +4,8 @@ using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 
 namespace PawsAndHearts.Domain.Species.Entities;
 
-public class Breed : Entity<BreedId>, ISoftDeletable
+public class Breed : Entity<BreedId>
 {
-    private bool _isDeleted = false;
-    
     private Breed(BreedId id) : base(id)
     {
     }
@@ -21,14 +19,4 @@ public class Breed : Entity<BreedId>, ISoftDeletable
     public string Name { get; private set; }
     
     public SpeciesId SpeciesId { get; private set; }
-
-    public void Delete()
-    {
-        _isDeleted = true;
-    }
-
-    public void Restore()
-    {
-        _isDeleted = false;
-    }
 }
