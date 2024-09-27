@@ -45,10 +45,10 @@ public class CreateSpeciesHandler : ICommandHandler<Guid, CreateSpeciesCommand>
 
         var species = new Species(speciesId, command.Name);
         
-        var speciesNameNotExists = await CheckSpeciesNameNotExists(species);
-        
-        if (!speciesNameNotExists)
-            return Errors.General.AlreadyExists("species", "name", species.Name).ToErrorList();
+        var speciesNameNotExistsResult = await CheckSpeciesNameNotExists(species);
+
+        if (speciesNameNotExistsResult.IsFailure)
+            return speciesNameNotExistsResult.Error.ToErrorList();
         
         var result = await _speciesRepository.Add(species, cancellationToken);
 
@@ -59,6 +59,15 @@ public class CreateSpeciesHandler : ICommandHandler<Guid, CreateSpeciesCommand>
         return result;
     }
 
-    private async Task<bool> CheckSpeciesNameNotExists(Species species) =>
-        await _readDbContext.Species.AllAsync(s => s.Name != species.Name);
+    private async Task<UnitResult<Error>> CheckSpeciesNameNotExists(Species species)
+    {
+        var foundedSpecies = await _readDbContext.Species
+            .FirstOrDefaultAsync(s => s.Name == species.Name);
+
+        if (foundedSpecies is null)
+            return Result.Success<Error>();
+
+        return Errors.General.AlreadyExists("species", "name", species.Name);
+    }
+        
 }

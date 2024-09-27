@@ -35,10 +35,10 @@ public class DeleteSpeciesHandler : ICommandHandler<Guid, DeleteSpeciesCommand>
         if (speciesResult.IsFailure)
             return speciesResult.Error.ToErrorList();
 
-        var petsHaveNotSpecies = await CheckPetsDoNotHaveSpecies(speciesResult.Value);
+        var petsHaveNotSpeciesResult = await CheckPetsDoNotHaveSpecies(speciesResult.Value);
 
-        if (!petsHaveNotSpecies)
-            return Errors.General.AlreadyUsed(speciesResult.Value.Id).ToErrorList();
+        if (petsHaveNotSpeciesResult.IsFailure)
+            return petsHaveNotSpeciesResult.Error.ToErrorList();
 
         var result = _repository.Delete(speciesResult.Value);
 
@@ -52,6 +52,15 @@ public class DeleteSpeciesHandler : ICommandHandler<Guid, DeleteSpeciesCommand>
         return result.Value;
     }
 
-    private async Task<bool> CheckPetsDoNotHaveSpecies(Species species) =>
-        await _readDbContext.Pets.AllAsync(p => p.SpeciesId != (Guid)species.Id);
+    private async Task<UnitResult<Error>> CheckPetsDoNotHaveSpecies(Species species)
+    {
+        var pet = await _readDbContext.Pets
+            .FirstOrDefaultAsync(p => p.SpeciesId == (Guid)species.Id);
+
+        if (pet is null)
+            return Result.Success<Error>();
+
+        return Errors.General.AlreadyUsed(species.Id);
+    }
+        
 }

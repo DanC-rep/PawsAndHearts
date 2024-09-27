@@ -25,18 +25,25 @@ public class Species : Shared.Entity<SpeciesId>
 
     public UnitResult<Error> AddBreed(Breed breed)
     {
-        if (CheckBreedNameNotExists(breed))
-        {
-            _breeds.Add(breed);
+        var breedNameNotExistsResult = CheckBreedNameNotExists(breed);
 
+        if (breedNameNotExistsResult.IsFailure)
+            return breedNameNotExistsResult.Error;
+        
+        _breeds.Add(breed);
+
+        return Result.Success<Error>();
+    }
+
+    private UnitResult<Error> CheckBreedNameNotExists(Breed breed)
+    {
+        var foundedBreed = _breeds.FirstOrDefault(b => b.Name == breed.Name);
+
+        if (foundedBreed is null)
             return Result.Success<Error>();
-        }
 
         return Errors.General.AlreadyExists("breed", "name", breed.Name);
     }
-
-    private bool CheckBreedNameNotExists(Breed breed) =>
-        _breeds.All(b => b.Name != breed.Name);
 
     public Result<Breed, Error> GetBreedById(BreedId breedId)
     {

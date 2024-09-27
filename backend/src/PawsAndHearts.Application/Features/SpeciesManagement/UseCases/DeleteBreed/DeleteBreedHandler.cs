@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PawsAndHearts.Application.Dto;
 using PawsAndHearts.Application.Extensions;
 using PawsAndHearts.Application.Interfaces;
 using PawsAndHearts.Domain.Shared;
@@ -50,10 +51,10 @@ public class DeleteBreedHandler : ICommandHandler<Guid, DeleteBreedCommand>
         if (breedResult.IsFailure)
             return breedResult.Error.ToErrorList();
 
-        var petHaveNotBreed = await CheckPetsDoNotHaveBreed(breedResult.Value);
-        
-        if (!petHaveNotBreed)
-            return Errors.General.AlreadyUsed(breedResult.Value.Id).ToErrorList();
+        var petHaveNotBreedResult = await CheckPetsDoNotHaveBreed(breedResult.Value);
+
+        if (petHaveNotBreedResult.IsFailure)
+            return petHaveNotBreedResult.Error.ToErrorList();
 
         speciesResult.Value.RemoveBreed(breedResult.Value);
 
@@ -64,6 +65,14 @@ public class DeleteBreedHandler : ICommandHandler<Guid, DeleteBreedCommand>
         return (Guid)breedResult.Value.Id;
     }
 
-    private async Task<bool> CheckPetsDoNotHaveBreed(Breed breed) =>
-        await _readDbContext.Pets.AllAsync(p => p.BreedId != (Guid)breed.Id);
+    private async Task<UnitResult<Error>> CheckPetsDoNotHaveBreed(Breed breed)
+    {
+        var pet = await _readDbContext.Pets
+            .FirstOrDefaultAsync(p => p.BreedId == (Guid)breed.Id);
+
+        if (pet is null)
+            return Result.Success<Error>();
+        
+        return Errors.General.AlreadyUsed(breed.Id);
+    }
 }
