@@ -77,9 +77,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     
     public CreationDate CreationDate { get; private set; }
 
-    public ValueObjectList<Requisite> Requisites { get; private set; }
+    public IReadOnlyList<Requisite> Requisites { get; private set; }
     
-    public ValueObjectList<PetPhoto>? PetPhotos { get; private set; }
+    public IReadOnlyList<PetPhoto>? PetPhotos { get; private set; }
 
     public void SetPosition(Position position) =>
         Position = position;

@@ -4,12 +4,13 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PawsAndHearts.Application.Dto;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Application.Interfaces;
-using PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Domain.Shared;
 using PawsAndHearts.Domain.Shared.Enums;
 using PawsAndHearts.Domain.Shared.ValueObjects;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
+using PawsAndHearts.Domain.Species.Entities;
 using PawsAndHearts.Domain.Volunteer.Entities;
 using PawsAndHearts.Domain.Volunteer.Enums;
 using PawsAndHearts.Domain.Volunteer.ValueObjects;
@@ -19,6 +20,7 @@ namespace PawsAndHearts.Application.UnitTests;
 public class AddPetTests
 {
     private readonly Mock<IVolunteersRepository> _volunteersRepositoryMock = new();
+    private readonly Mock<ISpeciesRepository> _speciesRepositoryMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<IValidator<CreatePetCommand>> _validatorMock = new();
     private readonly Mock<ILogger<CreatePetHandler>> _loggerMock = new();
@@ -29,6 +31,7 @@ public class AddPetTests
         // act
         var cancellationToken = new CancellationTokenSource().Token;
         var volunteer = CreateVolunteerWithPets(0);
+        var species = CreateSpeciesWithBreed(1);
 
         var command = new CreatePetCommand(
             volunteer.Id,
@@ -36,6 +39,8 @@ public class AddPetTests
             "test",
             "test",
             "test",
+            species.Id,
+            species.Breeds.First().Id,
             new AddressDto("123", "123", "123"),
             new PetMetricsDto(10, 10),
             "89205598871",
@@ -58,8 +63,12 @@ public class AddPetTests
         _unitOfWorkMock.Setup(u => u.SaveChanges(cancellationToken))
             .Returns(Task.CompletedTask);
 
+        _speciesRepositoryMock.Setup(s => s.GetById(species.Id, cancellationToken))
+            .ReturnsAsync(species);
+
         var handler = new CreatePetHandler(
             _volunteersRepositoryMock.Object,
+            _speciesRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _validatorMock.Object,
             _loggerMock.Object);
@@ -87,6 +96,8 @@ public class AddPetTests
             "test",
             "test",
             "test",
+            Guid.Empty,
+            Guid.Empty,
             new AddressDto("123", "123", "123"),
             new PetMetricsDto(10, 10),
             invalidNumber,
@@ -114,6 +125,7 @@ public class AddPetTests
         
         var handler = new CreatePetHandler(
             _volunteersRepositoryMock.Object,
+            _speciesRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _validatorMock.Object,
             _loggerMock.Object);
@@ -180,5 +192,25 @@ public class AddPetTests
         }
 
         return volunteer;
+    }
+
+    private Species CreateSpeciesWithBreed(int breedsCount)
+    {
+        var speciesId = SpeciesId.NewId();
+        var speciesName = "example";
+        
+        var species = new Species(speciesId, speciesName);
+
+        for (int i = 0; i < breedsCount; i++)
+        {
+            var breedId = BreedId.NewId();
+            var breedName = $"breed {i + 1}";
+
+            var breed = new Breed(breedId, breedName, speciesId);
+
+            species.AddBreed(breed);
+        }
+
+        return species;
     }
 }

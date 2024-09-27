@@ -15,5 +15,15 @@ public static class Errors
             var forId = id == null ? "" : " for id: " + id;
             return Error.NotFound("record.not.found", $"record not found{forId}");
         }
+
+        public static Error AlreadyExists(string name, string key, string value)
+        {
+            return Error.Conflict("record.already.exists", $"{name} already exists with {key + " = " + value}");
+        }
+        
+        public static Error AlreadyUsed(Guid id)
+        {
+            return Error.Conflict("value.already.used", $"{id} is already used");
+        }
     }
 }

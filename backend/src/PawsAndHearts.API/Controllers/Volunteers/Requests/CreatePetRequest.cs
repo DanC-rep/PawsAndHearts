@@ -1,6 +1,7 @@
 using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.VolunteerManagement.UseCases.CreatePet;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Domain.Volunteer.Enums;
+using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 namespace PawsAndHearts.API.Controllers.Volunteers.Requests;
 
@@ -9,6 +10,8 @@ public record CreatePetRequest(
     string Description,
     string Color,
     string HealthInfo,
+    Guid SpeciesId,
+    Guid BreedId,
     AddressDto Address,
     PetMetricsDto PetMetrics,
     string PhoneNumber,
@@ -26,6 +29,8 @@ public record CreatePetRequest(
             Description,
             Color,
             HealthInfo,
+            SpeciesId,
+            BreedId,
             Address,
             PetMetrics,
             PhoneNumber,

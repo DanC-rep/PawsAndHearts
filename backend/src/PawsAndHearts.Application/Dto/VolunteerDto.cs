@@ -2,7 +2,7 @@ namespace PawsAndHearts.Application.Dto;
 
 public class VolunteerDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
     public string Name { get; init; } = default!;
 
