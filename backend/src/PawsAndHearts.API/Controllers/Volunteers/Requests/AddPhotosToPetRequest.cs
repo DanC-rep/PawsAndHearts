@@ -3,8 +3,11 @@ using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.AddPhotosT
 
 namespace PawsAndHearts.API.Controllers.Volunteers.Requests;
 
-public record AddPhotosToPetRequest(Guid PetId, IFormFileCollection Files)
+public record AddPhotosToPetRequest(IFormFileCollection Files)
 {
-    public AddPhotosToPetCommand ToCommand(Guid volunteerId, IEnumerable<UploadFileDto> fileDtos) =>
-        new(volunteerId, PetId, fileDtos);
+    public AddPhotosToPetCommand ToCommand(
+        Guid volunteerId, 
+        Guid petId, 
+        IEnumerable<UploadFileDto> fileDtos) =>
+        new(volunteerId, petId, fileDtos);
 }

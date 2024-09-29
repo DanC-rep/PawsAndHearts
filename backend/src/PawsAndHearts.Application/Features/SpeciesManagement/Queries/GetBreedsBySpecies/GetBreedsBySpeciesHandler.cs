@@ -10,14 +10,10 @@ namespace PawsAndHearts.Application.Features.SpeciesManagement.Queries.GetBreeds
 public class GetBreedsBySpeciesHandler : IQueryHandlerWithResult<IEnumerable<BreedDto>, GetBreedsBySpeciesQuery>
 {
     private readonly IReadDbContext _readDbContext;
-    private ILogger<GetBreedsBySpeciesHandler> _logger;
 
-    public GetBreedsBySpeciesHandler(
-        IReadDbContext readDbContext,
-        ILogger<GetBreedsBySpeciesHandler> logger)
+    public GetBreedsBySpeciesHandler(IReadDbContext readDbContext)
     {
         _readDbContext = readDbContext;
-        _logger = logger;
     }
 
     public async Task<Result<IEnumerable<BreedDto>, ErrorList>> Handle(
@@ -36,8 +32,6 @@ public class GetBreedsBySpeciesHandler : IQueryHandlerWithResult<IEnumerable<Bre
         breedsQuery = query.SortDirection?.ToLower() == "desc"
             ? breedsQuery.OrderByDescending(keySelector => keySelector.Name)
             : breedsQuery.OrderBy(keySelector => keySelector.Name);
-        
-        _logger.LogInformation("Species was received with speciesId: {speciesId}", query.SpeciesId);
 
         return breedsQuery.ToList();
     }

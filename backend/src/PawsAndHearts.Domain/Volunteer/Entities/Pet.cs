@@ -90,11 +90,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
             _isDeleted = true;
     }
 
-    public UnitResult<Error> AddPhotos(ValueObjectList<PetPhoto> petPhotos)
+    public void AddPhotos(IEnumerable<PetPhoto> petPhotos)
     {
-        PetPhotos = petPhotos;
-
-        return Result.Success<Error>();
+        PetPhotos = petPhotos.ToList();
     }
 
     public void Restore()
@@ -132,5 +130,23 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         Position = newPosition;
 
         return Result.Success<Error>();
+    }
+
+    public void UpdateInfo(Pet updatedPet)
+    {
+        Name = updatedPet.Name;
+        Description = updatedPet.Description;
+        PetIdentity = updatedPet.PetIdentity;
+        Color = updatedPet.Color;
+        HealthInfo = updatedPet.HealthInfo;
+        Address = updatedPet.Address;
+        PetMetrics = updatedPet.PetMetrics;
+        PhoneNumber = updatedPet.PhoneNumber;
+        IsNeutered = updatedPet.IsNeutered;
+        BirthDate = updatedPet.BirthDate;
+        IsVaccinated = updatedPet.IsVaccinated;
+        HelpStatus = updatedPet.HelpStatus;
+        CreationDate = updatedPet.CreationDate;
+        Requisites = updatedPet.Requisites;
     }
 }
