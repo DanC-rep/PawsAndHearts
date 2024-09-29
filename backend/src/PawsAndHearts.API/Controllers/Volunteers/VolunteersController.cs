@@ -2,17 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.API.Controllers.Volunteers.Requests;
 using PawsAndHearts.API.Extensions;
 using PawsAndHearts.API.Processors;
-using PawsAndHearts.API.Response;
 using PawsAndHearts.Application.Dto;
 using PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetVolunteerById;
 using PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.AddPhotosToPet;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreateVolunteer;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeletePetPhotos;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeleteVolunteer;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateMainInfo;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdatePet;
-using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdatePetPhotos;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateRequisites;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateSocialNetworks;
 using PawsAndHearts.Domain.Shared.ValueObjects;
@@ -163,19 +162,14 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
-    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/photos")]
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/photos")]
     public async Task<ActionResult<FilePathList>> UpdatePetPhotos(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
-        [FromForm] UpdatePetPhotosRequest request,
         [FromServices] UpdatePetPhotosHandler handler,
         CancellationToken cancellationToken = default)
     {
-        await using var fileProcessor = new FormFileProcessor();
-
-        var fileDtos = fileProcessor.Process(request.Files);
-        
-        var command = request.ToCommand(volunteerId, petId, fileDtos);
+        var command = new DeletePetPhotosCommand(volunteerId, petId);
 
         var result = await handler.Handle(command, cancellationToken);
 

@@ -149,4 +149,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         CreationDate = updatedPet.CreationDate;
         Requisites = updatedPet.Requisites;
     }
+
+    public void DeletePhotos()
+    {
+        PetPhotos = [];
+    }
 }
