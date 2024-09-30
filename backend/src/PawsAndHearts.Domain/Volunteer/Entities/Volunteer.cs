@@ -98,6 +98,13 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         return Result.Success<Error>();
     }
 
+    public void UpdatePet(Pet updatedPet)
+    {
+        var pet = GetPetById(updatedPet.Id).Value;
+
+        pet.UpdateInfo(updatedPet);
+    }
+
     public UnitResult<Error> MovePet(Pet pet, Position newPosition)
     {
         var currentPosition = pet.Position;

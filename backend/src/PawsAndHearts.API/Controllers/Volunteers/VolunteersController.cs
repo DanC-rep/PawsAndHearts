@@ -2,15 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.API.Controllers.Volunteers.Requests;
 using PawsAndHearts.API.Extensions;
 using PawsAndHearts.API.Processors;
-using PawsAndHearts.API.Response;
 using PawsAndHearts.Application.Dto;
 using PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetVolunteerById;
 using PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.AddPhotosToPet;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreateVolunteer;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeletePetPhotos;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeleteVolunteer;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateMainInfo;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdatePet;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateRequisites;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateSocialNetworks;
 using PawsAndHearts.Domain.Shared.ValueObjects;
@@ -101,9 +102,10 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
-    [HttpPost("{id:guid}/pet/photos")]
+    [HttpPost("{volunteerId:guid}/pet/{petId:guid}/photos")]
     public async Task<ActionResult<FilePathList>> AddPhotosToPet(
-        [FromRoute] Guid id,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
         [FromForm] AddPhotosToPetRequest request,
         [FromServices] AddPhotosToPetHandler handler,
         CancellationToken cancellationToken = default)
@@ -112,7 +114,7 @@ public class VolunteersController : ApplicationController
 
         var fileDtos = fileProcessor.Process(request.Files);
 
-        var command = request.ToCommand(id, fileDtos);
+        var command = request.ToCommand(volunteerId, petId, fileDtos);
         
         var result = await handler.Handle(command, cancellationToken);
 
@@ -143,5 +145,35 @@ public class VolunteersController : ApplicationController
         var result = await handler.Handle(query, cancellationToken);
 
         return result.ToResponse();
+    }
+
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}")]
+    public async Task<ActionResult<Guid>> UpdatePet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetRequest request,
+        [FromServices] UpdatePetHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+
+        var result = await handler.Handle(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/photos")]
+    public async Task<ActionResult<FilePathList>> UpdatePetPhotos(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] UpdatePetPhotosHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new DeletePetPhotosCommand(volunteerId, petId);
+
+        var result = await handler.Handle(command, cancellationToken);
+
+        return result.ToResponse();
+
     }
 }

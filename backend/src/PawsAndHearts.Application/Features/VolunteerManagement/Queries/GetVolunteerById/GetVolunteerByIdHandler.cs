@@ -10,14 +10,9 @@ namespace PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetVolu
 public class GetVolunteerByIdHandler : IQueryHandlerWithResult<VolunteerDto, GetVolunteerByIdQuery>
 {
     private readonly IReadDbContext _readDbContext;
-    private readonly ILogger<GetVolunteerByIdHandler> _logger;
-
-    public GetVolunteerByIdHandler(
-        IReadDbContext readDbContext,
-        ILogger<GetVolunteerByIdHandler> logger)
+    public GetVolunteerByIdHandler(IReadDbContext readDbContext)
     {
         _readDbContext = readDbContext;
-        _logger = logger;
     }
 
     public async Task<Result<VolunteerDto, ErrorList>> Handle(
@@ -29,8 +24,6 @@ public class GetVolunteerByIdHandler : IQueryHandlerWithResult<VolunteerDto, Get
 
         if (volunteerDto is null)
             return Errors.General.NotFound(query.Id).ToErrorList();
-        
-        _logger.LogInformation("Volunteer was found with Id {id}", query.Id);
 
         return volunteerDto;
     }

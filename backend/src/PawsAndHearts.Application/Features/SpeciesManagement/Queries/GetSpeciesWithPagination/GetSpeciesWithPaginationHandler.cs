@@ -9,14 +9,10 @@ namespace PawsAndHearts.Application.Features.SpeciesManagement.Queries.GetSpecie
 public class GetSpeciesWithPaginationHandler : IQueryHandler<PagedList<SpeciesDto>, GetSpeciesWithPaginationQuery>
 {
     private readonly IReadDbContext _readDbContext;
-    private readonly ILogger<GetSpeciesWithPaginationHandler> _logger;
 
-    public GetSpeciesWithPaginationHandler(
-        IReadDbContext readDbContext,
-        ILogger<GetSpeciesWithPaginationHandler> logger)
+    public GetSpeciesWithPaginationHandler(IReadDbContext readDbContext)
     {
         _readDbContext = readDbContext;
-        _logger = logger;
     }
 
     public async Task<PagedList<SpeciesDto>> Handle(
@@ -30,8 +26,6 @@ public class GetSpeciesWithPaginationHandler : IQueryHandler<PagedList<SpeciesDt
             : speciesQuery.OrderBy(keySelector => keySelector.Name);
 
         var result = await speciesQuery.ToPagedList(query.Page, query.PageSize, cancellationToken);
-        
-        _logger.LogInformation("Species was received with count: {totalCount}", result.Items.Count);
 
         return result;
     }

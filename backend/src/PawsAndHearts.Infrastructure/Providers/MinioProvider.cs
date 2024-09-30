@@ -55,6 +55,38 @@ public class MinioProvider : IFileProvider
         }
     }
 
+    public async Task<UnitResult<Error>> DeleteFiles(
+        IEnumerable<FileInfo> fileInfos,
+        CancellationToken cancellationToken = default)
+    {
+        var semaphoreSlim = new SemaphoreSlim(MAX_DEGREE_OF_PARALLELISM);
+        var filesList = fileInfos.ToList();
+
+        try
+        {
+            var bucketResult = await IfBucketNotExistsReturnError(filesList, cancellationToken);
+
+            if (bucketResult.IsFailure)
+                return bucketResult.Error;
+
+            var tasks = filesList.Select(async file => 
+                await DeleteObject(file, semaphoreSlim, cancellationToken));
+
+            var deleteResult = await Task.WhenAll(tasks);
+
+            if (deleteResult.Any(p => p.IsFailure))
+                return deleteResult.First().Error;
+
+            return Result.Success<Error>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Fail to delete file in minio");
+
+            return Error.Failure("file.delete", "Fail to delete file in minio");
+        }
+    }
+
     public async Task<UnitResult<Error>> Delete(
         FileInfo fileInfo, 
         CancellationToken cancellationToken = default)
@@ -113,6 +145,38 @@ public class MinioProvider : IFileProvider
             semaphoreSlim.Release();
         }
     }
+    
+    private async Task<UnitResult<Error>> DeleteObject(
+        FileInfo fileInfo,
+        SemaphoreSlim semaphoreSlim,
+        CancellationToken cancellationToken = default)
+    {
+        await semaphoreSlim.WaitAsync(cancellationToken);
+
+        var deleteObjectArgs = new RemoveObjectArgs()
+            .WithBucket(fileInfo.BucketName)
+            .WithObject(fileInfo.FilePath.Path);
+
+        try
+        {
+            await _minioClient.RemoveObjectAsync(deleteObjectArgs, cancellationToken);
+
+            return Result.Success<Error>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Fail to delete file in minio with {path} in bucket {bucket}",
+                fileInfo.FilePath.Path,
+                fileInfo.BucketName);
+
+            return Error.Failure("file.delete", "Fail to delete file in minio");
+        }
+        finally
+        {
+            semaphoreSlim.Release();
+        }
+    }
 
     private async Task IfBucketNotExistsCreateBucket(
         IEnumerable<UploadFileData> filesData,
@@ -136,5 +200,26 @@ public class MinioProvider : IFileProvider
                 await _minioClient.MakeBucketAsync(makeBucketArgs, cancellationToken);
             }
         }
+    }
+
+    private async Task<UnitResult<Error>> IfBucketNotExistsReturnError(
+        IEnumerable<FileInfo> fileInfos,
+        CancellationToken cancellationToken = default)
+    {
+        HashSet<string> bucketNames = [..fileInfos.Select(file => file.BucketName)];
+
+        foreach (var bucketName in bucketNames)
+        {
+            var bucketExistsArgs = new BucketExistsArgs()
+                .WithBucket(bucketName);
+
+            var bucketExists = await _minioClient
+                .BucketExistsAsync(bucketExistsArgs, cancellationToken);
+
+            if (!bucketExists)
+                return Error.NotFound("bucket.exists", "Bucket does not exist");
+        }
+
+        return Result.Success<Error>();
     }
 }

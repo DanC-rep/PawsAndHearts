@@ -11,14 +11,9 @@ public class GetVolunteersWithPaginationHandler
     : IQueryHandler<PagedList<VolunteerDto>, GetVolunteersWithPaginationQuery>
 {
     private readonly IReadDbContext _readDbContext;
-    private readonly ILogger<GetVolunteersWithPaginationHandler> _logger;
-
-    public GetVolunteersWithPaginationHandler(
-        IReadDbContext readDbContext, 
-        ILogger<GetVolunteersWithPaginationHandler> logger)
+    public GetVolunteersWithPaginationHandler(IReadDbContext readDbContext)
     {
         _readDbContext = readDbContext;
-        _logger = logger;
     }
 
     public async Task<PagedList<VolunteerDto>> Handle(
@@ -34,8 +29,6 @@ public class GetVolunteersWithPaginationHandler
             : volunteersQuery.OrderBy(keySelector);
         
         var result = await volunteersQuery.ToPagedList(query.Page, query.PageSize, cancellationToken);
-        
-        _logger.LogInformation("Volunteers was received with count: {totalCount}", result.Items.Count);
 
         return result;
     }

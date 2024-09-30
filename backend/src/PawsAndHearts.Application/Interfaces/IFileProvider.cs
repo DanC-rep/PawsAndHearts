@@ -12,6 +12,10 @@ public interface IFileProvider
         IEnumerable<UploadFileData> uploadFilesData,
         CancellationToken cancellationToken = default);
 
+    Task<UnitResult<Error>> DeleteFiles(
+        IEnumerable<FileInfo> fileInfos,
+        CancellationToken cancellationToken = default);
+
     Task<UnitResult<Error>> Delete(
         FileInfo fileInfo, 
         CancellationToken cancellationToken = default);
