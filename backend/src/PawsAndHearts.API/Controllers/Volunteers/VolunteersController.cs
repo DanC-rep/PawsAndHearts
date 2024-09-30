@@ -12,6 +12,7 @@ using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeletePetP
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeleteVolunteer;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateMainInfo;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdatePet;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdatePetStatus;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateRequisites;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateSocialNetworks;
 using PawsAndHearts.Domain.Shared.ValueObjects;
@@ -174,6 +175,20 @@ public class VolunteersController : ApplicationController
         var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();
+    }
 
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/status")]
+    public async Task<ActionResult<Guid>> UpdatePetStatus(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetStatusRequest request,
+        [FromServices] UpdatePetStatusHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+        
+        var result = await handler.Handle(command, cancellationToken);
+
+        return result.ToResponse();
     }
 }
