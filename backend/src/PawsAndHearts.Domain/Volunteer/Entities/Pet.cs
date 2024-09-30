@@ -95,6 +95,11 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         PetPhotos = petPhotos.ToList();
     }
 
+    public void UpdateStatus(HelpStatus helpStatus)
+    {
+        HelpStatus = helpStatus;
+    }
+
     public void Restore()
     {
         if (_isDeleted)

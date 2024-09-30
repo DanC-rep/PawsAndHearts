@@ -105,6 +105,11 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         pet.UpdateInfo(updatedPet);
     }
 
+    public void UpdatePetStatus(Pet pet, HelpStatus helpStatus)
+    {
+        pet.UpdateStatus(helpStatus);
+    }
+
     public UnitResult<Error> MovePet(Pet pet, Position newPosition)
     {
         var currentPosition = pet.Position;

@@ -17,4 +17,6 @@ public static class Constants
     public static readonly int MAX_ADDRESS_LENGTH = 200;
 
     public static readonly string[] PERMITTED_FILE_EXTENSIONS = [".jpg", ".png"];
+    
+    public static readonly string[] PERMITTED_HELP_STATUSES_FROM_VOLUNTEER = ["LookingForHome", "FoundHome"];
 }
