@@ -26,6 +26,8 @@ public static class Inject
 
         services.AddScoped<ISpeciesRepository, SpeciesRepository>();
 
+        services.AddScoped<IPetRepository, PetRepository>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddMinio(configuration);

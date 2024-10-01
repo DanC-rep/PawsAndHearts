@@ -8,7 +8,9 @@ using PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetVoluntee
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.AddPhotosToPet;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreatePet;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreateVolunteer;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeletePetForce;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeletePetPhotos;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeletePetSoft;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeleteVolunteer;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateMainInfo;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdatePet;
@@ -164,10 +166,10 @@ public class VolunteersController : ApplicationController
     }
 
     [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/photos")]
-    public async Task<ActionResult<FilePathList>> UpdatePetPhotos(
+    public async Task<ActionResult<FilePathList>> DeletePetPhotos(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
-        [FromServices] UpdatePetPhotosHandler handler,
+        [FromServices] DeletePetPhotosHandler handler,
         CancellationToken cancellationToken = default)
     {
         var command = new DeletePetPhotosCommand(volunteerId, petId);
@@ -187,6 +189,34 @@ public class VolunteersController : ApplicationController
     {
         var command = request.ToCommand(volunteerId, petId);
         
+        var result = await handler.Handle(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/soft")]
+    public async Task<ActionResult<Guid>> DeletePetSoft(
+        Guid volunteerId,
+        Guid petId,
+        [FromServices] DeletePetSoftHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new DeletePetSoftCommand(volunteerId, petId);
+        
+        var result = await handler.Handle(command, cancellationToken);
+        
+        return result.ToResponse();
+    }
+
+    [HttpDelete("{volunteerId}/pet/{petId:guid}/force")]
+    public async Task<ActionResult<Guid>> DeletePetForce(
+        Guid volunteerId,
+        Guid petId,
+        [FromServices] DeletePetForceHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new DeletePetForceCommand(volunteerId, petId);
+
         var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();
