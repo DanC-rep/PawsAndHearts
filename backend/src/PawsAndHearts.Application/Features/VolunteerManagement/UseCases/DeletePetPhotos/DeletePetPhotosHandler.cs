@@ -6,7 +6,7 @@ using FileInfo = PawsAndHearts.Application.FileProvider.FileInfo;
 
 namespace PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeletePetPhotos;
 
-public class UpdatePetPhotosHandler : ICommandHandler<DeletePetPhotosCommand>
+public class DeletePetPhotosHandler : ICommandHandler<DeletePetPhotosCommand>
 {
     private const string BUCKET_NAME = "photos";
 
@@ -14,13 +14,13 @@ public class UpdatePetPhotosHandler : ICommandHandler<DeletePetPhotosCommand>
     private readonly IFileProvider _fileProvider;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMessageQueue<IEnumerable<FileInfo>> _messageQueue;
-    private readonly ILogger<UpdatePetPhotosHandler> _logger;
+    private readonly ILogger<DeletePetPhotosHandler> _logger;
 
-    public UpdatePetPhotosHandler(
+    public DeletePetPhotosHandler(
         IVolunteersRepository volunteersRepository,
         IFileProvider fileProvider,
         IUnitOfWork unitOfWork,
-        ILogger<UpdatePetPhotosHandler> logger, 
+        ILogger<DeletePetPhotosHandler> logger, 
         IMessageQueue<IEnumerable<FileInfo>> messageQueue)
     {
         _volunteersRepository = volunteersRepository;
