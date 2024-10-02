@@ -3,6 +3,7 @@ using PawsAndHearts.API.Controllers.Volunteers.Requests;
 using PawsAndHearts.API.Extensions;
 using PawsAndHearts.API.Processors;
 using PawsAndHearts.Application.Dto;
+using PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetPetsWIthPagination;
 using PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetVolunteerById;
 using PawsAndHearts.Application.Features.VolunteerManagement.Queries.GetVolunteersWithPagination;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.AddPhotosToPet;

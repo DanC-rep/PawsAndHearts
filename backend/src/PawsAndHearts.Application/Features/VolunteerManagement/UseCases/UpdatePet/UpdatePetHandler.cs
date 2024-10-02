@@ -79,9 +79,9 @@ public class UpdatePetHandler : ICommandHandler<Guid, UpdatePetCommand>
 
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
 
-        var birthDate = BirthDate.Create(DateOnly.FromDateTime(command.BirthDate)).Value;
+        var birthDate = BirthDate.Create(command.BirthDate).Value;
 
-        var creationDate = CreationDate.Create(DateOnly.FromDateTime(command.CreationDate)).Value;
+        var creationDate = CreationDate.Create(command.CreationDate).Value;
 
         var requisites = command.Requisites.Select(f =>
             Requisite.Create(f.Name, f.Description).Value).ToList();

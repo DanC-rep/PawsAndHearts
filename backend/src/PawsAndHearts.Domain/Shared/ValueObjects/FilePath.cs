@@ -26,7 +26,7 @@ public class FilePath
         var extension = System.IO.Path.GetExtension(fullPath);
 
         if (!Constants.PERMITTED_FILE_EXTENSIONS.Contains(extension))
-            return Errors.General.ValueIsInvalid("file extension");
+            return Errors.Files.InvalidExtension();
         
         return new FilePath(fullPath);
     }

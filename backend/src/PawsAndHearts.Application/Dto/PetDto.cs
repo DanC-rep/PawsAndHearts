@@ -12,6 +12,8 @@ public class PetDto
     
     public Guid BreedId { get; init; }
     
+    public Guid VolunteerId { get; init; }
+    
     public string Color { get; init; } = default!;
 
     public string HealthInfo { get; init; } = default!;
@@ -32,13 +34,13 @@ public class PetDto
     
     public bool IsNeutered { get; init; }
     
-    public DateOnly BirthDate { get; init; }
+    public DateTime BirthDate { get; init; }
     
     public bool IsVaccinated { get; init; }
 
     public string HelpStatus { get; init; } = default!;
     
-    public DateOnly CreationDate { get; init; }
+    public DateTime CreationDate { get; init; }
     
     public int Position { get; init; }
 

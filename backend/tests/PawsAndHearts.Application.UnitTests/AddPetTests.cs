@@ -152,8 +152,8 @@ public class AddPetTests
         var color = Color.Create("123").Value;
         var address = Address.Create("123", "123", "123", "213").Value;
         var petMetrics = PetMetrics.Create(123, 213).Value;
-        var birthDate = BirthDate.Create(new DateOnly(2024, 01, 01)).Value;
-        var creationDate = CreationDate.Create(new DateOnly(2024, 02, 01)).Value;
+        var birthDate = BirthDate.Create(DateTime.Now).Value;
+        var creationDate = CreationDate.Create(DateTime.Now).Value;
 
         var socialNetworks = new ValueObjectList<SocialNetwork>(
             [SocialNetwork.Create("123", "123").Value]);

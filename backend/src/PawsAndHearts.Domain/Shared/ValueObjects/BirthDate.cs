@@ -4,16 +4,16 @@ namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
 public record BirthDate
 {
-    private BirthDate(DateOnly value)
+    private BirthDate(DateTime value)
     {
         Value = value;
     }
     
-    public DateOnly Value { get; } = default!;
+    public DateTime Value { get; }
 
-    public static Result<BirthDate, Error> Create(DateOnly birthDate)
+    public static Result<BirthDate, Error> Create(DateTime birthDate)
     {
-        if (birthDate > DateOnly.FromDateTime(DateTime.Now) || birthDate.Year < 1900)
+        if (birthDate > DateTime.Now || birthDate.Year < 1900)
             return Errors.General.ValueIsInvalid("birth date");
         
         return new BirthDate(birthDate);
