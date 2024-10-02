@@ -36,10 +36,10 @@ public class UpdatePetValidator : AbstractValidator<UpdatePetCommand>
         RuleFor(c => c.PhoneNumber)
             .MustBeValueObject(PhoneNumber.Create);
 
-        RuleFor(c => DateOnly.FromDateTime(c.BirthDate))
+        RuleFor(c => c.BirthDate)
             .MustBeValueObject(BirthDate.Create);
 
-        RuleFor(c => DateOnly.FromDateTime(c.CreationDate))
+        RuleFor(c => c.CreationDate)
             .MustBeValueObject(CreationDate.Create);
 
         RuleForEach(c => c.Requisites)

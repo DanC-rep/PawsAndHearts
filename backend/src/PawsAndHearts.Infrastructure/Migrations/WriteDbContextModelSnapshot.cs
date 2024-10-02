@@ -152,8 +152,8 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<DateOnly>("Value")
-                                .HasColumnType("date")
+                            b1.Property<DateTime>("Value")
+                                .HasColumnType("timestamp with time zone")
                                 .HasColumnName("birth_date");
                         });
 
@@ -172,8 +172,8 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<DateOnly>("Value")
-                                .HasColumnType("date")
+                            b1.Property<DateTime>("Value")
+                                .HasColumnType("timestamp with time zone")
                                 .HasColumnName("creation_date");
                         });
 

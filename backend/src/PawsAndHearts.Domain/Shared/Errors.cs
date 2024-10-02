@@ -21,9 +21,16 @@ public static class Errors
             return Error.Conflict("record.already.exists", $"{name} already exists with {key + " = " + value}");
         }
         
-        public static Error AlreadyUsed(Guid id)
-        {
-            return Error.Conflict("value.already.used", $"{id} is already used");
-        }
+        public static Error AlreadyUsed(Guid id) =>
+            Error.Conflict("value.already.used", $"{id} is already used");
+    }
+
+    public static class Files
+    {
+        public static Error InvalidSize() =>
+            Error.Validation("size.is.invalid", "File size is invalid");
+
+        public static Error InvalidExtension() =>
+            Error.Validation("extension.is.invalid", "File extension is invalid");
     }
 }

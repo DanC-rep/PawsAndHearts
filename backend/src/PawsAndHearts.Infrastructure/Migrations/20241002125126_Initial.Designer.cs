@@ -13,7 +13,7 @@ using PawsAndHearts.Infrastructure.DbContexts;
 namespace PawsAndHearts.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20240926083937_Initial")]
+    [Migration("20241002125126_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -155,8 +155,8 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<DateOnly>("Value")
-                                .HasColumnType("date")
+                            b1.Property<DateTime>("Value")
+                                .HasColumnType("timestamp with time zone")
                                 .HasColumnName("birth_date");
                         });
 
@@ -175,8 +175,8 @@ namespace PawsAndHearts.Infrastructure.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<DateOnly>("Value")
-                                .HasColumnType("date")
+                            b1.Property<DateTime>("Value")
+                                .HasColumnType("timestamp with time zone")
                                 .HasColumnName("creation_date");
                         });
 
