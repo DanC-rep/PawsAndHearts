@@ -8,7 +8,7 @@ using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 namespace PawsAndHearts.Domain.Volunteer.Entities;
 
-public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
+public class Volunteer : Entity<VolunteerId>, ISoftDeletable
 {
     private bool _isDeleted = false;
     
@@ -187,5 +187,16 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
             return Errors.General.NotFound(petId);
 
         return pet;
+    }
+
+
+    public Result<FilePath, Error> UpdatePetMainPhoto(Pet pet, PetPhoto petPhoto)
+    {
+        var result = pet.UpdateMainPhoto(petPhoto);
+
+        if (result.IsFailure)
+            return result.Error;
+
+        return petPhoto.Path;
     }
 }

@@ -8,7 +8,7 @@ using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 namespace PawsAndHearts.Domain.Volunteer.Entities;
 
-public class Pet : Shared.Entity<PetId>, ISoftDeletable
+public class Pet : Entity<PetId>, ISoftDeletable
 {
     private bool _isDeleted = false;
     
@@ -78,7 +78,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     public CreationDate CreationDate { get; private set; }
 
     public IReadOnlyList<Requisite> Requisites { get; private set; }
-    
+
     public IReadOnlyList<PetPhoto>? PetPhotos { get; private set; }
 
     public void SetPosition(Position position) =>
@@ -158,5 +158,21 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     public void DeletePhotos()
     {
         PetPhotos = [];
+    }
+
+    public UnitResult<Error> UpdateMainPhoto(PetPhoto updatedPhoto)
+    {
+        var fileExists = PetPhotos?
+            .Where(p => p.Path == updatedPhoto.Path).FirstOrDefault();
+
+        if (fileExists is null)
+            return Errors.General.NotFound();
+        
+        PetPhotos = PetPhotos?
+            .Select(photo => PetPhoto.Create(photo.Path, photo.Path == updatedPhoto.Path).Value)
+            .OrderByDescending(photo => photo.IsMain)
+            .ToList();
+
+        return Result.Success<Error>();
     }
 }

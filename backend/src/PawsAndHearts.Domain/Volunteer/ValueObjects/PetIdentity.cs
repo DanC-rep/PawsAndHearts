@@ -1,8 +1,9 @@
+using CSharpFunctionalExtensions;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 
 namespace PawsAndHearts.Domain.Volunteer.ValueObjects;
 
-public record PetIdentity
+public class PetIdentity : ValueObject
 {
     public PetIdentity(SpeciesId speciesId, Guid breedId)
     {
@@ -13,5 +14,10 @@ public record PetIdentity
     public SpeciesId SpeciesId { get; } = default!;
 
     public Guid BreedId { get; }
-    
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return SpeciesId;
+        yield return BreedId;
+    }
 }

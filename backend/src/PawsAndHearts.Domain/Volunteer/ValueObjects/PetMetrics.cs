@@ -3,7 +3,7 @@ using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.Volunteer.ValueObjects;
 
-public record PetMetrics
+public class PetMetrics : ValueObject
 {
     public PetMetrics(double height, double weight)
     {
@@ -23,5 +23,11 @@ public record PetMetrics
             return Errors.General.ValueIsInvalid("weight");
 
         return new PetMetrics(height, weight);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Height;
+        yield return Weight;
     }
 }

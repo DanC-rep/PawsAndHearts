@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
-public record Requisite
+public class Requisite : ValueObject
 {
     private Requisite(string name, string description)
     {
@@ -23,5 +23,11 @@ public record Requisite
             return Errors.General.ValueIsRequired("description");
 
         return new Requisite(name, description);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Name;
+        yield return Description;
     }
 }

@@ -1,3 +1,3 @@
 ﻿namespace PawsAndHearts.Application.Dto;
 
-public record PetPhotoDto(string PathToStorage);
+public record PetPhotoDto(string PathToStorage, bool IsMain);

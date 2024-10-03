@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
-public record FullName
+public class FullName : ValueObject
 {
     private FullName(string name, string surname, string? patronymic)
     {
@@ -26,5 +26,12 @@ public record FullName
             return Errors.General.ValueIsRequired("surname");
 
         return new FullName(name, surname, patronymic);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Name;
+        yield return Surname;
+        yield return Patronymic ?? string.Empty;
     }
 }
