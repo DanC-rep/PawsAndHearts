@@ -3,7 +3,7 @@ using CSharpFunctionalExtensions;
 
 namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
-public record PhoneNumber
+public class PhoneNumber : ValueObject
 {
     private static readonly Regex PhoneNumberRegex = new Regex(
         "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$"); 
@@ -23,5 +23,10 @@ public record PhoneNumber
             return Errors.General.ValueIsInvalid("phone number");
 
         return new PhoneNumber(phoneNumber);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

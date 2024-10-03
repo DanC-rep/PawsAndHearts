@@ -8,7 +8,7 @@ using PawsAndHearts.Domain.Volunteer.ValueObjects;
 
 namespace PawsAndHearts.Domain.Volunteer.Entities;
 
-public class Pet : Shared.Entity<PetId>, ISoftDeletable
+public class Pet : Entity<PetId>, ISoftDeletable
 {
     private bool _isDeleted = false;
     

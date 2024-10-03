@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
-public record CreationDate
+public class CreationDate : ValueObject
 {
     private CreationDate(DateTime value)
     {
@@ -17,5 +17,10 @@ public record CreationDate
             return Errors.General.ValueIsInvalid("creation date");
         
         return new CreationDate(creationDate);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

@@ -3,7 +3,7 @@ using PawsAndHearts.Domain.Shared;
 
 namespace PawsAndHearts.Domain.Volunteer.ValueObjects;
 
-public record Position
+public class Position : ValueObject
 {
     public static Position First => new (1);
     
@@ -26,5 +26,10 @@ public record Position
             return Errors.General.ValueIsInvalid("position");
         
         return new Position(position);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

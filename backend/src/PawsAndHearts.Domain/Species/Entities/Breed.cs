@@ -1,5 +1,4 @@
-using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.Shared.Interfaces;
+using CSharpFunctionalExtensions;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 
 namespace PawsAndHearts.Domain.Species.Entities;

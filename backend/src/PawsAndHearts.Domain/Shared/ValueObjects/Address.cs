@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
-public record Address
+public class Address : ValueObject
 {
     private Address(string city, string street, string house, string? flat)
     {
@@ -32,5 +32,13 @@ public record Address
             return Errors.General.ValueIsRequired("house");
 
         return new Address(city, street, house, flat);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return City;
+        yield return Street;
+        yield return House;
+        yield return Flat ?? string.Empty;
     }
 }

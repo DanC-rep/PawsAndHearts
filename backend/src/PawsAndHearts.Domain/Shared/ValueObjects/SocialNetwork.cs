@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
-public record SocialNetwork
+public class SocialNetwork : ValueObject
 {
     private SocialNetwork(string link, string name)
     {
@@ -23,5 +23,11 @@ public record SocialNetwork
             return Errors.General.ValueIsRequired("name");
                 
         return new SocialNetwork(link, name);
-    } 
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Link;
+        yield return Name;
+    }
 }

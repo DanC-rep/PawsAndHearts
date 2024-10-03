@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
-public record Experience
+public class Experience : ValueObject
 {
     private Experience(int value)
     {
@@ -17,5 +17,10 @@ public record Experience
             return Errors.General.ValueIsInvalid("experience");
 
         return new Experience(experience);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

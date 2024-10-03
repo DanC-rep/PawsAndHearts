@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
-public record Color
+public class Color : ValueObject
 {
     public Color(string value)
     {
@@ -17,5 +17,10 @@ public record Color
             return Errors.General.ValueIsRequired("color");
 
         return new Color(color);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

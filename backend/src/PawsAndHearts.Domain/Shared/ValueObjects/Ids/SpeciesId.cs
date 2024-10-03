@@ -1,6 +1,8 @@
+using CSharpFunctionalExtensions;
+
 namespace PawsAndHearts.Domain.Shared.ValueObjects.Ids;
 
-public record SpeciesId
+public class SpeciesId : ValueObject
 {
     private SpeciesId(Guid value)
     {
@@ -22,5 +24,10 @@ public record SpeciesId
         ArgumentNullException.ThrowIfNull(speciesId);
 
         return speciesId.Value;
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

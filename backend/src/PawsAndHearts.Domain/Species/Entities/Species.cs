@@ -1,12 +1,10 @@
 using CSharpFunctionalExtensions;
 using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.Shared.Interfaces;
 using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
-using PawsAndHearts.Domain.Volunteer.Entities;
 
 namespace PawsAndHearts.Domain.Species.Entities;
 
-public class Species : Shared.Entity<SpeciesId>
+public class Species : Entity<SpeciesId>
 {
     private Species(SpeciesId id) : base(id)
     {
