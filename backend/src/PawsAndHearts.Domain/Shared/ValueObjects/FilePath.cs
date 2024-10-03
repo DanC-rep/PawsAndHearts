@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PawsAndHearts.Domain.Shared.ValueObjects;
 
-public class FilePath
+public class FilePath : ValueObject
 {
     private FilePath(string path)
     {
@@ -29,5 +29,10 @@ public class FilePath
             return Errors.Files.InvalidExtension();
         
         return new FilePath(fullPath);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Path;
     }
 }

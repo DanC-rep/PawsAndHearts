@@ -15,6 +15,7 @@ using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeletePetS
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.DeleteVolunteer;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateMainInfo;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdatePet;
+using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdatePetMainPhoto;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdatePetStatus;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateRequisites;
 using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.UpdateSocialNetworks;
@@ -197,8 +198,8 @@ public class VolunteersController : ApplicationController
 
     [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/soft")]
     public async Task<ActionResult<Guid>> DeletePetSoft(
-        Guid volunteerId,
-        Guid petId,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
         [FromServices] DeletePetSoftHandler handler,
         CancellationToken cancellationToken = default)
     {
@@ -211,13 +212,28 @@ public class VolunteersController : ApplicationController
 
     [HttpDelete("{volunteerId}/pet/{petId:guid}/force")]
     public async Task<ActionResult<Guid>> DeletePetForce(
-        Guid volunteerId,
-        Guid petId,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
         [FromServices] DeletePetForceHandler handler,
         CancellationToken cancellationToken = default)
     {
         var command = new DeletePetForceCommand(volunteerId, petId);
 
+        var result = await handler.Handle(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/mainPhoto")]
+    public async Task<ActionResult<FilePath>> UpdatePetMainPhoto(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetMainPhotoRequest request,
+        [FromServices] UpdatePetMainPhotoHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+        
         var result = await handler.Handle(command, cancellationToken);
 
         return result.ToResponse();

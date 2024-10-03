@@ -188,4 +188,15 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 
         return pet;
     }
+
+
+    public Result<FilePath, Error> UpdatePetMainPhoto(Pet pet, PetPhoto petPhoto)
+    {
+        var result = pet.UpdateMainPhoto(petPhoto);
+
+        if (result.IsFailure)
+            return result.Error;
+
+        return petPhoto.Path;
+    }
 }

@@ -132,8 +132,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(v => v.PetPhotos)!
             .HasValueObjectsJsonConversion(
-                petPhoto => new PetPhotoDto(petPhoto.Path.Path),
-                dto => PetPhoto.Create(FilePath.Create(dto.PathToStorage).Value, false).Value)
+                petPhoto => new PetPhotoDto(petPhoto.Path.Path, petPhoto.IsMain),
+                dto => PetPhoto.Create(FilePath.Create(dto.PathToStorage).Value, dto.IsMain).Value)
             .HasColumnName("pet_photos");
         
         builder.Property<bool>("_isDeleted")

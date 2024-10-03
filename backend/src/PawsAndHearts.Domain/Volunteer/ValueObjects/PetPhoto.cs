@@ -4,7 +4,7 @@ using PawsAndHearts.Domain.Shared.ValueObjects;
 
 namespace PawsAndHearts.Domain.Volunteer.ValueObjects;
 
-public record PetPhoto
+public class PetPhoto : ValueObject
 {
     private PetPhoto(FilePath path, bool isMain)
     {
@@ -19,5 +19,11 @@ public record PetPhoto
     public static Result<PetPhoto, Error> Create(FilePath path, bool isMain)
     {
         return new PetPhoto(path, isMain);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Path;
+        yield return IsMain;
     }
 }

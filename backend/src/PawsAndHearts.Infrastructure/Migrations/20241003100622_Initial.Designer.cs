@@ -13,7 +13,7 @@ using PawsAndHearts.Infrastructure.DbContexts;
 namespace PawsAndHearts.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20241002125126_Initial")]
+    [Migration("20241003100622_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
