@@ -25,7 +25,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\PawsAndHearts.Application\PawsAndHearts.Application.csproj" />
+      <ProjectReference Include="..\..\src\BreedManagement\PawsAndHearts.BreedManagement.Application\PawsAndHearts.BreedManagement.Application.csproj" />
+      <ProjectReference Include="..\..\src\PetManagement\PawsAndHearts.PetManagement.Application\PawsAndHearts.PetManagement.Application.csproj" />
     </ItemGroup>
 
 </Project>

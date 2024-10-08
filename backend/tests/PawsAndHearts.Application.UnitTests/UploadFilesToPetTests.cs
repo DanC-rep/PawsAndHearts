@@ -5,18 +5,20 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
-using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.AddPhotosToPet;
-using PawsAndHearts.Application.FileProvider;
-using PawsAndHearts.Application.Interfaces;
-using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.Shared.Enums;
-using PawsAndHearts.Domain.Shared.ValueObjects;
-using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
-using PawsAndHearts.Domain.Volunteer.Entities;
-using PawsAndHearts.Domain.Volunteer.Enums;
-using PawsAndHearts.Domain.Volunteer.ValueObjects;
-using FileInfo = PawsAndHearts.Application.FileProvider.FileInfo;
+using PawsAndHearts.Core.Dtos;
+using PawsAndHearts.Core.Messaging;
+using PawsAndHearts.PetManagement.Application.Interfaces;
+using PawsAndHearts.PetManagement.Application.UseCases.AddPhotosToPet;
+using PawsAndHearts.PetManagement.Domain.Entities;
+using PawsAndHearts.PetManagement.Domain.Enums;
+using PawsAndHearts.PetManagement.Domain.ValueObjects;
+using PawsAndHearts.SharedKernel;
+using PawsAndHearts.SharedKernel.Enums;
+using PawsAndHearts.SharedKernel.FileProvider;
+using PawsAndHearts.SharedKernel.Interfaces;
+using PawsAndHearts.SharedKernel.ValueObjects;
+using PawsAndHearts.SharedKernel.ValueObjects.Ids;
+using FileInfo = PawsAndHearts.SharedKernel.FileProvider.FileInfo;
 
 namespace PawsAndHearts.Application.UnitTests;
 
@@ -25,7 +27,7 @@ public class UploadFilesToPetTests
     private readonly Mock<IFileProvider> _fileProviderMock = new();
     private readonly Mock<IVolunteersRepository> _volunteersRepositoryMock = new();
     private readonly Mock<ILogger<AddPhotosToPetHandler>> _loggerMock = new();
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<IPetManagementUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<IValidator<AddPhotosToPetCommand>> _validatorMock = new();
     private readonly Mock<IMessageQueue<IEnumerable<FileInfo>>> _messageQueueMock = new();
     
