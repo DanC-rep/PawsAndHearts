@@ -3,25 +3,27 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
-using PawsAndHearts.Application.Dto;
-using PawsAndHearts.Application.Features.VolunteerManagement.UseCases.CreatePet;
-using PawsAndHearts.Application.Interfaces;
-using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.Shared.Enums;
-using PawsAndHearts.Domain.Shared.ValueObjects;
-using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
-using PawsAndHearts.Domain.Species.Entities;
-using PawsAndHearts.Domain.Volunteer.Entities;
-using PawsAndHearts.Domain.Volunteer.Enums;
-using PawsAndHearts.Domain.Volunteer.ValueObjects;
+using PawsAndHearts.BreedManagement.Contracts;
+using PawsAndHearts.BreedManagement.Domain.Entities;
+using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Dtos;
+using PawsAndHearts.PetManagement.Application.Interfaces;
+using PawsAndHearts.PetManagement.Application.UseCases.CreatePet;
+using PawsAndHearts.PetManagement.Domain.Entities;
+using PawsAndHearts.PetManagement.Domain.Enums;
+using PawsAndHearts.PetManagement.Domain.ValueObjects;
+using PawsAndHearts.SharedKernel;
+using PawsAndHearts.SharedKernel.Enums;
+using PawsAndHearts.SharedKernel.ValueObjects;
+using PawsAndHearts.SharedKernel.ValueObjects.Ids;
 
 namespace PawsAndHearts.Application.UnitTests;
 
 public class AddPetTests
 {
     private readonly Mock<IVolunteersRepository> _volunteersRepositoryMock = new();
-    private readonly Mock<ISpeciesRepository> _speciesRepositoryMock = new();
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<IBreedManagementContract> _breedManagementContractMock = new();
+    private readonly Mock<IPetManagementUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<IValidator<CreatePetCommand>> _validatorMock = new();
     private readonly Mock<ILogger<CreatePetHandler>> _loggerMock = new();
 
@@ -32,6 +34,9 @@ public class AddPetTests
         var cancellationToken = new CancellationTokenSource().Token;
         var volunteer = CreateVolunteerWithPets(0);
         var species = CreateSpeciesWithBreed(1);
+
+        var speciesDto = CreateSpeciesDto(species);
+        var breedDto = CreateBreedDto(species.Breeds.First());
 
         var command = new CreatePetCommand(
             volunteer.Id,
@@ -63,12 +68,16 @@ public class AddPetTests
         _unitOfWorkMock.Setup(u => u.SaveChanges(cancellationToken))
             .Returns(Task.CompletedTask);
 
-        _speciesRepositoryMock.Setup(s => s.GetById(species.Id, cancellationToken))
-            .ReturnsAsync(species);
+        _breedManagementContractMock.Setup(b => b.GetSpeciesById(species.Id, cancellationToken))
+            .ReturnsAsync(speciesDto);
+
+        _breedManagementContractMock.Setup(b => b.
+            GetBreedBySpecies(species.Id, species.Breeds.First().Id, cancellationToken))
+            .ReturnsAsync(breedDto);
 
         var handler = new CreatePetHandler(
             _volunteersRepositoryMock.Object,
-            _speciesRepositoryMock.Object,
+            _breedManagementContractMock.Object,
             _unitOfWorkMock.Object,
             _validatorMock.Object,
             _loggerMock.Object);
@@ -125,7 +134,7 @@ public class AddPetTests
         
         var handler = new CreatePetHandler(
             _volunteersRepositoryMock.Object,
-            _speciesRepositoryMock.Object,
+            _breedManagementContractMock.Object,
             _unitOfWorkMock.Object,
             _validatorMock.Object,
             _loggerMock.Object);
@@ -212,5 +221,24 @@ public class AddPetTests
         }
 
         return species;
+    }
+
+    private SpeciesDto CreateSpeciesDto(Species species)
+    {
+        return new SpeciesDto
+        {
+            Id = species.Id,
+            Name = species.Name
+        };
+    }
+
+    private BreedDto CreateBreedDto(Breed breed)
+    {
+        return new BreedDto
+        {
+            Id = breed.Id,
+            Name = breed.Name,
+            SpeciesId = breed.SpeciesId
+        };
     }
 }

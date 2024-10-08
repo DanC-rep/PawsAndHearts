@@ -1,10 +1,9 @@
 using FluentAssertions;
-using PawsAndHearts.Domain.Shared;
-using PawsAndHearts.Domain.Shared.ValueObjects;
-using PawsAndHearts.Domain.Shared.ValueObjects.Ids;
-using PawsAndHearts.Domain.Volunteer.Entities;
-using PawsAndHearts.Domain.Volunteer.Enums;
-using PawsAndHearts.Domain.Volunteer.ValueObjects;
+using PawsAndHearts.PetManagement.Domain.Entities;
+using PawsAndHearts.PetManagement.Domain.Enums;
+using PawsAndHearts.PetManagement.Domain.ValueObjects;
+using PawsAndHearts.SharedKernel.ValueObjects;
+using PawsAndHearts.SharedKernel.ValueObjects.Ids;
 
 namespace PawsAndHearts.UnitTests;
 
