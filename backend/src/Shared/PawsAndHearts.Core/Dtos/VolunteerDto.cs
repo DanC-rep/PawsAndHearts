@@ -17,4 +17,6 @@ public class VolunteerDto
     public IEnumerable<SocialNetworkDto> SocialNetworks { get; init; } = [];
     
     public IEnumerable<RequisiteDto> Requisites { get; init; } = [];
+    
+    public bool IsDeleted { get; init; }
 }

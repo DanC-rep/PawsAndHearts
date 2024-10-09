@@ -12,6 +12,8 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
         builder.ToTable("volunteers");
 
         builder.HasKey(v => v.Id);
+        
+        builder.HasQueryFilter(v => !v.IsDeleted);
 
         builder.Property(v => v.Requisites)
             .HasConversion(

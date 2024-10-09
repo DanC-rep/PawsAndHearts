@@ -15,7 +15,6 @@ public class DeletePetForceHandler : ICommandHandler<Guid, DeletePetForceCommand
     private const string BUCKET_NAME = "photos";
     
     private readonly IVolunteersRepository _volunteersVolunteersRepository;
-    private readonly IPetRepository _petRepository;
     private readonly IFileProvider _fileProvider;
     private readonly IPetManagementUnitOfWork _unitOfWork;
     private readonly IMessageQueue<IEnumerable<FileInfo>> _messageQueue;
@@ -23,14 +22,12 @@ public class DeletePetForceHandler : ICommandHandler<Guid, DeletePetForceCommand
 
     public DeletePetForceHandler(
         IVolunteersRepository volunteersRepository,
-        IPetRepository petRepository,
         IFileProvider fileProvider,
         IPetManagementUnitOfWork unitOfWork,
         IMessageQueue<IEnumerable<FileInfo>> messageQueue,
         ILogger<DeletePetForceHandler> logger)
     {
         _volunteersVolunteersRepository = volunteersRepository;
-        _petRepository = petRepository;
         _fileProvider = fileProvider;
         _unitOfWork = unitOfWork;
         _messageQueue = messageQueue;
@@ -58,7 +55,7 @@ public class DeletePetForceHandler : ICommandHandler<Guid, DeletePetForceCommand
             var petPreviousPhotosInfo = (petResult.Value.PetPhotos ?? new List<PetPhoto>())
                 .Select(p => new FileInfo(p.Path, BUCKET_NAME)).ToList();
             
-            _petRepository.Delete(petResult.Value);
+            volunteerResult.Value.DeletePet(petResult.Value);
 
             await _unitOfWork.SaveChanges(cancellationToken);
             

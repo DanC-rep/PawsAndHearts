@@ -47,4 +47,6 @@ public class PetDto
     public IEnumerable<RequisiteDto> Requisites { get; init; } = [];
     
     public IEnumerable<PetPhotoDto>? PetPhotos { get; init; } = [];
+    
+    public bool IsDeleted { get; init; }
 }

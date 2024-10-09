@@ -76,6 +76,8 @@ public class Pet : Entity<PetId>, ISoftDeletable
     public HelpStatus HelpStatus { get; private set; }
     
     public CreationDate CreationDate { get; private set; }
+    
+    public VolunteerId VolunteerId { get; private set; }
 
     public IReadOnlyList<Requisite> Requisites { get; private set; }
 
