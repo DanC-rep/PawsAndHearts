@@ -12,6 +12,8 @@ public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
         builder.ToTable("pets");
         
         builder.HasKey(p => p.Id);
+
+        builder.HasQueryFilter(v => !v.IsDeleted);
         
         builder.Property(v => v.Requisites)
             .HasConversion(

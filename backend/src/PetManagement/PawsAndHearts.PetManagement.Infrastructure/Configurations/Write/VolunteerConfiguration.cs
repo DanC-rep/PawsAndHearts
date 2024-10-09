@@ -69,7 +69,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.HasMany(v => v.Pets)
             .WithOne()
-            .HasForeignKey("volunteer_id");
+            .HasForeignKey(p => p.VolunteerId);
 
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)

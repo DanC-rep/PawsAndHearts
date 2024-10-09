@@ -44,7 +44,6 @@ public static class Inject
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IVolunteersRepository, VolunteersRepository>();
-        services.AddScoped<IPetRepository, PetRepository>();
 
         return services;
     }

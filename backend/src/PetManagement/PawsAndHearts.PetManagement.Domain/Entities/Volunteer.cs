@@ -105,6 +105,11 @@ public class Volunteer : Entity<VolunteerId>, ISoftDeletable
         pet.UpdateInfo(updatedPet);
     }
 
+    public void DeletePet(Pet pet)
+    {
+        _pets.Remove(pet);
+    }
+
     public void UpdatePetStatus(Pet pet, HelpStatus helpStatus)
     {
         pet.UpdateStatus(helpStatus);
