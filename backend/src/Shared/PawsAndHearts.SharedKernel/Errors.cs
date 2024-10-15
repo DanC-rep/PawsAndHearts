@@ -10,15 +10,17 @@ public static class Errors
         public static Error ValueIsRequired(string? name = null) =>
             Error.Validation("length.is.invalid", $"invalid {name ?? "value"} length");
 
-        public static Error NotFound(Guid? id = null)
+        public static Error NotFound(Guid? id = null, string? name = null)
         {
-            var forId = id == null ? "" : " for id: " + id;
-            return Error.NotFound("record.not.found", $"record not found{forId}");
+            var forId = id == null ? "" : $" for Id '{id}'";
+            return Error.NotFound("record.not.found", $"{name ?? "record"} not found{forId}");
         }
 
-        public static Error AlreadyExists(string name, string key, string value)
+        public static Error AlreadyExists(string name, string key, string? value = null)
         {
-            return Error.Conflict("record.already.exists", $"{name} already exists with {key + " = " + value}");
+            var withValue = value == null ? "" : $" = {value}";
+            
+            return Error.Conflict("record.already.exists", $"{name} already exists with {key + withValue}");
         }
         
         public static Error AlreadyUsed(Guid id) =>
@@ -32,5 +34,13 @@ public static class Errors
 
         public static Error InvalidExtension() =>
             Error.Validation("extension.is.invalid", "File extension is invalid");
+    }
+
+    public static class Accounts
+    {
+        public static Error InvalidCredentials()
+        {
+            return Error.Validation("credentials.is.invalid", "Your credentials is invalid");
+        }
     }
 }
