@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.Framework;
@@ -25,6 +26,7 @@ namespace PawsAndHearts.PetManagement.Presentation.Volunteers;
 
 public class VolunteersController : ApplicationController
 {
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateVolunteerHandler handler,
@@ -38,6 +40,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpPut("{id:guid}/main-info")]
     public async Task<ActionResult<Guid>> UpdateMainInfo(
         [FromRoute] Guid id,
@@ -52,6 +55,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpPut("{id:guid}/social-networks")]
     public async Task<ActionResult<Guid>> UpdateSocialNetworks(
         [FromRoute] Guid id,
@@ -66,6 +70,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpPut("{id:guid}/requisites")]
     public async Task<ActionResult<Guid>> UpdateRequisites(
         [FromRoute] Guid id,
@@ -80,6 +85,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<Guid>> Delete(
         [FromRoute] Guid id,
@@ -93,6 +99,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpPost("{id:guid}/pet")]
     public async Task<ActionResult<Guid>> CreatePet(
         [FromRoute] Guid id,
@@ -107,6 +114,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpPost("{volunteerId:guid}/pet/{petId:guid}/photos")]
     public async Task<ActionResult<FilePathList>> AddPhotosToPet(
         [FromRoute] Guid volunteerId,
@@ -125,7 +133,7 @@ public class VolunteersController : ApplicationController
 
         return result.ToResponse();
     }
-
+    
     [HttpGet]
     public async Task<ActionResult> Get(
         [FromQuery] GetVolunteersWithPaginationRequest request, 
@@ -152,6 +160,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}/pet/{petId:guid}")]
     public async Task<ActionResult<Guid>> UpdatePet(
         [FromRoute] Guid volunteerId,
@@ -167,6 +176,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/photos")]
     public async Task<ActionResult<FilePathList>> DeletePetPhotos(
         [FromRoute] Guid volunteerId,
@@ -181,6 +191,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}/pet/{petId:guid}/status")]
     public async Task<ActionResult<Guid>> UpdatePetStatus(
         [FromRoute] Guid volunteerId,
@@ -196,6 +207,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/soft")]
     public async Task<ActionResult<Guid>> DeletePetSoft(
         [FromRoute] Guid volunteerId,
@@ -210,6 +222,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpDelete("{volunteerId}/pet/{petId:guid}/force")]
     public async Task<ActionResult<Guid>> DeletePetForce(
         [FromRoute] Guid volunteerId,
@@ -224,6 +237,7 @@ public class VolunteersController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}/pet/{petId:guid}/mainPhoto")]
     public async Task<ActionResult<FilePath>> UpdatePetMainPhoto(
         [FromRoute] Guid volunteerId,

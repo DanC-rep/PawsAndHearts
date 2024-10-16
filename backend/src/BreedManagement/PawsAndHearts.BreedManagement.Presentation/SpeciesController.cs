@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.BreedManagement.Application.Queries.GetBreedsBySpecies;
 using PawsAndHearts.BreedManagement.Application.Queries.GetSpeciesWithPagination;
 using PawsAndHearts.BreedManagement.Application.UseCases.CreateBreed;
@@ -13,6 +14,7 @@ namespace PawsAndHearts.BreedManagement.Presentation;
 
 public class SpeciesController : ApplicationController
 {
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateSpeciesHandler handler,
@@ -26,6 +28,7 @@ public class SpeciesController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpPost("{id:guid}/breed")]
     public async Task<ActionResult<Guid>> CreateBreed(
         [FromRoute] Guid id,
@@ -40,6 +43,7 @@ public class SpeciesController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<Guid>> Delete(
         [FromRoute] Guid id,
@@ -53,6 +57,7 @@ public class SpeciesController : ApplicationController
         return result.ToResponse();
     }
 
+    [Authorize]
     [HttpDelete("{speciesId:guid}/breed/{breedId:guid}")]
     public async Task<ActionResult<Guid>> DeleteBreed(
         [FromRoute] Guid speciesId,

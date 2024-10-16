@@ -27,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Accounts\PawsAndHearts.Accounts.Infrastructure\PawsAndHearts.Accounts.Infrastructure.csproj" />
+    <ProjectReference Include="..\Accounts\PawsAndHearts.Accounts.Presentation\PawsAndHearts.Accounts.Presentation.csproj" />
     <ProjectReference Include="..\BreedManagement\PawsAndHearts.BreedManagement.Application\PawsAndHearts.BreedManagement.Application.csproj" />
     <ProjectReference Include="..\BreedManagement\PawsAndHearts.BreedManagement.Infrastructure\PawsAndHearts.BreedManagement.Infrastructure.csproj" />
     <ProjectReference Include="..\BreedManagement\PawsAndHearts.BreedManagement.Presentation\PawsAndHearts.BreedManagement.Presentation.csproj" />
