@@ -2,16 +2,13 @@ using CSharpFunctionalExtensions;
 using PawsAndHearts.PetManagement.Domain.Enums;
 using PawsAndHearts.PetManagement.Domain.ValueObjects;
 using PawsAndHearts.SharedKernel;
-using PawsAndHearts.SharedKernel.Interfaces;
 using PawsAndHearts.SharedKernel.ValueObjects;
 using PawsAndHearts.SharedKernel.ValueObjects.Ids;
 
 namespace PawsAndHearts.PetManagement.Domain.Entities;
 
-public class Pet : Entity<PetId>, ISoftDeletable
+public class Pet : SoftDeletableEntity<PetId>
 {
-    private bool _isDeleted = false;
-    
     private Pet(PetId id) : base(id)
     {
     }
@@ -86,29 +83,17 @@ public class Pet : Entity<PetId>, ISoftDeletable
     public void SetPosition(Position position) =>
         Position = position;
 
-    public void Delete()
-    {
-        if (!_isDeleted)
-            _isDeleted = true;
-    }
-
-    public void AddPhotos(IEnumerable<PetPhoto> petPhotos)
+    internal void AddPhotos(IEnumerable<PetPhoto> petPhotos)
     {
         PetPhotos = petPhotos.ToList();
     }
 
-    public void UpdateStatus(HelpStatus helpStatus)
+    internal void UpdateStatus(HelpStatus helpStatus)
     {
         HelpStatus = helpStatus;
     }
 
-    public void Restore()
-    {
-        if (_isDeleted)
-            _isDeleted = false;
-    }
-
-    public UnitResult<Error> MoveForward()
+    internal UnitResult<Error> MoveForward()
     {
         var newPosition = Position.Forward();
 
@@ -120,7 +105,7 @@ public class Pet : Entity<PetId>, ISoftDeletable
         return Result.Success<Error>();
     }
     
-    public UnitResult<Error> MoveBack()
+    internal UnitResult<Error> MoveBack()
     {
         var newPosition = Position.Back();
 
@@ -132,14 +117,12 @@ public class Pet : Entity<PetId>, ISoftDeletable
         return Result.Success<Error>();
     }
 
-    public UnitResult<Error> Move(Position newPosition)
+    internal void Move(Position newPosition)
     {
         Position = newPosition;
-
-        return Result.Success<Error>();
     }
 
-    public void UpdateInfo(Pet updatedPet)
+    internal void UpdateInfo(Pet updatedPet)
     {
         Name = updatedPet.Name;
         Description = updatedPet.Description;
@@ -157,12 +140,12 @@ public class Pet : Entity<PetId>, ISoftDeletable
         Requisites = updatedPet.Requisites;
     }
 
-    public void DeletePhotos()
+    internal void DeletePhotos()
     {
         PetPhotos = [];
     }
 
-    public UnitResult<Error> UpdateMainPhoto(PetPhoto updatedPhoto)
+    internal UnitResult<Error> UpdateMainPhoto(PetPhoto updatedPhoto)
     {
         var fileExists = PetPhotos?
             .Where(p => p.Path == updatedPhoto.Path).FirstOrDefault();

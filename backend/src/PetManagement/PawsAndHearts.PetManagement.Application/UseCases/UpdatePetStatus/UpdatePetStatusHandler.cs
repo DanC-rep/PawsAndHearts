@@ -1,7 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.Core.Extensions;
 using PawsAndHearts.PetManagement.Application.Interfaces;
 using PawsAndHearts.PetManagement.Domain.Enums;
@@ -12,13 +14,13 @@ namespace PawsAndHearts.PetManagement.Application.UseCases.UpdatePetStatus;
 public class UpdatePetStatusHandler : ICommandHandler<Guid, UpdatePetStatusCommand>
 {
     private readonly IVolunteersRepository _repository;
-    private readonly IPetManagementUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UpdatePetStatusCommand> _validator;
     private readonly ILogger<UpdatePetStatusHandler> _logger;
 
     public UpdatePetStatusHandler(
         IVolunteersRepository repository,
-        IPetManagementUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.PetManagement)] IUnitOfWork unitOfWork, 
         IValidator<UpdatePetStatusCommand> validator,
         ILogger<UpdatePetStatusHandler> logger)
     {

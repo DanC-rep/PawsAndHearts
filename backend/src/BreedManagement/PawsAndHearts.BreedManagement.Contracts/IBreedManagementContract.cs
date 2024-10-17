@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PawsAndHearts.BreedManagement.Contracts.Dtos;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.SharedKernel;
 

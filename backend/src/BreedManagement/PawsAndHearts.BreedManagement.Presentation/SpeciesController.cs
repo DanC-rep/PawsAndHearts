@@ -6,7 +6,7 @@ using PawsAndHearts.BreedManagement.Application.UseCases.CreateBreed;
 using PawsAndHearts.BreedManagement.Application.UseCases.CreateSpecies;
 using PawsAndHearts.BreedManagement.Application.UseCases.DeleteBreed;
 using PawsAndHearts.BreedManagement.Application.UseCases.DeleteSpecies;
-using PawsAndHearts.BreedManagement.Presentation.Requests;
+using PawsAndHearts.BreedManagement.Contracts.Requests;
 using PawsAndHearts.Framework;
 using PawsAndHearts.Framework.Extensions;
 
@@ -21,7 +21,7 @@ public class SpeciesController : ApplicationController
         [FromBody] CreateSpeciesRequest request,
         CancellationToken cancellationToken = default)
     {
-        var command = request.ToCommand();
+        var command = CreateSpeciesCommand.Create(request);
 
         var result = await handler.Handle(command, cancellationToken);
 
@@ -36,7 +36,7 @@ public class SpeciesController : ApplicationController
         [FromServices] CreateBreedHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = request.ToCommand(id);
+        var command = CreateBreedCommand.Create(id, request);
         
         var result = await handler.Handle(command, cancellationToken);
 
@@ -78,8 +78,7 @@ public class SpeciesController : ApplicationController
         [FromServices] GetSpeciesWithPaginationHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var query = request.ToQuery();
-
+        var query = GetSpeciesWithPaginationQuery.Create(request);
         var response = await handler.Handle(query, cancellationToken);
 
         return Ok(response);
@@ -91,7 +90,7 @@ public class SpeciesController : ApplicationController
         [FromServices] GetBreedsBySpeciesHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var query = request.ToQuery();
+        var query = GetBreedsBySpeciesQuery.Create(request);
 
         var response = await handler.Handle(query, cancellationToken);
 

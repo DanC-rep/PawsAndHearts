@@ -1,10 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.BreedManagement.Application.Interfaces;
 using PawsAndHearts.BreedManagement.Domain.Entities;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.Core.Extensions;
 using PawsAndHearts.SharedKernel;
 using PawsAndHearts.SharedKernel.ValueObjects.Ids;
@@ -15,14 +17,14 @@ public class CreateSpeciesHandler : ICommandHandler<Guid, CreateSpeciesCommand>
 {
     private readonly ISpeciesRepository _speciesRepository;
     private readonly ISpeciesReadDbContext _readDbContext;
-    private readonly IBreedManagementUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<CreateSpeciesCommand> _validator;
     private readonly ILogger<CreateSpeciesHandler> _logger;
 
     public CreateSpeciesHandler(
         ISpeciesReadDbContext readDbContext,
         ISpeciesRepository speciesRepository,
-        IBreedManagementUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.BreedManagement)] IUnitOfWork unitOfWork,
         IValidator<CreateSpeciesCommand> validator,
         ILogger<CreateSpeciesHandler> logger)
     {

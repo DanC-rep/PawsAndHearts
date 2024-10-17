@@ -4,11 +4,13 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PawsAndHearts.BreedManagement.Contracts;
+using PawsAndHearts.BreedManagement.Contracts.Dtos;
 using PawsAndHearts.BreedManagement.Domain.Entities;
 using PawsAndHearts.Core.Abstractions;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.PetManagement.Application.Interfaces;
 using PawsAndHearts.PetManagement.Application.UseCases.CreatePet;
+using PawsAndHearts.PetManagement.Contracts.Dtos;
 using PawsAndHearts.PetManagement.Domain.Entities;
 using PawsAndHearts.PetManagement.Domain.Enums;
 using PawsAndHearts.PetManagement.Domain.ValueObjects;
@@ -23,7 +25,7 @@ public class AddPetTests
 {
     private readonly Mock<IVolunteersRepository> _volunteersRepositoryMock = new();
     private readonly Mock<IBreedManagementContract> _breedManagementContractMock = new();
-    private readonly Mock<IPetManagementUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<IValidator<CreatePetCommand>> _validatorMock = new();
     private readonly Mock<ILogger<CreatePetHandler>> _loggerMock = new();
 

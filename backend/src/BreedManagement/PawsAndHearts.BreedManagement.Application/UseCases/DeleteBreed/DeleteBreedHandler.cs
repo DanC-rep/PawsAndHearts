@@ -1,8 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.BreedManagement.Application.Interfaces;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.Core.Extensions;
 using PawsAndHearts.PetManagement.Contracts;
 using PawsAndHearts.SharedKernel;
@@ -13,14 +15,14 @@ public class DeleteBreedHandler : ICommandHandler<Guid, DeleteBreedCommand>
 {
     private readonly IPetManagementContract _petManagementContract;
     private readonly ISpeciesRepository _repository;
-    private readonly IBreedManagementUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeleteBreedHandler> _logger;
     private readonly IValidator<DeleteBreedCommand> _validator;
 
     public DeleteBreedHandler(
         IPetManagementContract petManagementContract,
         ISpeciesRepository repository,
-        IBreedManagementUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.BreedManagement)] IUnitOfWork unitOfWork,
         ILogger<DeleteBreedHandler> logger,
         IValidator<DeleteBreedCommand> validator)
     {

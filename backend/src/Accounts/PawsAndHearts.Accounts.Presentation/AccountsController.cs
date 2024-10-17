@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.Accounts.Application.UseCases.Login;
 using PawsAndHearts.Accounts.Application.UseCases.Register;
-using PawsAndHearts.Accounts.Presentation.Requests;
+using PawsAndHearts.Accounts.Contracts.Requests;
 using PawsAndHearts.Framework;
 using PawsAndHearts.Framework.Extensions;
 
@@ -15,7 +15,7 @@ public class AccountsController : ApplicationController
         [FromServices] RegisterUserHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = request.ToCommand();
+        var command = RegisterUserCommand.Create(request);
         
         var result = await handler.Handle(command, cancellationToken);
 
@@ -28,7 +28,7 @@ public class AccountsController : ApplicationController
         [FromServices] LoginUserHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = request.ToCommand();
+        var command = LoginUserCommand.Create(request);
         
         var result = await handler.Handle(command, cancellationToken);
 

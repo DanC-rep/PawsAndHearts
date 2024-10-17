@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\BreedManagement\PawsAndHearts.BreedManagement.Contracts\PawsAndHearts.BreedManagement.Contracts.csproj" />
       <ProjectReference Include="..\..\Shared\PawsAndHearts.Core\PawsAndHearts.Core.csproj" />
+      <ProjectReference Include="..\PawsAndHearts.PetManagement.Contracts\PawsAndHearts.PetManagement.Contracts.csproj" />
       <ProjectReference Include="..\PawsAndHearts.PetManagement.Domain\PawsAndHearts.PetManagement.Domain.csproj" />
     </ItemGroup>
 

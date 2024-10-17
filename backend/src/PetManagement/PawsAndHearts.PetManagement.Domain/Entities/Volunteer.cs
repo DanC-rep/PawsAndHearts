@@ -2,16 +2,13 @@ using CSharpFunctionalExtensions;
 using PawsAndHearts.PetManagement.Domain.Enums;
 using PawsAndHearts.PetManagement.Domain.ValueObjects;
 using PawsAndHearts.SharedKernel;
-using PawsAndHearts.SharedKernel.Interfaces;
 using PawsAndHearts.SharedKernel.ValueObjects;
 using PawsAndHearts.SharedKernel.ValueObjects.Ids;
 
 namespace PawsAndHearts.PetManagement.Domain.Entities;
 
-public class Volunteer : Entity<VolunteerId>, ISoftDeletable
+public class Volunteer : SoftDeletableEntity<VolunteerId>
 {
-    private bool _isDeleted = false;
-    
     private Volunteer(VolunteerId id) : base(id)
     {
     }
@@ -68,17 +65,17 @@ public class Volunteer : Entity<VolunteerId>, ISoftDeletable
         Requisites = requisites;
     }
 
-    public void Delete()
+    public override void Delete()
     {
-        _isDeleted = true;
+        base.Delete();
 
         foreach (var pet in _pets)
             pet.Delete();
     }
 
-    public void Restore()
+    public override void Restore()
     {
-        _isDeleted = false;
+        base.Restore();
 
         foreach (var pet in _pets)
             pet.Restore();
@@ -203,5 +200,16 @@ public class Volunteer : Entity<VolunteerId>, ISoftDeletable
             return result.Error;
 
         return petPhoto.Path;
+    }
+
+    public void AddPetPhotos(Pet pet, IEnumerable<PetPhoto> photos)
+    {
+        pet.AddPhotos(photos);
+    }
+
+
+    public void DeletePetPhotos(Pet pet)
+    {
+        pet.DeletePhotos();
     }
 }

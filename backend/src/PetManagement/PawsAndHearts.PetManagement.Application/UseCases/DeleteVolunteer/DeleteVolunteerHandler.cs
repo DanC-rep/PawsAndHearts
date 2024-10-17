@@ -1,7 +1,9 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.Core.Extensions;
 using PawsAndHearts.PetManagement.Application.Interfaces;
 using PawsAndHearts.SharedKernel;
@@ -11,12 +13,12 @@ namespace PawsAndHearts.PetManagement.Application.UseCases.DeleteVolunteer;
 public class DeleteVolunteerHandler : ICommandHandler<Guid, DeleteVolunteerCommand>
 {
     private readonly IVolunteersRepository _repository;
-    private readonly IPetManagementUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<DeleteVolunteerCommand> _validator;
     private readonly ILogger<DelegatingHandler> _logger;
 
     public DeleteVolunteerHandler(IVolunteersRepository repository,
-        IPetManagementUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.PetManagement)] IUnitOfWork unitOfWork, 
         IValidator<DeleteVolunteerCommand> validator,
         ILogger<DelegatingHandler> logger)
     {

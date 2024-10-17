@@ -6,7 +6,7 @@ using PawsAndHearts.Core.Abstractions;
 
 namespace PawsAndHearts.BreedManagement.Infrastructure;
 
-public class UnitOfWork : IBreedManagementUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
     private readonly WriteDbContext _dbContext;
 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PawsAndHearts.Core.Abstractions;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.PetManagement.Application.Interfaces;
+using PawsAndHearts.PetManagement.Contracts.Dtos;
 using PawsAndHearts.SharedKernel;
 
 namespace PawsAndHearts.PetManagement.Application.Queries.GetPetById;

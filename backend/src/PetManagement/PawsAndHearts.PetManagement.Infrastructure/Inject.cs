@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.Core.Files;
 using PawsAndHearts.Core.Messaging;
 using PawsAndHearts.PetManagement.Application;
@@ -36,7 +37,7 @@ public static class Inject
 
     private static IServiceCollection AddDatabase(this IServiceCollection services)
     {
-        services.AddScoped<IPetManagementUnitOfWork, UnitOfWork>();
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.PetManagement);
 
         return services;
     }

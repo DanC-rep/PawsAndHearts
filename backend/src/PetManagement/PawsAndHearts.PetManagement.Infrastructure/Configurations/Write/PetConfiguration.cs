@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.Core.Extensions;
+using PawsAndHearts.PetManagement.Contracts.Dtos;
 using PawsAndHearts.PetManagement.Domain.Entities;
 using PawsAndHearts.PetManagement.Domain.ValueObjects;
 using PawsAndHearts.SharedKernel.ValueObjects;
@@ -136,8 +137,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 dto => PetPhoto.Create(FilePath.Create(dto.PathToStorage).Value, dto.IsMain).Value)
             .HasColumnName("pet_photos");
         
-        builder.Property<bool>("_isDeleted")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
+        builder.Property(p => p.IsDeleted)
             .HasColumnName("is_deleted");
     }
 }

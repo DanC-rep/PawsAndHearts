@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using PawsAndHearts.BreedManagement.Application.Interfaces;
+using PawsAndHearts.BreedManagement.Contracts.Dtos;
 using PawsAndHearts.Core.Abstractions;
-using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.SharedKernel;
 
 namespace PawsAndHearts.BreedManagement.Application.Queries.GetBreedBySpecies;
@@ -21,8 +21,8 @@ public class GetBreedBySpeciesHandler : IQueryHandlerWithResult<BreedDto, GetBre
         CancellationToken cancellationToken = default)
     {
         var breedDto = await _speciesReadDbContext.Breeds
-            .Where(b => b.SpeciesId == query.SpeciesId)
-            .FirstOrDefaultAsync(b => b.Id == query.BreedId, cancellationToken);
+            .FirstOrDefaultAsync(b => b.Id == query.BreedId && b.SpeciesId == query.SpeciesId,
+                cancellationToken);
 
         if (breedDto is null)
             return Errors.General.NotFound(query.BreedId).ToErrorList();

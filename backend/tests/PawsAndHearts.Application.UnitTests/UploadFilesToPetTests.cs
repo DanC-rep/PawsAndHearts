@@ -5,6 +5,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
+using PawsAndHearts.Core.Abstractions;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.Core.Messaging;
 using PawsAndHearts.PetManagement.Application.Interfaces;
@@ -27,7 +28,7 @@ public class UploadFilesToPetTests
     private readonly Mock<IFileProvider> _fileProviderMock = new();
     private readonly Mock<IVolunteersRepository> _volunteersRepositoryMock = new();
     private readonly Mock<ILogger<AddPhotosToPetHandler>> _loggerMock = new();
-    private readonly Mock<IPetManagementUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<IValidator<AddPhotosToPetCommand>> _validatorMock = new();
     private readonly Mock<IMessageQueue<IEnumerable<FileInfo>>> _messageQueueMock = new();
     

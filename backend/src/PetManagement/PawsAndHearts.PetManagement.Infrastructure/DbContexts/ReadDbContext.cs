@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.PetManagement.Application;
 using PawsAndHearts.PetManagement.Application.Interfaces;
+using PawsAndHearts.PetManagement.Contracts.Dtos;
 
 namespace PawsAndHearts.PetManagement.Infrastructure.DbContexts;
 

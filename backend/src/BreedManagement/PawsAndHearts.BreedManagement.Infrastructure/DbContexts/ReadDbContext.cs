@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.BreedManagement.Application.Interfaces;
-using PawsAndHearts.Core.Dtos;
+using PawsAndHearts.BreedManagement.Contracts.Dtos;
 
 namespace PawsAndHearts.BreedManagement.Infrastructure.DbContexts;
 

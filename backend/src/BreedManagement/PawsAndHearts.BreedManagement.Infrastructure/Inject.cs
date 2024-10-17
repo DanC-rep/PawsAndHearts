@@ -4,6 +4,7 @@ using PawsAndHearts.BreedManagement.Application.Interfaces;
 using PawsAndHearts.BreedManagement.Infrastructure.DbContexts;
 using PawsAndHearts.BreedManagement.Infrastructure.Repositories;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 
 namespace PawsAndHearts.BreedManagement.Infrastructure;
 
@@ -22,7 +23,7 @@ public static class Inject
 
     private static IServiceCollection AddDatabase(this IServiceCollection services)
     {
-        services.AddScoped<IBreedManagementUnitOfWork, UnitOfWork>();
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.BreedManagement);
 
         return services;
     }

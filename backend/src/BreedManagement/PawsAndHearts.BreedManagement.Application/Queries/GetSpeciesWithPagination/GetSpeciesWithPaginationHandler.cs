@@ -1,6 +1,6 @@
 ﻿using PawsAndHearts.BreedManagement.Application.Interfaces;
+using PawsAndHearts.BreedManagement.Contracts.Dtos;
 using PawsAndHearts.Core.Abstractions;
-using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.Core.Extensions;
 using PawsAndHearts.Core.Models;
 

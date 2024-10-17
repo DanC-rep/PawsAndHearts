@@ -1,4 +1,5 @@
 ﻿using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.PetManagement.Contracts.Requests.Pet;
 
 namespace PawsAndHearts.PetManagement.Application.Queries.GetPetsWIthPagination;
 
@@ -13,7 +14,7 @@ public record GetPetsWithPaginationQuery(
     Guid? BreedId,
     string? Color,
     string? City,
-    string? Street, 
+    string? Street,
     int? MinAge,
     int? MaxAge,
     int? MinHeight,
@@ -22,4 +23,28 @@ public record GetPetsWithPaginationQuery(
     int? MaxWeight,
     string? HelpStatus,
     bool? IsNeutered,
-    bool? IsVaccinated) : IQuery;
+    bool? IsVaccinated) : IQuery
+{
+    public static GetPetsWithPaginationQuery Create(GetPetsWithPaginationRequest request) =>
+        new(
+            request.SortBy,
+            request.SortDirection,
+            request.Page,
+            request.PageSize,
+            request.VolunteerId,
+            request.Name,
+            request.SpeciesId,
+            request.BreedId,
+            request.Color,
+            request.City,
+            request.Street,
+            request.MinAge,
+            request.MaxAge,
+            request.MinHeight,
+            request.MaxHeight,
+            request.MinWeight,
+            request.MaxWeight,
+            request.HelpStatus,
+            request.IsCastrated,
+            request.IsVaccinated);
+}

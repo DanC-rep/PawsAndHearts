@@ -2,7 +2,17 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PawsAndHearts.Accounts.Application;
+using PawsAndHearts.Accounts.Infrastructure;
+using PawsAndHearts.BreedManagement.Application;
+using PawsAndHearts.BreedManagement.Infrastructure;
+using PawsAndHearts.BreedManagement.Presentation;
 using PawsAndHearts.Core.Options;
+using PawsAndHearts.PetManagement.Application;
+using PawsAndHearts.PetManagement.Infrastructure;
+using PawsAndHearts.PetManagement.Presentation;
+using Serilog;
+using Serilog.Events;
 
 namespace PawsAndHearts.Web;
 
@@ -75,6 +85,58 @@ public static class Inject
                 }
             });
         });
+
+        return services;
+    }
+
+    public static IServiceCollection AddLogging(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Seq(configuration.GetConnectionString("Seq") 
+                         ?? throw new ArgumentNullException("Seq"))
+            .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+            .CreateLogger();
+
+        services.AddSerilog();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAccountsModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services
+            .AddAccountsInfrastructure(configuration)
+            .AddAccountsApplication();
+
+        return services;
+    }
+
+    public static IServiceCollection AddBreedManagementModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services
+            .AddBreedManagementInfrastructure(configuration)
+            .AddBreedManagementApplication()
+            .AddBreedManagementPresentation();
+
+        return services;
+    }
+
+    public static IServiceCollection AddPetManagementModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services
+            .AddPetManagementInfrastructure(configuration)
+            .AddPetManagementApplication()
+            .AddPetManagementPresentation();
 
         return services;
     }

@@ -4,6 +4,7 @@ using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.Core.Extensions;
 using PawsAndHearts.Core.Models;
 using PawsAndHearts.PetManagement.Application.Interfaces;
+using PawsAndHearts.PetManagement.Contracts.Dtos;
 
 namespace PawsAndHearts.PetManagement.Application.Queries.GetPetsWIthPagination;
 

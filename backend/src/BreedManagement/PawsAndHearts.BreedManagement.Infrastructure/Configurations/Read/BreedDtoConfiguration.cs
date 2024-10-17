@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PawsAndHearts.Core.Dtos;
+using PawsAndHearts.BreedManagement.Contracts.Dtos;
 
 namespace PawsAndHearts.BreedManagement.Infrastructure.Configurations.Read;
 
