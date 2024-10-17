@@ -25,7 +25,7 @@ public class AddPetTests
 {
     private readonly Mock<IVolunteersRepository> _volunteersRepositoryMock = new();
     private readonly Mock<IBreedManagementContract> _breedManagementContractMock = new();
-    private readonly Mock<IPetManagementUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<IValidator<CreatePetCommand>> _validatorMock = new();
     private readonly Mock<ILogger<CreatePetHandler>> _loggerMock = new();
 

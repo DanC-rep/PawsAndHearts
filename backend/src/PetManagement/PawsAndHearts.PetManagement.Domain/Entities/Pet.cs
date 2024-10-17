@@ -1,18 +1,14 @@
 using CSharpFunctionalExtensions;
-using Microsoft.VisualBasic;
 using PawsAndHearts.PetManagement.Domain.Enums;
 using PawsAndHearts.PetManagement.Domain.ValueObjects;
 using PawsAndHearts.SharedKernel;
-using PawsAndHearts.SharedKernel.Interfaces;
 using PawsAndHearts.SharedKernel.ValueObjects;
 using PawsAndHearts.SharedKernel.ValueObjects.Ids;
 
 namespace PawsAndHearts.PetManagement.Domain.Entities;
 
-public class Pet : Entity<PetId>, ISoftDeletable
+public class Pet : SoftDeletableEntity<PetId>
 {
-    private bool _isDeleted = false;
-    
     private Pet(PetId id) : base(id)
     {
     }
@@ -87,12 +83,6 @@ public class Pet : Entity<PetId>, ISoftDeletable
     public void SetPosition(Position position) =>
         Position = position;
 
-    public void Delete()
-    {
-        if (!_isDeleted)
-            _isDeleted = true;
-    }
-
     internal void AddPhotos(IEnumerable<PetPhoto> petPhotos)
     {
         PetPhotos = petPhotos.ToList();
@@ -101,12 +91,6 @@ public class Pet : Entity<PetId>, ISoftDeletable
     internal void UpdateStatus(HelpStatus helpStatus)
     {
         HelpStatus = helpStatus;
-    }
-
-    public void Restore()
-    {
-        if (_isDeleted)
-            _isDeleted = false;
     }
 
     internal UnitResult<Error> MoveForward()

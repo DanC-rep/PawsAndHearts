@@ -6,7 +6,7 @@ using PawsAndHearts.PetManagement.Infrastructure.DbContexts;
 
 namespace PawsAndHearts.PetManagement.Infrastructure;
 
-public class UnitOfWork : IPetManagementUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
     private readonly WriteDbContext _dbContext;
 

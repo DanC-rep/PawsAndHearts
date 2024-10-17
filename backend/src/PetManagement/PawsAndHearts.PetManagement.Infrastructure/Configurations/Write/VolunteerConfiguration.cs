@@ -71,8 +71,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .WithOne()
             .HasForeignKey(p => p.VolunteerId);
 
-        builder.Property<bool>("_isDeleted")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
+        builder.Property(v => v.IsDeleted)
             .HasColumnName("is_deleted");
     }
 }

@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.PetManagement.Application.Interfaces;
 using PawsAndHearts.PetManagement.Domain.ValueObjects;
 using PawsAndHearts.SharedKernel;
@@ -11,12 +13,12 @@ namespace PawsAndHearts.PetManagement.Application.UseCases.UpdatePetMainPhoto;
 public class UpdatePetMainPhotoHandler : ICommandHandler<FilePath, UpdatePetMainPhotoCommand>
 {
     private readonly IVolunteersRepository _repository;
-    private readonly IPetManagementUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdatePetMainPhotoHandler> _logger;
 
     public UpdatePetMainPhotoHandler(
         IVolunteersRepository repository,
-        IPetManagementUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.PetManagement)] IUnitOfWork unitOfWork, 
         ILogger<UpdatePetMainPhotoHandler> logger)
     {
         _repository = repository;

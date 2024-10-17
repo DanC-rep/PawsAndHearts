@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.Core.Messaging;
 using PawsAndHearts.PetManagement.Application.Interfaces;
 using PawsAndHearts.SharedKernel;
@@ -15,14 +17,14 @@ public class DeletePetPhotosHandler : ICommandHandler<DeletePetPhotosCommand>
 
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IFileProvider _fileProvider;
-    private readonly IPetManagementUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMessageQueue<IEnumerable<FileInfo>> _messageQueue;
     private readonly ILogger<DeletePetPhotosHandler> _logger;
 
     public DeletePetPhotosHandler(
         IVolunteersRepository volunteersRepository,
         IFileProvider fileProvider,
-        IPetManagementUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.PetManagement)] IUnitOfWork unitOfWork, 
         ILogger<DeletePetPhotosHandler> logger, 
         IMessageQueue<IEnumerable<FileInfo>> messageQueue)
     {

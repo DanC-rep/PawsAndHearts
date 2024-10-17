@@ -17,7 +17,6 @@ public class AddPhotosToPetValidator : AbstractValidator<AddPhotosToPetCommand>
         RuleFor(a => a.Files).NotEmpty()
             .WithError(Errors.General.ValueIsRequired("files"));
 
-        RuleForEach(a => a.Files).Must(f => f.Content.Length < Constants.MAX_FILE_SIZE)
-            .WithError(Errors.Files.InvalidSize());
+        RuleForEach(a => a.Files).SetValidator(new UploadFileDtoValidator());
     }
 }

@@ -137,8 +137,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 dto => PetPhoto.Create(FilePath.Create(dto.PathToStorage).Value, dto.IsMain).Value)
             .HasColumnName("pet_photos");
         
-        builder.Property<bool>("_isDeleted")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
+        builder.Property(p => p.IsDeleted)
             .HasColumnName("is_deleted");
     }
 }

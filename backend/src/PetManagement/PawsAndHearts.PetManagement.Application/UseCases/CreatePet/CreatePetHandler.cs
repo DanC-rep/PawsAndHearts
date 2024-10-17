@@ -1,8 +1,10 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.BreedManagement.Contracts;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.Core.Extensions;
 using PawsAndHearts.PetManagement.Application.Interfaces;
 using PawsAndHearts.PetManagement.Domain.Entities;
@@ -18,14 +20,14 @@ public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IBreedManagementContract _breedManagementContract;
-    private readonly IPetManagementUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<CreatePetCommand> _validator;
     private readonly ILogger<CreatePetHandler> _logger;
 
     public CreatePetHandler(
         IVolunteersRepository volunteersRepository,
         IBreedManagementContract breedManagementContract,
-        IPetManagementUnitOfWork unitOfWork,
+        [FromKeyedServices(Modules.PetManagement)] IUnitOfWork unitOfWork, 
         IValidator<CreatePetCommand> validator,
         ILogger<CreatePetHandler> logger)
     {

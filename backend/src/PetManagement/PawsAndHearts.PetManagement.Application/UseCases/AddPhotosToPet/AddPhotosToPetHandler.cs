@@ -1,7 +1,9 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.Core.Extensions;
 using PawsAndHearts.Core.Messaging;
 using PawsAndHearts.PetManagement.Application.Interfaces;
@@ -20,7 +22,7 @@ public class AddPhotosToPetHandler : ICommandHandler<FilePathList, AddPhotosToPe
     
     private readonly IVolunteersRepository _repository;
     private readonly IFileProvider _fileProvider;
-    private readonly IPetManagementUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMessageQueue<IEnumerable<FileInfo>> _messageQueue;
     private readonly IValidator<AddPhotosToPetCommand> _validator;
     private readonly ILogger<AddPhotosToPetHandler> _logger;
@@ -30,7 +32,7 @@ public class AddPhotosToPetHandler : ICommandHandler<FilePathList, AddPhotosToPe
         ILogger<AddPhotosToPetHandler> logger, 
         IFileProvider fileProvider,
         IValidator<AddPhotosToPetCommand> validator,
-        IPetManagementUnitOfWork unitOfWork, 
+        [FromKeyedServices(Modules.PetManagement)] IUnitOfWork unitOfWork, 
         IMessageQueue<IEnumerable<FileInfo>> messageQueue)
     {
         _repository = repository;

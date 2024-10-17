@@ -1,8 +1,8 @@
 ﻿using System.Data;
 
-namespace PawsAndHearts.BreedManagement.Application.Interfaces;
+namespace PawsAndHearts.Core.Abstractions;
 
-public interface IBreedManagementUnitOfWork
+public interface IUnitOfWork
 {
     Task<IDbTransaction> BeginTransaction(CancellationToken cancellationToken = default);
 
