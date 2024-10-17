@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using PawsAndHearts.BreedManagement.Application.Interfaces;
+using PawsAndHearts.BreedManagement.Contracts.Dtos;
 using PawsAndHearts.Core.Abstractions;
-using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.SharedKernel;
 
 namespace PawsAndHearts.BreedManagement.Application.Queries.GetBreedsBySpecies;

@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\PawsAndHearts.Core\PawsAndHearts.Core.csproj" />
+      <ProjectReference Include="..\..\Shared\PawsAndHearts.Framework\PawsAndHearts.Framework.csproj" />
     </ItemGroup>
 
 </Project>

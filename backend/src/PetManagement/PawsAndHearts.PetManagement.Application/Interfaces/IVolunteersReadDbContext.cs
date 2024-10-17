@@ -1,4 +1,4 @@
-using PawsAndHearts.Core.Dtos;
+using PawsAndHearts.PetManagement.Contracts.Dtos;
 
 namespace PawsAndHearts.PetManagement.Application.Interfaces;
 

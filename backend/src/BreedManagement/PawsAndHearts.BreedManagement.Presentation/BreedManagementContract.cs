@@ -2,6 +2,7 @@
 using PawsAndHearts.BreedManagement.Application.Queries.GetBreedBySpecies;
 using PawsAndHearts.BreedManagement.Application.Queries.GetSpeciesById;
 using PawsAndHearts.BreedManagement.Contracts;
+using PawsAndHearts.BreedManagement.Contracts.Dtos;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.SharedKernel;
 

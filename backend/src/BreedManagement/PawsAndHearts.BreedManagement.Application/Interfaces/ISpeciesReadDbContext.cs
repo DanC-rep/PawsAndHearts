@@ -1,4 +1,4 @@
-using PawsAndHearts.Core.Dtos;
+using PawsAndHearts.BreedManagement.Contracts.Dtos;
 
 namespace PawsAndHearts.BreedManagement.Application.Interfaces;
 

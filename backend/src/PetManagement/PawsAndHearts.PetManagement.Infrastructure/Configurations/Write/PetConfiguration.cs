@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.Core.Extensions;
+using PawsAndHearts.PetManagement.Contracts.Dtos;
 using PawsAndHearts.PetManagement.Domain.Entities;
 using PawsAndHearts.PetManagement.Domain.ValueObjects;
 using PawsAndHearts.SharedKernel.ValueObjects;

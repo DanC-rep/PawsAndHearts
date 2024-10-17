@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using Microsoft.VisualBasic;
 using PawsAndHearts.PetManagement.Domain.Enums;
 using PawsAndHearts.PetManagement.Domain.ValueObjects;
 using PawsAndHearts.SharedKernel;
@@ -92,12 +93,12 @@ public class Pet : Entity<PetId>, ISoftDeletable
             _isDeleted = true;
     }
 
-    public void AddPhotos(IEnumerable<PetPhoto> petPhotos)
+    internal void AddPhotos(IEnumerable<PetPhoto> petPhotos)
     {
         PetPhotos = petPhotos.ToList();
     }
 
-    public void UpdateStatus(HelpStatus helpStatus)
+    internal void UpdateStatus(HelpStatus helpStatus)
     {
         HelpStatus = helpStatus;
     }
@@ -108,7 +109,7 @@ public class Pet : Entity<PetId>, ISoftDeletable
             _isDeleted = false;
     }
 
-    public UnitResult<Error> MoveForward()
+    internal UnitResult<Error> MoveForward()
     {
         var newPosition = Position.Forward();
 
@@ -120,7 +121,7 @@ public class Pet : Entity<PetId>, ISoftDeletable
         return Result.Success<Error>();
     }
     
-    public UnitResult<Error> MoveBack()
+    internal UnitResult<Error> MoveBack()
     {
         var newPosition = Position.Back();
 
@@ -132,14 +133,12 @@ public class Pet : Entity<PetId>, ISoftDeletable
         return Result.Success<Error>();
     }
 
-    public UnitResult<Error> Move(Position newPosition)
+    internal void Move(Position newPosition)
     {
         Position = newPosition;
-
-        return Result.Success<Error>();
     }
 
-    public void UpdateInfo(Pet updatedPet)
+    internal void UpdateInfo(Pet updatedPet)
     {
         Name = updatedPet.Name;
         Description = updatedPet.Description;
@@ -157,12 +156,12 @@ public class Pet : Entity<PetId>, ISoftDeletable
         Requisites = updatedPet.Requisites;
     }
 
-    public void DeletePhotos()
+    internal void DeletePhotos()
     {
         PetPhotos = [];
     }
 
-    public UnitResult<Error> UpdateMainPhoto(PetPhoto updatedPhoto)
+    internal UnitResult<Error> UpdateMainPhoto(PetPhoto updatedPhoto)
     {
         var fileExists = PetPhotos?
             .Where(p => p.Path == updatedPhoto.Path).FirstOrDefault();

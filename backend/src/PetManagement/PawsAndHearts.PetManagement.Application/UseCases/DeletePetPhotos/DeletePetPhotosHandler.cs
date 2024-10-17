@@ -54,7 +54,7 @@ public class DeletePetPhotosHandler : ICommandHandler<DeletePetPhotosCommand>
             var petPreviousPhotosInfo = petResult.Value.PetPhotos!
                 .Select(p => new FileInfo(p.Path, BUCKET_NAME)).ToList();
             
-            petResult.Value.DeletePhotos();
+            volunteerResult.Value.DeletePetPhotos(petResult.Value);
             
             await _unitOfWork.SaveChanges(cancellationToken);
 

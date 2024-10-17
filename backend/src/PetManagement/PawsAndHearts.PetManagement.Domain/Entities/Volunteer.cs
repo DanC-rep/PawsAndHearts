@@ -204,4 +204,15 @@ public class Volunteer : Entity<VolunteerId>, ISoftDeletable
 
         return petPhoto.Path;
     }
+
+    public void AddPetPhotos(Pet pet, IEnumerable<PetPhoto> photos)
+    {
+        pet.AddPhotos(photos);
+    }
+
+
+    public void DeletePetPhotos(Pet pet)
+    {
+        pet.DeletePhotos();
+    }
 }
