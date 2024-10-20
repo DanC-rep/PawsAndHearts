@@ -29,6 +29,8 @@ public class ReadDbContext(IConfiguration configuration) : DbContext, IVolunteer
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(WriteDbContext).Assembly,
             type => type.FullName?.Contains("Configurations.Read") ?? false);
+
+        modelBuilder.HasDefaultSchema("pet-management");
     }
     
     private ILoggerFactory CreateLoggerFactory() =>

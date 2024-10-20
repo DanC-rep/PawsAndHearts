@@ -10,6 +10,11 @@ public class FullName : ValueObject
         Surname = surname;
         Patronymic = patronymic;
     }
+
+    private FullName()
+    {
+        
+    }
     
     public string Name { get; } = default!;
 

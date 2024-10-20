@@ -1,14 +1,7 @@
-using PawsAndHearts.Accounts.Application;
 using PawsAndHearts.Accounts.Infrastructure;
-using PawsAndHearts.BreedManagement.Application;
-using PawsAndHearts.BreedManagement.Infrastructure;
-using PawsAndHearts.BreedManagement.Presentation;
-using PawsAndHearts.PetManagement.Application;
-using PawsAndHearts.PetManagement.Infrastructure;
-using PawsAndHearts.PetManagement.Presentation;
+using PawsAndHearts.Accounts.Infrastructure.Seeding;
 using PawsAndHearts.Web.Extensions;
 using Serilog;
-using Serilog.Events;
 
 namespace PawsAndHearts.Web;
 
@@ -32,6 +25,10 @@ public class Program
         builder.Services.AddAuthServices(builder.Configuration);
 
         var app = builder.Build();
+        
+        var accountsSeeder = app.Services.GetRequiredService<AccountSeeder>();
+        
+        await accountsSeeder.SeedAsync();
 
         app.UseExceptionMiddleware();
 

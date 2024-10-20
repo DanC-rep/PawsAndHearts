@@ -1,13 +1,16 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PawsAndHearts.Accounts.Application;
 using PawsAndHearts.Accounts.Infrastructure;
+using PawsAndHearts.Accounts.Presentation;
 using PawsAndHearts.BreedManagement.Application;
 using PawsAndHearts.BreedManagement.Infrastructure;
 using PawsAndHearts.BreedManagement.Presentation;
 using PawsAndHearts.Core.Options;
+using PawsAndHearts.Framework.Authorization;
 using PawsAndHearts.PetManagement.Application;
 using PawsAndHearts.PetManagement.Infrastructure;
 using PawsAndHearts.PetManagement.Presentation;
@@ -46,8 +49,11 @@ public static class Inject
                     ClockSkew = TimeSpan.Zero
                 };
             });
-        
+
         services.AddAuthorization();
+
+        services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
         return services;
     }
@@ -112,7 +118,8 @@ public static class Inject
     {
         services
             .AddAccountsInfrastructure(configuration)
-            .AddAccountsApplication();
+            .AddAccountsApplication()
+            .AddAAccountsPresentation();
 
         return services;
     }

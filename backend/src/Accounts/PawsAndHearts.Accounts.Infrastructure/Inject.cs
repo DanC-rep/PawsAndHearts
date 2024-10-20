@@ -2,7 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using PawsAndHearts.Accounts.Application.Interfaces;
 using PawsAndHearts.Accounts.Domain;
+using PawsAndHearts.Accounts.Infrastructure.IdentityManagers;
 using PawsAndHearts.Accounts.Infrastructure.Providers;
+using PawsAndHearts.Accounts.Infrastructure.Seeding;
+using PawsAndHearts.Core.Abstractions;
+using PawsAndHearts.Core.Enums;
 using PawsAndHearts.Core.Options;
 
 namespace PawsAndHearts.Accounts.Infrastructure;
@@ -21,6 +25,14 @@ public static class Inject
         services.RegisterIdentity();
         
         services.AddScoped<AccountsDbContext>();
+
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Accounts);
+
+        services.AddSingleton<AccountSeeder>();
+
+        services.AddScoped<AccountsSeederService>();
+
+        services.AddIdentityManagers();
         
         return services;
     }
@@ -36,6 +48,19 @@ public static class Inject
                 options.Password.RequiredLength = 8;
             })
             .AddEntityFrameworkStores<AccountsDbContext>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddIdentityManagers(this IServiceCollection services)
+    {
+        services.AddScoped<IPermissionManager, PermissionManager>();
+
+        services.AddScoped<PermissionManager>();
+
+        services.AddScoped<RolePermissionManager>();
+
+        services.AddScoped<IAccountManager, AccountsManager>();
 
         return services;
     }

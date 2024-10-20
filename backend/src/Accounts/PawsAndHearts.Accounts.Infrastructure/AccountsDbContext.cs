@@ -10,6 +10,11 @@ namespace PawsAndHearts.Accounts.Infrastructure;
 public class AccountsDbContext(IConfiguration configuration) 
     : IdentityDbContext<User, Role, Guid>
 {
+    public DbSet<Permission> Permissions => Set<Permission>();
+    
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    
+    public DbSet<ParticipantAccount> ParticipantAccounts => Set<ParticipantAccount>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -22,9 +27,6 @@ public class AccountsDbContext(IConfiguration configuration)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        modelBuilder.Entity<User>()
-            .ToTable("users");
         
         modelBuilder.Entity<Role>()
             .ToTable("roles");
@@ -43,6 +45,12 @@ public class AccountsDbContext(IConfiguration configuration)
         
         modelBuilder.Entity<IdentityUserRole<Guid>>()
             .ToTable("user_roles");
+        
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(AccountsDbContext).Assembly,
+            type => type.FullName?.Contains("Configuration.Write") ?? false);
+
+        modelBuilder.HasDefaultSchema("accounts");
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

@@ -9,6 +9,11 @@ public class SocialNetwork : ValueObject
         Link = link;
         Name = name;
     }
+
+    private SocialNetwork()
+    {
+        
+    }
     
     public string Link { get; } = default!;
 

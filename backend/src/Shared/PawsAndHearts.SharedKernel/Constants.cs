@@ -21,4 +21,9 @@ public static class Constants
     public static readonly int MAX_FILE_SIZE = 10 * 1024 * 1024;
     
     public static readonly string[] PERMITTED_HELP_STATUSES_FROM_VOLUNTEER = ["LookingForHome", "FoundHome"];
+    
+    public static class FilePaths
+    {
+        public static readonly string ACCOUNTS = "etc/accounts.json";
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PawsAndHearts.Core.Dtos;
 using PawsAndHearts.Framework;
+using PawsAndHearts.Framework.Authorization;
 using PawsAndHearts.Framework.Extensions;
 using PawsAndHearts.PetManagement.Application.Queries.GetPetById;
 using PawsAndHearts.PetManagement.Application.Queries.GetPetsWIthPagination;
@@ -11,6 +12,7 @@ namespace PawsAndHearts.PetManagement.Presentation;
 
 public class PetsController : ApplicationController
 {
+    [Permission("pet.read")]
     [HttpGet]
     public async Task<ActionResult> GetPets(
         [FromQuery] GetPetsWithPaginationRequest request,
@@ -24,6 +26,7 @@ public class PetsController : ApplicationController
         return Ok(response);
     }
 
+    [Permission("pet.read")]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<PetDto>> GetById(
         Guid id,
