@@ -9,6 +9,11 @@ public class Requisite : ValueObject
         Name = name;
         Description = description;
     }
+
+    private Requisite()
+    {
+        
+    }
     
     public string Name { get; private set; } = default!;
 

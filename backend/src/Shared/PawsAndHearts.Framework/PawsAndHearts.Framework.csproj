@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Accounts\PawsAndHearts.Accounts.Contracts\PawsAndHearts.Accounts.Contracts.csproj" />
       <ProjectReference Include="..\PawsAndHearts.Core\PawsAndHearts.Core.csproj" />
     </ItemGroup>
 

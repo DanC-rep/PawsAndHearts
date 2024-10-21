@@ -27,6 +27,8 @@ public class ReadDbContext(IConfiguration configuration) : DbContext, ISpeciesRe
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(WriteDbContext).Assembly,
             type => type.FullName?.Contains("Configurations.Read") ?? false);
+
+        modelBuilder.HasDefaultSchema("breed-management");
     }
     
     private ILoggerFactory CreateLoggerFactory() =>

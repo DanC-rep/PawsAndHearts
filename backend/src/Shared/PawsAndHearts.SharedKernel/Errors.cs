@@ -42,5 +42,10 @@ public static class Errors
         {
             return Error.Validation("credentials.is.invalid", "Your credentials is invalid");
         }
+
+        public static Error InvalidRole()
+        {
+            return Error.Failure("invalid.role", "Invalid role");
+        }
     }
 }
