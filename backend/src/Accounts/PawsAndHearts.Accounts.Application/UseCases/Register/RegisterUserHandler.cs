@@ -61,10 +61,16 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
             
             var socialNetworks = command.SocialNetworks.Select(s =>
                 SocialNetwork.Create(s.Name, s.Link).Value).ToList();
+            
+            var fullName = FullName.Create(
+                command.FullName.Name,
+                command.FullName.Surname,
+                command.FullName.Patronymic).Value;
 
             var userResult = User.CreateParticipant(
                 command.UserName, 
                 command.Email,
+                fullName,
                 socialNetworks,
                 role);
 
@@ -76,15 +82,7 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
             if (!result.Succeeded)
                 return Error.Failure("register.user", "can not register user").ToErrorList();
 
-            var fullNameResult = FullName.Create(
-                command.FullName.Name,
-                command.FullName.Surname,
-                command.FullName.Patronymic);
-
-            if (fullNameResult.IsFailure)
-                return fullNameResult.Error.ToErrorList();
-
-            var participantAccount = new ParticipantAccount(fullNameResult.Value, userResult.Value);
+            var participantAccount = new ParticipantAccount(userResult.Value);
             
             await _accountManager.AddParticipantAccount(participantAccount, cancellationToken);
 

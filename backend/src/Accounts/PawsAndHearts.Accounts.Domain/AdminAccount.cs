@@ -1,12 +1,19 @@
-﻿using PawsAndHearts.SharedKernel.ValueObjects;
-
-namespace PawsAndHearts.Accounts.Domain;
+﻿namespace PawsAndHearts.Accounts.Domain;
 
 public class AdminAccount
 {
-    public Guid Id { get; set; }
+    private AdminAccount()
+    {
+        
+    }
     
-    public FullName FullName { get; set; }
+    public AdminAccount(User user)
+    {
+        Id = Guid.NewGuid();
+        User = user;
+    }
+    
+    public Guid Id { get; set; }
     
     public User User { get; set; }
     

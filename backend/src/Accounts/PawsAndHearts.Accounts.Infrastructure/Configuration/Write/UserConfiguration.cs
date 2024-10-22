@@ -23,5 +23,23 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 input => new SocialNetworkDto(input.Name, input.Link),
                 output => SocialNetwork.Create(output.Name, output.Link).Value)
             .HasColumnName("social_networks");
+        
+        builder.ComplexProperty(v => v.FullName, fb =>
+        {
+            fb.Property(f => f.Name)
+                .IsRequired()
+                .HasMaxLength(SharedKernel.Constants.MAX_NAME_LENGTH)
+                .HasColumnName("name");
+
+            fb.Property(f => f.Surname)
+                .IsRequired()
+                .HasMaxLength(SharedKernel.Constants.MAX_NAME_LENGTH)
+                .HasColumnName("surname");
+
+            fb.Property(f => f.Patronymic)
+                .IsRequired(false)
+                .HasMaxLength(SharedKernel.Constants.MAX_NAME_LENGTH)
+                .HasColumnName("patronymic");
+        });
     }
 }

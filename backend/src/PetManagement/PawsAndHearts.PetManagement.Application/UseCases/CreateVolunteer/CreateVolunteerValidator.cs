@@ -17,13 +17,5 @@ public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerCommand
         RuleFor(c => c.FullName)
             .MustBeValueObject(f => 
                 FullName.Create(f.Name, f.Surname, f.Patronymic));
-
-        RuleForEach(c => c.SocialNetworks)
-            .MustBeValueObject(f => 
-                SocialNetwork.Create(f.Name, f.Link));
-        
-        RuleForEach(c => c.Requisites)
-            .MustBeValueObject(f => 
-                Requisite.Create(f.Name, f.Description));
     }
 }

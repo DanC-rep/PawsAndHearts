@@ -53,19 +53,11 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
 
         var experience = Experience.Create(command.Experience).Value;
 
-        var socialNetworks = command.SocialNetworks.Select(s =>
-                SocialNetwork.Create(s.Name, s.Link).Value).ToList();
-
-        var requisites = command.Requisites.Select(r =>
-                Requisite.Create(r.Name, r.Description).Value).ToList();
-
         var volunteerResult = new Volunteer(
             volunteerId, 
             fullName,
             experience,
-            phoneNumber, 
-            socialNetworks,
-            requisites);
+            phoneNumber);
 
         await _volunteersRepository.Add(volunteerResult, cancellationToken);
         await _unitOfWork.SaveChanges(cancellationToken);

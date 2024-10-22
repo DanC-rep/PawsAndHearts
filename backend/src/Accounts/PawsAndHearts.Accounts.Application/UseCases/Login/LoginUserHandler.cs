@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PawsAndHearts.Core.Abstractions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using PawsAndHearts.Accounts.Application.Interfaces;
 using PawsAndHearts.Accounts.Domain;
 using PawsAndHearts.SharedKernel;
@@ -28,7 +29,9 @@ public class LoginUserHandler : ICommandHandler<string, LoginUserCommand>
         LoginUserCommand command,
         CancellationToken cancellationToken = default)
     {
-        var user = await _userManager.FindByEmailAsync(command.Email);
+        var user = await _userManager.Users
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync(u => u.Email == command.Email, cancellationToken);
 
         if (user is null)
             return Errors.General.NotFound(null, "user").ToErrorList();

@@ -19,6 +19,9 @@ public static class Inject
     {
         services.Configure<JwtOptions>(
                 configuration.GetSection(JwtOptions.JWT));
+
+        services.Configure<AdminOptions>(
+            configuration.GetSection(AdminOptions.ADMIN));
         
         services.AddScoped<ITokenProvider, JwtTokenProvider>();   
         

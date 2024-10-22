@@ -16,6 +16,10 @@ public class AccountsDbContext(IConfiguration configuration)
     
     public DbSet<ParticipantAccount> ParticipantAccounts => Set<ParticipantAccount>();
     
+    public DbSet<VolunteerAccount> VolunteerAccounts => Set<VolunteerAccount>();
+    
+    public DbSet<AdminAccount> AdminAccounts => Set<AdminAccount>();
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql(configuration.GetConnectionString(Constants.DATABASE));
