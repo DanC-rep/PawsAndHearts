@@ -17,15 +17,11 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
         VolunteerId id, 
         FullName fullName, 
         Experience experience,
-        PhoneNumber phoneNumber, 
-        ValueObjectList<SocialNetwork> socialNetworks,
-        ValueObjectList<Requisite> requisites) : base(id)
+        PhoneNumber phoneNumber) : base(id)
     {
         FullName = fullName;
         Experience = experience;
         PhoneNumber = phoneNumber;
-        SocialNetworks = socialNetworks;
-        Requisites = requisites;
     }
 
     public FullName FullName { get; private set; }
@@ -33,10 +29,6 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
     public Experience Experience { get; private set; }
 
     public PhoneNumber PhoneNumber { get; private set; }
-
-    public IReadOnlyList<SocialNetwork> SocialNetworks { get; private set; }
-
-    public IReadOnlyList<Requisite> Requisites { get; private set; }
 
     private readonly List<Pet> _pets = [];
 
@@ -53,16 +45,6 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
         FullName = fullName;
         PhoneNumber = phoneNumber;
         Experience = experience;
-    }
-
-    public void UpdateSocialNetworks(ValueObjectList<SocialNetwork> socialNetworks)
-    {
-        SocialNetworks = socialNetworks;
-    }
-
-    public void UpdateRequisites(ValueObjectList<Requisite> requisites)
-    {
-        Requisites = requisites;
     }
 
     public override void Delete()

@@ -259,9 +259,6 @@ public class UploadFilesToPetTests
         var birthDate = BirthDate.Create(DateTime.Now).Value;
         var creationDate = CreationDate.Create(DateTime.Now).Value;
         
-        var socialNetworks = new ValueObjectList<SocialNetwork>(
-            [SocialNetwork.Create("123", "123").Value]);
-        
         var requisites = new ValueObjectList<Requisite>(
             [Requisite.Create("123", "123").Value]);
         
@@ -269,9 +266,7 @@ public class UploadFilesToPetTests
             VolunteerId.NewId(),
             fullName,
             experience,
-            phoneNumber,
-            socialNetworks,
-            requisites);
+            phoneNumber);
 
         for (int i = 0; i < petsCount; i++)
         {

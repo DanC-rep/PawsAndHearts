@@ -54,18 +54,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(SharedKernel.Constants.MAX_PHONE_LENGTH)
                 .HasColumnName("phone_number");
         });
-        
-        builder.Property(v => v.Requisites)
-            .HasValueObjectsJsonConversion(
-                requisite => new RequisiteDto(requisite.Name, requisite.Description),
-                dto => Requisite.Create(dto.Name, dto.Description).Value)
-            .HasColumnName("requisites");
-
-        builder.Property(v => v.SocialNetworks)
-            .HasValueObjectsJsonConversion(
-                socialNetwork => new SocialNetworkDto(socialNetwork.Name, socialNetwork.Link),
-                dto => SocialNetwork.Create(dto.Link, dto.Name).Value)
-            .HasColumnName("social_networks");
 
         builder.HasMany(v => v.Pets)
             .WithOne()

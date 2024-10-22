@@ -12,25 +12,7 @@ public class VolunteerAccountConfiguration : IEntityTypeConfiguration<VolunteerA
     public void Configure(EntityTypeBuilder<VolunteerAccount> builder)
     {
         builder.ToTable("volunteer_accounts");
-        
-        builder.ComplexProperty(v => v.FullName, fb =>
-        {
-            fb.Property(f => f.Name)
-                .IsRequired()
-                .HasMaxLength(SharedKernel.Constants.MAX_NAME_LENGTH)
-                .HasColumnName("name");
 
-            fb.Property(f => f.Surname)
-                .IsRequired()
-                .HasMaxLength(SharedKernel.Constants.MAX_NAME_LENGTH)
-                .HasColumnName("surname");
-
-            fb.Property(f => f.Patronymic)
-                .IsRequired(false)
-                .HasMaxLength(SharedKernel.Constants.MAX_NAME_LENGTH)
-                .HasColumnName("patronymic");
-        });
-        
         builder.ComplexProperty(v => v.Experience, eb =>
         {
             eb.Property(e => e.Value)

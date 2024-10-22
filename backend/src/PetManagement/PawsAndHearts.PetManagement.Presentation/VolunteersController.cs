@@ -17,8 +17,6 @@ using PawsAndHearts.PetManagement.Application.UseCases.UpdateMainInfo;
 using PawsAndHearts.PetManagement.Application.UseCases.UpdatePet;
 using PawsAndHearts.PetManagement.Application.UseCases.UpdatePetMainPhoto;
 using PawsAndHearts.PetManagement.Application.UseCases.UpdatePetStatus;
-using PawsAndHearts.PetManagement.Application.UseCases.UpdateRequisites;
-using PawsAndHearts.PetManagement.Application.UseCases.UpdateSocialNetworks;
 using PawsAndHearts.PetManagement.Contracts.Dtos;
 using PawsAndHearts.PetManagement.Contracts.Requests.Volunteer;
 using PawsAndHearts.SharedKernel.ValueObjects;
@@ -50,36 +48,6 @@ public class VolunteersController : ApplicationController
         CancellationToken cancellationToken = default)
     {
         var command = UpdateMainInfoCommand.Create(id, request);
-
-        var result = await handler.Handle(command, cancellationToken);
-
-        return result.ToResponse();
-    }
-
-    [Permission("volunteer.update")]
-    [HttpPut("{id:guid}/social-networks")]
-    public async Task<ActionResult<Guid>> UpdateSocialNetworks(
-        [FromRoute] Guid id,
-        [FromBody] UpdateSocialNetworksRequest request,
-        [FromServices] UpdateSocialNetworksHandler handler,
-        CancellationToken cancellationToken = default)
-    {
-        var command = UpdateSocialNetworksCommand.Create(id, request);
-
-        var result = await handler.Handle(command, cancellationToken);
-
-        return result.ToResponse();
-    }
-
-    [Permission("volunteer.update")]
-    [HttpPut("{id:guid}/requisites")]
-    public async Task<ActionResult<Guid>> UpdateRequisites(
-        [FromRoute] Guid id,
-        [FromBody] UpdateRequisitesRequest request,
-        [FromServices] UpdateRequisitesHandler handler,
-        CancellationToken cancellationToken = default)
-    {
-        var command = UpdateRequisitesCommand.Create(id, request);
 
         var result = await handler.Handle(command, cancellationToken);
 

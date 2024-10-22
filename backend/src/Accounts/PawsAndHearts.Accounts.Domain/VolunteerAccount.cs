@@ -6,8 +6,6 @@ public class VolunteerAccount
 {
     public Guid Id { get; set; }
     
-    public FullName FullName { get; set; }
-    
     public Experience Experience { get; set; }
     
     public IReadOnlyList<Requisite> Requisites { get; set; }
@@ -19,4 +17,9 @@ public class VolunteerAccount
     public User User { get; set; }
     
     public Guid UserId { get; set; }
+
+    public void UpdateRequisites(List<Requisite> requisites)
+    {
+        Requisites = requisites;
+    }
 }
